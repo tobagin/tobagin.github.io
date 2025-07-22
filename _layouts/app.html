@@ -4,26 +4,27 @@ layout: default
 
 {% assign app = site.data.apps | where: "slug", page.slug | first %}
 
-<section class="app-hero">
+<section class="hero">
   <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/icons/128x128/{{ app.flathub }}.png"
-       alt="{{ app.name }} icon" width="128" height="128">
+       alt="{{ app.name }}">
   <h1>{{ app.name }}</h1>
   <p>{{ app.tagline }}</p>
+
+  <div class="buttons">
+    <a class="btn primary" href="https://flathub.org/apps/{{ app.flathub }}">
+      <span>⬇</span> Install from Flathub
+    </a>
+    <a class="btn secondary" href="https://github.com/{{ app.github }}">
+      <span>🐙</span> Source on GitHub
+    </a>
+  </div>
 </section>
 
-<section class="buttons">
-  <a class="btn primary" href="https://flathub.org/apps/{{ app.flathub }}">
-    Install from Flathub
-  </a>
-  <a class="btn" href="https://github.com/{{ app.github }}">
-    Source on GitHub
-  </a>
-</section>
-
-<section>
-  <h2>Latest screenshots</h2>
-  <p>
-    Screenshots are auto-pulled from Flathub.  
-    <a href="https://flathub.org/apps/{{ app.flathub }}">View full gallery →</a>
-  </p>
+<section class="screenshots">
+  {% for i in (1..5) %}
+    {% assign url = "https://dl.flathub.org/media/" |
+                    append: app.flathub | replace: '.', '/' |
+                    append: "/screenshots/image-" | append: i | append: "_orig.webp" %}
+    <img src="{{ url }}" alt="Screenshot {{ i }}">
+  {% endfor %}
 </section>
