@@ -22,10 +22,10 @@ The following features have been implemented:
 
 ### Must-Have Features
 
-- [ ] **Enhanced App Schema** - Add fields for docs_url, wiki_url, issues_url, discussions_url `M`
-- [ ] **Data Validation** - Implement YAML schema validation for app entries `S`
-- [ ] **Resource Link UI** - Display comprehensive resource links on app pages `M`
-- [ ] **Link Status Checking** - Validate that provided URLs are accessible `L`
+- [x] **Enhanced App Schema** - Add fields for docs_url, wiki_url, issues_url, discussions_url `DONE`
+- [x] **Data Validation** - Implement YAML schema validation for app entries `DONE`
+- [x] **Resource Link UI** - Display comprehensive resource links on app pages `DONE`
+- [x] **Link Status Checking** - Validate that provided URLs are accessible `DONE`
 
 ### Should-Have Features
 
