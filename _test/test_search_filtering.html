@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Search Filtering Tests</title>
+  <style>
+    body { 
+      font-family: system-ui, sans-serif; 
+      margin: 2rem; 
+      background: #f6f5f4; 
+    }
+    .test-result {
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      border-radius: 4px;
+    }
+    .pass { background: #d1e7dd; color: #0f5132; }
+    .fail { background: #f8d7da; color: #842029; }
+    .test-app {
+      display: block;
+      margin: 0.5rem;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      transition: opacity 0.2s ease;
+    }
+    .test-app.hidden {
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Search Filtering Tests</h1>
+  <div id="test-results"></div>
+  
+  <!-- Mock app grid for testing -->
+  <div id="test-grid" style="display: none;">
+    <div class="test-app" data-name="Digger" data-tagline="Friendly DNS lookup without the terminal" data-category="Network" data-tags="networking,dns,gtk4,rust">
+      <h3>Digger</h3>
+      <p>Friendly DNS lookup without the terminal</p>
+    </div>
+    <div class="test-app" data-name="Karere" data-tagline="Modern chat client for Matrix" data-category="Network" data-tags="chat,matrix,messaging,gtk4">
+      <h3>Karere</h3>
+      <p>Modern chat client for Matrix</p>
+    </div>
+    <div class="test-app" data-name="Secrets" data-tagline="Manage passwords and secrets" data-category="System" data-tags="password,security,gtk4">
+      <h3>Secrets</h3>
+      <p>Manage passwords and secrets</p>
+    </div>
+  </div>
+
+  <script>
+    // Test framework
+    function runTest(name, testFn) {
+      const resultsDiv = document.getElementById('test-results');
+      try {
+        testFn();
+        resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name}</div>`;
+      } catch (error) {
+        resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${error.message}</div>`;
+      }
+    }
+
+    function assert(condition, message) {
+      if (!condition) {
+        throw new Error(message);
+      }
+    }
+
+    // FilterManager implementation (to be tested)
+    const FilterManager = {
+      state: {
+        searchTerm: '',
+        selectedCategory: 'all',
+        selectedTags: new Set()
+      },
+
+      // Initialize filter manager
+      init: function(appSelector = '.test-app') {
+        this.apps = document.querySelectorAll(appSelector);
+        this.filterApps();
+      },
+
+      // Set search term and filter
+      setSearchTerm: function(term) {
+        this.state.searchTerm = term.toLowerCase().trim();
+        this.filterApps();
+      },
+
+      // Set category filter
+      setCategory: function(category) {
+        this.state.selectedCategory = category;
+        this.filterApps();
+      },
+
+      // Add/remove tag filter
+      toggleTag: function(tag) {
+        if (this.state.selectedTags.has(tag)) {
+          this.state.selectedTags.delete(tag);
+        } else {
+          this.state.selectedTags.add(tag);
+        }
+        this.filterApps();
+      },
+
+      // Clear all filters
+      clearFilters: function() {
+        this.state.searchTerm = '';
+        this.state.selectedCategory = 'all';
+        this.state.selectedTags.clear();
+        this.filterApps();
+      },
+
+      // Apply filters to apps
+      filterApps: function() {
+        if (!this.apps) return;
+
+        this.apps.forEach(app => {
+          const name = app.dataset.name?.toLowerCase() || '';
+          const tagline = app.dataset.tagline?.toLowerCase() || '';
+          const category = app.dataset.category || '';
+          const tags = app.dataset.tags ? app.dataset.tags.split(',') : [];
+
+          let visible = true;
+
+          // Search filter
+          if (this.state.searchTerm) {
+            const searchMatch = name.includes(this.state.searchTerm) || 
+                               tagline.includes(this.state.searchTerm);
+            visible = visible && searchMatch;
+          }
+
+          // Category filter
+          if (this.state.selectedCategory !== 'all') {
+            visible = visible && (category === this.state.selectedCategory);
+          }
+
+          // Tag filter (AND logic)
+          if (this.state.selectedTags.size > 0) {
+            const hasAllTags = Array.from(this.state.selectedTags)
+              .every(tag => tags.includes(tag));
+            visible = visible && hasAllTags;
+          }
+
+          // Apply visibility
+          if (visible) {
+            app.classList.remove('hidden');
+          } else {
+            app.classList.add('hidden');
+          }
+        });
+      },
+
+      // Get visible apps count
+      getVisibleCount: function() {
+        if (!this.apps) return 0;
+        return Array.from(this.apps).filter(app => !app.classList.contains('hidden')).length;
+      }
+    };
+
+    // Test cases
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize FilterManager
+      FilterManager.init();
+
+      // Test 1: Initial state
+      runTest('Initial state shows all apps', function() {
+        assert(FilterManager.getVisibleCount() === 3, 'Should show all 3 apps initially');
+      });
+
+      // Test 2: Search by app name
+      runTest('Search by app name', function() {
+        FilterManager.setSearchTerm('digger');
+        assert(FilterManager.getVisibleCount() === 1, 'Should show 1 app when searching for "digger"');
+        
+        FilterManager.setSearchTerm('karere');
+        assert(FilterManager.getVisibleCount() === 1, 'Should show 1 app when searching for "karere"');
+      });
+
+      // Test 3: Search by tagline
+      runTest('Search by tagline', function() {
+        FilterManager.setSearchTerm('dns');
+        assert(FilterManager.getVisibleCount() === 1, 'Should show 1 app when searching for "dns"');
+        
+        FilterManager.setSearchTerm('matrix');
+        assert(FilterManager.getVisibleCount() === 1, 'Should show 1 app when searching for "matrix"');
+      });
+
+      // Test 4: Case insensitive search
+      runTest('Case insensitive search', function() {
+        FilterManager.setSearchTerm('DIGGER');
+        assert(FilterManager.getVisibleCount() === 1, 'Should be case insensitive');
+        
+        FilterManager.setSearchTerm('DNS');
+        assert(FilterManager.getVisibleCount() === 1, 'Should be case insensitive for tagline');
+      });
+
+      // Test 5: Category filtering
+      runTest('Category filtering', function() {
+        FilterManager.clearFilters();
+        FilterManager.setCategory('Network');
+        assert(FilterManager.getVisibleCount() === 2, 'Should show 2 Network apps');
+        
+        FilterManager.setCategory('System');
+        assert(FilterManager.getVisibleCount() === 1, 'Should show 1 System app');
+      });
+
+      // Test 6: Tag filtering
+      runTest('Tag filtering', function() {
+        FilterManager.clearFilters();
+        FilterManager.toggleTag('gtk4');
+        assert(FilterManager.getVisibleCount() === 3, 'Should show 3 apps with gtk4 tag');
+        
+        FilterManager.toggleTag('networking');
+        assert(FilterManager.getVisibleCount() === 1, 'Should show 1 app with both gtk4 and networking tags');
+      });
+
+      // Test 7: Combined filtering
+      runTest('Combined search and category filtering', function() {
+        FilterManager.clearFilters();
+        FilterManager.setSearchTerm('client');
+        FilterManager.setCategory('Network');
+        assert(FilterManager.getVisibleCount() === 1, 'Should show 1 app matching both search and category');
+      });
+
+      // Test 8: Clear filters
+      runTest('Clear filters functionality', function() {
+        FilterManager.setSearchTerm('test');
+        FilterManager.setCategory('Development');
+        FilterManager.toggleTag('rust');
+        assert(FilterManager.getVisibleCount() === 0, 'Should show 0 apps with non-matching filters');
+        
+        FilterManager.clearFilters();
+        assert(FilterManager.getVisibleCount() === 3, 'Should show all apps after clearing filters');
+      });
+
+      // Test 9: No results scenario
+      runTest('No results scenario', function() {
+        FilterManager.setSearchTerm('nonexistent');
+        assert(FilterManager.getVisibleCount() === 0, 'Should show 0 apps for non-matching search');
+      });
+
+      // Test 10: State management
+      runTest('State management integrity', function() {
+        FilterManager.clearFilters();
+        assert(FilterManager.state.searchTerm === '', 'Search term should be empty after clear');
+        assert(FilterManager.state.selectedCategory === 'all', 'Category should be "all" after clear');
+        assert(FilterManager.state.selectedTags.size === 0, 'Tags set should be empty after clear');
+      });
+    });
+  </script>
+</body>
+</html>

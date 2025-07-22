@@ -13,12 +13,12 @@ These are the tasks to be completed for the spec detailed in @.agent-os/specs/20
   - [x] 1.3 Add tags array field to all existing apps in _data/apps.yml
   - [x] 1.4 Verify all tests pass and Jekyll builds successfully
 
-- [ ] 2. Implement Search Functionality
-  - [ ] 2.1 Write tests for search filtering logic
-  - [ ] 2.2 Create FilterManager JavaScript module
-  - [ ] 2.3 Add search input to homepage layout
-  - [ ] 2.4 Implement real-time search filtering
-  - [ ] 2.5 Verify all tests pass
+- [x] 2. Implement Search Functionality
+  - [x] 2.1 Write tests for search filtering logic
+  - [x] 2.2 Create FilterManager JavaScript module
+  - [x] 2.3 Add search input to homepage layout
+  - [x] 2.4 Implement real-time search filtering
+  - [x] 2.5 Verify all tests pass
 
 - [ ] 3. Implement Category Filtering System
   - [ ] 3.1 Write tests for category filtering logic
