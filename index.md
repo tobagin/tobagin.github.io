@@ -3,14 +3,15 @@ layout: default
 title: Home
 ---
 
-# Tobagin Apps
-
-A handful of open-source utilities built for GNOME and shipped as Flatpaks.
-
+<div class="grid">
 {% for app in site.data.apps %}
-- **[{{ app.name }}](apps/{{ app.slug }})** — {{ app.tagline }}
+  <a class="card" href="apps/{{ app.slug }}">
+    <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/icons/128x128/{{ app.flathub }}.png"
+         alt="{{ app.name }} icon">
+    <div class="card-body">
+      <h3>{{ app.name }}</h3>
+      <p>{{ app.tagline }}</p>
+    </div>
+  </a>
 {% endfor %}
-
-## Contribute / Report Issues
-
-All code lives on [GitHub](https://github.com/tobagin).
+</div>
