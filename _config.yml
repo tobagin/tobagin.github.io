@@ -1,1 +1,7 @@
-
+title: Tobagin Apps
+description: A small collection of useful GNOME utilities
+url: https://tobagin.github.io
+plugins:
+  - jekyll-sass-converter
+sass:
+  style: compressed
