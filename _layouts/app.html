@@ -1,0 +1,29 @@
+---
+layout: default
+---
+
+{% assign app = site.data.apps | where: "slug", page.slug | first %}
+
+<section class="app-hero">
+  <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/icons/128x128/{{ app.flathub }}.png"
+       alt="{{ app.name }} icon" width="128" height="128">
+  <h1>{{ app.name }}</h1>
+  <p>{{ app.tagline }}</p>
+</section>
+
+<section class="buttons">
+  <a class="btn primary" href="https://flathub.org/apps/{{ app.flathub }}">
+    Install from Flathub
+  </a>
+  <a class="btn" href="https://github.com/{{ app.github }}">
+    Source on GitHub
+  </a>
+</section>
+
+<section>
+  <h2>Latest screenshots</h2>
+  <p>
+    Screenshots are auto-pulled from Flathub.  
+    <a href="https://flathub.org/apps/{{ app.flathub }}">View full gallery →</a>
+  </p>
+</section>
