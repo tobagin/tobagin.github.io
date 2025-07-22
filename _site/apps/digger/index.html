@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Tobagin Apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+</head>
+<body>
+  <header>
+    <h1><a href="/">Tobagin Apps</a></h1>
+    <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
+  </header>
+
+  
+
+<section class="hero">
+  <img src="https://dl.flathub.org/media/io/github/tobagin/digger/icons/128x128/io.github.tobagin.digger.png"
+       alt="Digger">
+  <h1>Digger</h1>
+  <p>Friendly DNS lookup without the terminal</p>
+
+  <div class="buttons">
+    <a class="btn primary" href="https://flathub.org/apps/io.github.tobagin.digger">
+      <span>⬇</span> Install from Flathub
+    </a>
+    <a class="btn secondary" href="https://github.com/tobagin/digger">
+      <span>🐙</span> Source on GitHub
+    </a>
+  </div>
+</section>
+
+
+<section class="resources">
+  <h2>Project Resources</h2>
+  <div class="resource-links">
+    
+    <a class="resource-link" href="https://tobagin.github.io/digger/docs">
+      <span class="resource-icon">📚</span>
+      <div class="resource-info">
+        <h3>Documentation</h3>
+        <p>User guides and API docs</p>
+      </div>
+    </a>
+    
+    
+    
+    <a class="resource-link" href="https://github.com/tobagin/digger/wiki">
+      <span class="resource-icon">📖</span>
+      <div class="resource-info">
+        <h3>Wiki</h3>
+        <p>Community knowledge base</p>
+      </div>
+    </a>
+    
+    
+    
+    <a class="resource-link" href="https://github.com/tobagin/digger/issues">
+      <span class="resource-icon">🐛</span>
+      <div class="resource-info">
+        <h3>Issues</h3>
+        <p>Bug reports and feature requests</p>
+      </div>
+    </a>
+    
+    
+    
+    <a class="resource-link" href="https://github.com/tobagin/digger/discussions">
+      <span class="resource-icon">💬</span>
+      <div class="resource-info">
+        <h3>Discussions</h3>
+        <p>Community support and chat</p>
+      </div>
+    </a>
+    
+  </div>
+</section>
+
+
+<section class="screenshots">
+  
+    
+    <img src="https://dl/flathub/org/media/io/github/tobagin/digger/screenshots/image-1_orig.webp" alt="Screenshot 1">
+  
+    
+    <img src="https://dl/flathub/org/media/io/github/tobagin/digger/screenshots/image-2_orig.webp" alt="Screenshot 2">
+  
+    
+    <img src="https://dl/flathub/org/media/io/github/tobagin/digger/screenshots/image-3_orig.webp" alt="Screenshot 3">
+  
+    
+    <img src="https://dl/flathub/org/media/io/github/tobagin/digger/screenshots/image-4_orig.webp" alt="Screenshot 4">
+  
+    
+    <img src="https://dl/flathub/org/media/io/github/tobagin/digger/screenshots/image-5_orig.webp" alt="Screenshot 5">
+  
+</section>
+
+
+  <script>
+    // Auto dark/light + toggle
+    const btn = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    else {
+      const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      html.setAttribute('data-theme', prefers);
+    }
+    btn.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  </script>
+</body>
+</html>

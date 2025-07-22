@@ -109,6 +109,62 @@ header h1 { margin: 0; font-size: 1.5rem; }
 }
 .btn.secondary:hover { background: var(--light-3); }
 
+/* Resources */
+.resources {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.resources h2 {
+  text-align: center;
+  margin: 0 0 2rem;
+  font-size: 1.5rem;
+  color: var(--fg);
+}
+.resource-links {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.resource-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
+  color: var(--fg);
+}
+.resource-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,.2);
+  color: var(--fg);
+}
+.resource-icon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: var(--blue-3);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.resource-info h3 {
+  margin: 0 0 .25rem;
+  font-size: 1rem;
+  color: var(--fg);
+}
+.resource-info p {
+  margin: 0;
+  font-size: .875rem;
+  color: var(--fg-alt);
+}
+
 /* Screenshots */
 .screenshots {
   display: grid;

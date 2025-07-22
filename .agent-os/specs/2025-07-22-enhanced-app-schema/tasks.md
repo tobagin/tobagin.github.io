@@ -13,11 +13,11 @@ These are the tasks to be completed for the spec detailed in @.agent-os/specs/20
   - [x] 1.3 Create data validation helper functions for resource URLs
   - [x] 1.4 Verify Jekyll build works with enhanced schema
 
-- [ ] 2. Update App Layout Templates
-  - [ ] 2.1 Update app.html layout to display resource links section
-  - [ ] 2.2 Add appropriate icons and styling for resource links
-  - [ ] 2.3 Ensure responsive design for new resource section
-  - [ ] 2.4 Test template rendering with apps that have/don't have resources
+- [x] 2. Update App Layout Templates
+  - [x] 2.1 Update app.html layout to display resource links section
+  - [x] 2.2 Add appropriate icons and styling for resource links
+  - [x] 2.3 Ensure responsive design for new resource section
+  - [x] 2.4 Test template rendering with apps that have/don't have resources
 
 - [ ] 3. Enhance All App Data
   - [ ] 3.1 Research and add resource URLs for all remaining apps
