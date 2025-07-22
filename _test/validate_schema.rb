@@ -5,7 +5,7 @@ require 'yaml'
 
 # Load the app data
 begin
-  apps = YAML.load_file('_data/app.yml')
+  apps = YAML.load_file('_data/apps.yml')
   puts "✓ YAML loaded successfully with #{apps.length} apps"
 rescue => e
   puts "✗ YAML loading failed: #{e.message}"

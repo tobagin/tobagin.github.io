@@ -19,10 +19,10 @@ These are the tasks to be completed for the spec detailed in @.agent-os/specs/20
   - [x] 2.3 Ensure responsive design for new resource section
   - [x] 2.4 Test template rendering with apps that have/don't have resources
 
-- [ ] 3. Enhance All App Data
-  - [ ] 3.1 Research and add resource URLs for all remaining apps
-  - [ ] 3.2 Validate all URLs are accessible and correct
-  - [ ] 3.3 Ensure consistent URL formats across all apps
+- [x] 3. Enhance All App Data
+  - [x] 3.1 Research and add resource URLs for all remaining apps
+  - [x] 3.2 Validate all URLs are accessible and correct
+  - [x] 3.3 Ensure consistent URL formats across all apps
 
 - [ ] 4. Documentation and Testing
   - [ ] 4.1 Update README with new data schema documentation

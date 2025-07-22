@@ -23,21 +23,36 @@
   tagline: Point-and-click SSH key manager
   github: tobagin/keysmith
   flathub: io.github.tobagin.keysmith
+  resources:
+    wiki_url: "https://github.com/tobagin/keysmith/wiki"
+    issues_url: "https://github.com/tobagin/keysmith/issues"
+    discussions_url: "https://github.com/tobagin/keysmith/discussions"
 
 - slug: secrets
   name: Secrets Manager
   tagline: Beautiful password safe for GNOME
   github: tobagin/secrets
   flathub: io.github.tobagin.secrets
+  resources:
+    issues_url: "https://github.com/tobagin/secrets/issues"
+    discussions_url: "https://github.com/tobagin/secrets/discussions"
 
 - slug: sonar
   name: Sonar
   tagline: Local webhook inspector for developers
   github: tobagin/sonar
   flathub: io.github.tobagin.sonar
+  resources:
+    wiki_url: "https://github.com/tobagin/sonar/wiki"
+    issues_url: "https://github.com/tobagin/sonar/issues"
+    discussions_url: "https://github.com/tobagin/sonar/discussions"
 
 - slug: tempo
   name: Tempo
   tagline: A rock-solid metronome
   github: tobagin/tempo
   flathub: io.github.tobagin.tempo
+  resources:
+    wiki_url: "https://github.com/tobagin/tempo/wiki"
+    issues_url: "https://github.com/tobagin/tempo/issues"
+    discussions_url: "https://github.com/tobagin/tempo/discussions"
