@@ -1,3 +1,4 @@
+
 ## How to add a new app
 
 1. Add an entry to `_data/apps.yml`
