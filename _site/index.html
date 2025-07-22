@@ -13,59 +13,263 @@
     <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
   </header>
 
-  <div class="grid">
+  <!-- Search and Filter Interface -->
+<div class="search-filters">
+  <div class="search-container">
+    <input type="search" id="search-input" class="search-input" placeholder="Search applications..." aria-label="Search applications" />
+    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </svg>
+  </div>
 
-  <a class="card" href="apps/digger">
+  <div class="filter-container">
+    <div class="category-filters">
+      <h3 class="filter-label">Categories</h3>
+      <div class="filter-buttons">
+        <button class="category-filter active" data-category="all">All</button>
+        
+        
+          <button class="category-filter" data-category="Development">Development</button>
+        
+          <button class="category-filter" data-category="Entertainment">Entertainment</button>
+        
+          <button class="category-filter" data-category="Network">Network</button>
+        
+          <button class="category-filter" data-category="System">System</button>
+        
+      </div>
+    </div>
+
+    <div class="tag-filters">
+      <h3 class="filter-label">Tags</h3>
+      <div class="filter-buttons">
+        
+        
+          
+            <button class="tag-filter" data-tag="audio">audio</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="chat">chat</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="debugging">debugging</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="development">development</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="dns">dns</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="encryption">encryption</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="gtk4">gtk4</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="keys">keys</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="matrix">matrix</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="messaging">messaging</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="metronome">metronome</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="music">music</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="networking">networking</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="password">password</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="rust">rust</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="security">security</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="ssh">ssh</button>
+          
+        
+          
+            <button class="tag-filter" data-tag="webhook">webhook</button>
+          
+        
+      </div>
+    </div>
+
+    <button id="clear-filters" class="clear-filters">Clear All Filters</button>
+  </div>
+</div>
+
+<!-- App Grid -->
+<div class="grid">
+
+  <a class="card" href="apps/digger" data-name="Digger" data-tagline="Friendly DNS lookup without the terminal" data-category="Network" data-tags="networking,dns,gtk4,rust">
     <img src="https://dl.flathub.org/media/io/github/tobagin/digger/icons/128x128/io.github.tobagin.digger.png" alt="Digger icon" />
     <div class="card-body">
       <h3>Digger</h3>
       <p>Friendly DNS lookup without the terminal</p>
+      <div class="app-meta">
+        <span class="app-category">Network</span>
+        <div class="app-tags">
+          
+            <span class="tag">networking</span>
+          
+            <span class="tag">dns</span>
+          
+            <span class="tag">gtk4</span>
+          
+          
+            <span class="tag-more">+1</span>
+          
+        </div>
+      </div>
     </div>
   </a>
 
-  <a class="card" href="apps/karere">
+  <a class="card" href="apps/karere" data-name="Karere" data-tagline="Modern chat client for Matrix" data-category="Network" data-tags="chat,matrix,messaging,gtk4">
     <img src="https://dl.flathub.org/media/io/github/tobagin/karere/icons/128x128/io.github.tobagin.karere.png" alt="Karere icon" />
     <div class="card-body">
       <h3>Karere</h3>
       <p>Modern chat client for Matrix</p>
+      <div class="app-meta">
+        <span class="app-category">Network</span>
+        <div class="app-tags">
+          
+            <span class="tag">chat</span>
+          
+            <span class="tag">matrix</span>
+          
+            <span class="tag">messaging</span>
+          
+          
+            <span class="tag-more">+1</span>
+          
+        </div>
+      </div>
     </div>
   </a>
 
-  <a class="card" href="apps/keysmith">
+  <a class="card" href="apps/keysmith" data-name="KeySmith" data-tagline="Point-and-click SSH key manager" data-category="System" data-tags="ssh,security,keys,gtk4">
     <img src="https://dl.flathub.org/media/io/github/tobagin/keysmith/icons/128x128/io.github.tobagin.keysmith.png" alt="KeySmith icon" />
     <div class="card-body">
       <h3>KeySmith</h3>
       <p>Point-and-click SSH key manager</p>
+      <div class="app-meta">
+        <span class="app-category">System</span>
+        <div class="app-tags">
+          
+            <span class="tag">ssh</span>
+          
+            <span class="tag">security</span>
+          
+            <span class="tag">keys</span>
+          
+          
+            <span class="tag-more">+1</span>
+          
+        </div>
+      </div>
     </div>
   </a>
 
-  <a class="card" href="apps/secrets">
+  <a class="card" href="apps/secrets" data-name="Secrets Manager" data-tagline="Beautiful password safe for GNOME" data-category="System" data-tags="password,security,encryption,gtk4">
     <img src="https://dl.flathub.org/media/io/github/tobagin/secrets/icons/128x128/io.github.tobagin.secrets.png" alt="Secrets Manager icon" />
     <div class="card-body">
       <h3>Secrets Manager</h3>
       <p>Beautiful password safe for GNOME</p>
+      <div class="app-meta">
+        <span class="app-category">System</span>
+        <div class="app-tags">
+          
+            <span class="tag">password</span>
+          
+            <span class="tag">security</span>
+          
+            <span class="tag">encryption</span>
+          
+          
+            <span class="tag-more">+1</span>
+          
+        </div>
+      </div>
     </div>
   </a>
 
-  <a class="card" href="apps/sonar">
+  <a class="card" href="apps/sonar" data-name="Sonar" data-tagline="Local webhook inspector for developers" data-category="Development" data-tags="development,webhook,networking,debugging">
     <img src="https://dl.flathub.org/media/io/github/tobagin/sonar/icons/128x128/io.github.tobagin.sonar.png" alt="Sonar icon" />
     <div class="card-body">
       <h3>Sonar</h3>
       <p>Local webhook inspector for developers</p>
+      <div class="app-meta">
+        <span class="app-category">Development</span>
+        <div class="app-tags">
+          
+            <span class="tag">development</span>
+          
+            <span class="tag">webhook</span>
+          
+            <span class="tag">networking</span>
+          
+          
+            <span class="tag-more">+1</span>
+          
+        </div>
+      </div>
     </div>
   </a>
 
-  <a class="card" href="apps/tempo">
+  <a class="card" href="apps/tempo" data-name="Tempo" data-tagline="A rock-solid metronome" data-category="Entertainment" data-tags="music,metronome,gtk4,audio">
     <img src="https://dl.flathub.org/media/io/github/tobagin/tempo/icons/128x128/io.github.tobagin.tempo.png" alt="Tempo icon" />
     <div class="card-body">
       <h3>Tempo</h3>
       <p>A rock-solid metronome</p>
+      <div class="app-meta">
+        <span class="app-category">Entertainment</span>
+        <div class="app-tags">
+          
+            <span class="tag">music</span>
+          
+            <span class="tag">metronome</span>
+          
+            <span class="tag">gtk4</span>
+          
+          
+            <span class="tag-more">+1</span>
+          
+        </div>
+      </div>
     </div>
   </a>
 
 </div>
 
 
+  <script src="/assets/js/filter-manager.js"></script>
   <script>
     // Auto dark/light + toggle
     const btn = document.querySelector('.theme-toggle');

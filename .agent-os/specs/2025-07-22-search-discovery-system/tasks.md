@@ -20,12 +20,12 @@ These are the tasks to be completed for the spec detailed in @.agent-os/specs/20
   - [x] 2.4 Implement real-time search filtering
   - [x] 2.5 Verify all tests pass
 
-- [ ] 3. Implement Category Filtering System
-  - [ ] 3.1 Write tests for category filtering logic
-  - [ ] 3.2 Create category filter UI component
-  - [ ] 3.3 Integrate category filtering with search
-  - [ ] 3.4 Add category display to app cards
-  - [ ] 3.5 Verify all tests pass
+- [x] 3. Implement Category Filtering System
+  - [x] 3.1 Write tests for category filtering logic
+  - [x] 3.2 Create category filter UI component
+  - [x] 3.3 Integrate category filtering with search
+  - [x] 3.4 Add category display to app cards
+  - [x] 3.5 Verify all tests pass
 
 - [ ] 4. Implement Tag Filtering System
   - [ ] 4.1 Write tests for tag filtering logic
