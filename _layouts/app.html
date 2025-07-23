@@ -5,8 +5,7 @@ layout: default
 {% assign app = site.data.apps | where: "slug", page.slug | first %}
 
 <section class="hero">
-  <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/icons/128x128/{{ app.flathub }}.png"
-       alt="{{ app.name }}">
+  {% include responsive-image.html app=app type="icon" alt="App icon" class="hero-icon" %}
   <h1>{{ app.name }}</h1>
   <p>{{ app.tagline }}</p>
 
@@ -68,10 +67,7 @@ layout: default
 {% endif %}
 
 <section class="screenshots">
-  {% for i in (1..5) %}
-    {% assign url = "https://dl.flathub.org/media/" |
-                    append: app.flathub | replace: '.', '/' |
-                    append: "/screenshots/image-" | append: i | append: "_orig.webp" %}
-    <img src="{{ url }}" alt="Screenshot {{ i }}">
+  {% for i in (0..4) %}
+    {% include responsive-image.html app=app type="screenshot" index=i alt="Screenshot" class="screenshot" %}
   {% endfor %}
 </section>

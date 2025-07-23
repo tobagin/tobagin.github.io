@@ -1,0 +1,22 @@
+{
+  "name": "tobagin-apps-portfolio",
+  "version": "1.0.0",
+  "description": "GNOME application portfolio website with performance optimization",
+  "scripts": {
+    "optimize-images": "node scripts/optimize-images.js",
+    "build": "npm run optimize-images && bundle exec jekyll build",
+    "dev": "bundle exec jekyll serve --host 0.0.0.0 --port 4000"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.1",
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tobagin/tobagin.github.io.git"
+  },
+  "license": "MIT"
+}

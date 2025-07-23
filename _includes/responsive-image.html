@@ -1,0 +1,74 @@
+{% comment %}
+  Responsive image include for optimized WebP/JPEG images
+  Usage: {% include responsive-image.html app=app type="icon" alt="App icon" class="icon-class" %}
+         {% include responsive-image.html app=app type="screenshot" index=0 alt="Screenshot" class="screenshot-class" %}
+{% endcomment %}
+
+{% assign image_manifest = site.data.image_manifest %}
+{% assign app_images = image_manifest.apps[app.slug] %}
+
+{% if type == "icon" %}
+  {% assign variants = app_images.icon %}
+  {% if variants and variants.size > 0 %}
+    {% assign variant = variants[0] %}
+    <picture class="{{ class }}">
+      <source srcset="/{{ variant.webp }}" type="image/webp">
+      <img src="/{{ variant.jpeg }}" 
+           alt="{{ alt | default: app.name }}"
+           width="{{ variant.width }}"
+           height="{{ variant.width }}"
+           loading="lazy">
+    </picture>
+  {% else %}
+    <!-- Fallback to Flathub CDN if optimized image not available -->
+    <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/icons/128x128/{{ app.flathub }}.png"
+         alt="{{ alt | default: app.name }}"
+         class="{{ class }}"
+         width="128"
+         height="128"
+         loading="lazy">
+  {% endif %}
+
+{% elsif type == "screenshot" %}
+  {% assign screenshots = app_images.screenshots %}
+  {% if screenshots and screenshots.size > index %}
+    {% assign screenshot = screenshots[index] %}
+    {% assign variants = screenshot.variants %}
+    {% if variants and variants.size > 0 %}
+      <picture class="{{ class }}">
+        <!-- WebP sources with responsive breakpoints -->
+        <source media="(max-width: 320px)" 
+                srcset="{% for variant in variants %}/{{ variant.webp }} {{ variant.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}" 
+                type="image/webp">
+        <source srcset="{% for variant in variants %}/{{ variant.webp }} {{ variant.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}" 
+                type="image/webp">
+        
+        <!-- JPEG fallback sources -->
+        <source media="(max-width: 320px)" 
+                srcset="{% for variant in variants %}/{{ variant.jpeg }} {{ variant.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}">
+        <source srcset="{% for variant in variants %}/{{ variant.jpeg }} {{ variant.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}">
+        
+        <!-- Fallback img element -->
+        {% assign largest = variants | last %}
+        <img src="/{{ largest.jpeg }}" 
+             alt="{{ alt | default: 'Screenshot' }}"
+             loading="lazy"
+             sizes="(max-width: 320px) 280px, (max-width: 640px) 600px, (max-width: 1024px) 980px, 1200px">
+      </picture>
+    {% else %}
+      <!-- Fallback to Flathub CDN if optimized image not available -->
+      {% assign screenshot_name = app.screenshots[index] %}
+      <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/screenshots/{{ screenshot_name }}_orig.webp"
+           alt="{{ alt | default: 'Screenshot' }}"
+           class="{{ class }}"
+           loading="lazy">
+    {% endif %}
+  {% else %}
+    <!-- Fallback if screenshot index not found -->
+    {% assign screenshot_name = app.screenshots[index] %}
+    <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/screenshots/{{ screenshot_name }}_orig.webp"
+         alt="{{ alt | default: 'Screenshot' }}"
+         class="{{ class }}"
+         loading="lazy">
+  {% endif %}
+{% endif %}
