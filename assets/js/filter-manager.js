@@ -104,6 +104,12 @@ const FilterManager = {
   setSearchTerm: function(term) {
     this.state.searchTerm = term.toLowerCase().trim();
     this.filterApps();
+    
+    // Track search behavior if analytics is available
+    if (window.PrivacyAnalytics && this.state.searchTerm.length >= 3) {
+      const resultsCount = this.getVisibleCount();
+      window.PrivacyAnalytics.trackSearchBehavior(this.state.searchTerm, resultsCount);
+    }
   },
 
   /**
@@ -113,6 +119,12 @@ const FilterManager = {
   setCategory: function(category) {
     this.state.selectedCategory = category;
     this.filterApps();
+    
+    // Track filter usage if analytics is available
+    if (window.PrivacyAnalytics) {
+      const resultsCount = this.getVisibleCount();
+      window.PrivacyAnalytics.trackFilterUsage('category', category, true, resultsCount);
+    }
   },
 
   /**
@@ -120,12 +132,19 @@ const FilterManager = {
    * @param {string} tag - Tag to toggle
    */
   toggleTag: function(tag) {
-    if (this.state.selectedTags.has(tag)) {
+    const wasActive = this.state.selectedTags.has(tag);
+    if (wasActive) {
       this.state.selectedTags.delete(tag);
     } else {
       this.state.selectedTags.add(tag);
     }
     this.filterApps();
+    
+    // Track filter usage if analytics is available
+    if (window.PrivacyAnalytics) {
+      const resultsCount = this.getVisibleCount();
+      window.PrivacyAnalytics.trackFilterUsage('tag', tag, !wasActive, resultsCount);
+    }
   },
 
   /**

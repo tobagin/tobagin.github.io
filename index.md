@@ -1,6 +1,7 @@
 ---
 layout: default
-title: Home
+title: "Tobagin Apps - Open Source GNOME Applications"
+description: "Discover quality open source applications for the GNOME desktop. Browse our collection of Linux apps including Digger, Karere, KeySmith, and more."
 ---
 
 <!-- Search and Filter Interface -->

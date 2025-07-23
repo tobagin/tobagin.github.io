@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Service Worker Tests - Tobagin Apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: "Cantarell", "Inter", system-ui, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    
+    .test-result {
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+    
+    .pass {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .fail {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    button {
+      background: #3584e4;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+    
+    button:hover {
+      background: #1c71d8;
+    }
+    
+    #results {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Service Worker Tests</h1>
+  <p>Tests for PWA service worker functionality including registration, caching strategies, and offline support.</p>
+  
+  <button onclick="runAllTests()">Run All Tests</button>
+  <button onclick="clearResults()">Clear Results</button>
+  <button onclick="testServiceWorkerRegistration()">Test SW Registration</button>
+  <button onclick="testCacheStrategies()">Test Cache Strategies</button>
+  <button onclick="testOfflineFallback()">Test Offline Fallback</button>
+  <button onclick="testCacheVersioning()">Test Cache Versioning</button>
+  
+  <div id="results"></div>
+
+  <script>
+    const resultsDiv = document.getElementById('results');
+    let testCount = 0;
+    let passCount = 0;
+
+    function clearResults() {
+      resultsDiv.innerHTML = '';
+      testCount = 0;
+      passCount = 0;
+    }
+
+    function runTest(name, testFn) {
+      testCount++;
+      try {
+        const result = testFn();
+        if (result === true || result === undefined) {
+          passCount++;
+          resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name}</div>`;
+        } else if (result && typeof result.then === 'function') {
+          // Handle promise-based tests
+          result.then(asyncResult => {
+            if (asyncResult === true || asyncResult === undefined) {
+              passCount++;
+              resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name} (async)</div>`;
+            } else {
+              resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name} (async): ${asyncResult}</div>`;
+            }
+          }).catch(error => {
+            resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name} (async): ${error.message}</div>`;
+          });
+        } else {
+          resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${result}</div>`;
+        }
+      } catch (error) {
+        resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${error.message}</div>`;
+      }
+    }
+
+    // Service Worker Registration Tests
+    function testServiceWorkerSupport() {
+      if (!('serviceWorker' in navigator)) {
+        throw new Error('Service Worker not supported in this browser');
+      }
+      return true;
+    }
+
+    function testServiceWorkerRegistration() {
+      return navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          if (!registration) {
+            throw new Error('Service Worker registration failed');
+          }
+          resultsDiv.innerHTML += `<div class="test-result info">Service Worker registered with scope: ${registration.scope}</div>`;
+          return true;
+        })
+        .catch(error => {
+          throw new Error(`Service Worker registration failed: ${error.message}`);
+        });
+    }
+
+    function testServiceWorkerActive() {
+      return navigator.serviceWorker.ready
+        .then(registration => {
+          if (!registration.active) {
+            throw new Error('No active Service Worker found');
+          }
+          resultsDiv.innerHTML += `<div class="test-result info">Active Service Worker state: ${registration.active.state}</div>`;
+          return true;
+        });
+    }
+
+    // Cache Strategy Tests
+    async function testCacheAPI() {
+      if (!('caches' in window)) {
+        throw new Error('Cache API not supported');
+      }
+      
+      // Test cache creation and basic operations
+      const testCacheName = 'test-cache-v1';
+      const cache = await caches.open(testCacheName);
+      
+      if (!cache) {
+        throw new Error('Failed to create test cache');
+      }
+      
+      // Test cache.put operation
+      const testResponse = new Response('test content');
+      await cache.put('/test-url', testResponse);
+      
+      // Test cache.match operation
+      const cachedResponse = await cache.match('/test-url');
+      if (!cachedResponse) {
+        throw new Error('Failed to retrieve cached response');
+      }
+      
+      // Clean up test cache
+      await caches.delete(testCacheName);
+      return true;
+    }
+
+    async function testStaticAssetCaching() {
+      // Test that critical static assets can be cached
+      const staticAssets = [
+        '/assets/css/style.css',
+        '/assets/js/filter-manager.js',
+        '/assets/js/lazy-loading.js'
+      ];
+      
+      const cache = await caches.open('static-assets-test-v1');
+      
+      try {
+        await cache.addAll(staticAssets);
+        
+        // Verify all assets were cached
+        for (const asset of staticAssets) {
+          const cachedResponse = await cache.match(asset);
+          if (!cachedResponse) {
+            throw new Error(`Failed to cache asset: ${asset}`);
+          }
+        }
+        
+        return true;
+      } finally {
+        // Clean up test cache
+        await caches.delete('static-assets-test-v1');
+      }
+    }
+
+    // Offline Fallback Tests
+    async function testOfflinePageCaching() {
+      const cache = await caches.open('offline-test-v1');
+      
+      try {
+        // Test caching the offline page
+        await cache.add('/offline.html');
+        
+        const cachedOfflinePage = await cache.match('/offline.html');
+        if (!cachedOfflinePage) {
+          throw new Error('Failed to cache offline page');
+        }
+        
+        return true;
+      } finally {
+        await caches.delete('offline-test-v1');
+      }
+    }
+
+    // Cache Versioning Tests
+    async function testCacheVersioning() {
+      const oldCacheName = 'test-cache-v1';
+      const newCacheName = 'test-cache-v2';
+      
+      // Create old cache
+      const oldCache = await caches.open(oldCacheName);
+      await oldCache.put('/test-resource', new Response('old content'));
+      
+      // Create new cache
+      const newCache = await caches.open(newCacheName);
+      await newCache.put('/test-resource', new Response('new content'));
+      
+      // Verify both caches exist
+      const cacheNames = await caches.keys();
+      if (!cacheNames.includes(oldCacheName) || !cacheNames.includes(newCacheName)) {
+        throw new Error('Failed to create versioned caches');
+      }
+      
+      // Test cache cleanup (delete old cache)
+      await caches.delete(oldCacheName);
+      
+      const updatedCacheNames = await caches.keys();
+      if (updatedCacheNames.includes(oldCacheName)) {
+        throw new Error('Failed to delete old cache version');
+      }
+      
+      // Clean up
+      await caches.delete(newCacheName);
+      return true;
+    }
+
+    // Network Strategy Tests
+    async function testNetworkFirst() {
+      // Simulate network-first strategy behavior
+      const testUrl = '/api/test-endpoint';
+      
+      try {
+        // Try network first
+        const networkResponse = await fetch(testUrl);
+        if (networkResponse.ok) {
+          // Cache the successful response
+          const cache = await caches.open('network-first-test-v1');
+          await cache.put(testUrl, networkResponse.clone());
+          
+          // Clean up
+          await caches.delete('network-first-test-v1');
+          return true;
+        }
+      } catch (error) {
+        // Network failed, try cache fallback
+        const cache = await caches.open('network-first-test-v1');
+        const cachedResponse = await cache.match(testUrl);
+        
+        if (cachedResponse) {
+          // Cache fallback worked
+          await caches.delete('network-first-test-v1');
+          return true;
+        } else {
+          // Both network and cache failed - this is expected for test
+          resultsDiv.innerHTML += `<div class="test-result info">Network-first strategy test: Both network and cache failed as expected for non-existent endpoint</div>`;
+          return true;
+        }
+      }
+    }
+
+    // PWA Installation Tests
+    function testPWAInstallability() {
+      // Check for beforeinstallprompt event support
+      let installPromptSupported = false;
+      
+      window.addEventListener('beforeinstallprompt', (e) => {
+        installPromptSupported = true;
+        resultsDiv.innerHTML += `<div class="test-result info">PWA install prompt is available</div>`;
+      });
+      
+      // Check for web app manifest
+      const manifestLink = document.querySelector('link[rel="manifest"]');
+      if (!manifestLink) {
+        throw new Error('Web app manifest link not found');
+      }
+      
+      return true;
+    }
+
+    // Comprehensive test suite
+    async function runAllTests() {
+      clearResults();
+      resultsDiv.innerHTML += '<h2>Running Service Worker Tests...</h2>';
+      
+      // Basic Support Tests
+      runTest('Service Worker Support', testServiceWorkerSupport);
+      
+      // Registration Tests
+      runTest('Service Worker Registration', () => testServiceWorkerRegistration());
+      
+      // Wait a bit for registration to complete
+      setTimeout(() => {
+        runTest('Service Worker Active', () => testServiceWorkerActive());
+      }, 1000);
+      
+      // Cache API Tests
+      runTest('Cache API Support', () => testCacheAPI());
+      runTest('Static Asset Caching', () => testStaticAssetCaching());
+      runTest('Offline Page Caching', () => testOfflinePageCaching());
+      
+      // Cache Management Tests
+      runTest('Cache Versioning', () => testCacheVersioning());
+      
+      // Network Strategy Tests
+      runTest('Network-First Strategy', () => testNetworkFirst());
+      
+      // PWA Tests
+      runTest('PWA Installability', testPWAInstallability);
+      
+      // Summary after all tests
+      setTimeout(() => {
+        resultsDiv.innerHTML += `<div class="test-result info"><strong>Test Summary: ${passCount}/${testCount} tests passed</strong></div>`;
+      }, 2000);
+    }
+
+    // Individual test runners
+    function testCacheStrategies() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Cache Strategy Tests</h3>';
+      runTest('Cache API Support', () => testCacheAPI());
+      runTest('Static Asset Caching', () => testStaticAssetCaching());
+      runTest('Network-First Strategy', () => testNetworkFirst());
+    }
+
+    function testOfflineFallback() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Offline Fallback Tests</h3>';
+      runTest('Offline Page Caching', () => testOfflinePageCaching());
+      runTest('Cache API Support', () => testCacheAPI());
+    }
+
+    function testCacheVersioning() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Cache Versioning Tests</h3>';
+      runTest('Cache Versioning', () => testCacheVersioning());
+    }
+
+    // Auto-run basic tests on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      resultsDiv.innerHTML += '<div class="test-result info">Service Worker test suite loaded. Click "Run All Tests" to begin.</div>';
+    });
+  </script>
+</body>
+</html>

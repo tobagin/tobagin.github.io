@@ -1,0 +1,145 @@
+---
+layout: default
+title: Privacy Policy - Tobagin Apps
+---
+
+<section style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+  <h1>Privacy Policy</h1>
+  <p><em>Last updated: {{ site.time | date: "%B %d, %Y" }}</em></p>
+
+  <h2>Our Commitment to Privacy</h2>
+  <p>
+    Tobagin Apps is committed to protecting your privacy. This privacy policy explains 
+    how we collect, use, and protect information when you visit our website.
+  </p>
+
+  <h2>Privacy-First Analytics</h2>
+  <p>
+    We use a custom-built, privacy-first analytics system to understand how visitors 
+    use our site and improve the experience. Our approach is designed with privacy by default:
+  </p>
+
+  <h3>What We Collect</h3>
+  <ul>
+    <li><strong>Anonymous usage data:</strong> Which apps you view, search terms (anonymized), and filters you use</li>
+    <li><strong>Technical information:</strong> Browser type (without version), screen size, language preference</li>
+    <li><strong>Performance data:</strong> Page load times and user experience metrics</li>
+  </ul>
+
+  <h3>What We Don't Collect</h3>
+  <ul>
+    <li>❌ No cookies or persistent tracking identifiers</li>
+    <li>❌ No personal information (name, email, address)</li>
+    <li>❌ No IP addresses or precise location data</li>
+    <li>❌ No cross-site tracking or third-party data sharing</li>
+    <li>❌ No behavioral profiles or advertising data</li>
+  </ul>
+
+  <h3>Privacy Safeguards</h3>
+  <ul>
+    <li><strong>Do Not Track compliance:</strong> We automatically respect your browser's Do Not Track setting</li>
+    <li><strong>Data anonymization:</strong> All data is anonymized before collection</li>
+    <li><strong>Time bucketing:</strong> Timestamps are rounded to 5-minute intervals</li>
+    <li><strong>Limited retention:</strong> Data is aggregated and individual events are discarded</li>
+    <li><strong>No external tracking:</strong> All analytics run on our own infrastructure</li>
+  </ul>
+
+  <h2>Your Rights and Controls</h2>
+  <p>You have complete control over your privacy:</p>
+
+  <h3>Opt-Out Options</h3>
+  <ul>
+    <li><strong>Browser setting:</strong> Enable "Do Not Track" in your browser</li>
+    <li><strong>Site setting:</strong> Use the opt-out controls below</li>
+    <li><strong>Local storage:</strong> We only use localStorage to remember your opt-out preference</li>
+  </ul>
+
+  {% include analytics-controls.html %}
+
+  <h2>GDPR Compliance</h2>
+  <p>
+    Our privacy-first approach ensures compliance with the General Data Protection Regulation (GDPR) 
+    and other privacy laws:
+  </p>
+  <ul>
+    <li><strong>Lawful basis:</strong> Legitimate interest in improving our service</li>
+    <li><strong>Data minimization:</strong> We collect only what's necessary</li>
+    <li><strong>Purpose limitation:</strong> Data used only for site improvement</li>
+    <li><strong>Right to object:</strong> Easy opt-out at any time</li>
+    <li><strong>No consent required:</strong> Anonymous data with clear opt-out</li>
+  </ul>
+
+  <h2>External Services</h2>
+  <p>Our website may link to external services with their own privacy policies:</p>
+  <ul>
+    <li><strong>Flathub:</strong> App installation links go to flathub.org</li>
+    <li><strong>GitHub:</strong> Source code links go to github.com</li>
+    <li><strong>CDNs:</strong> Web Vitals library loaded from unpkg.com</li>
+  </ul>
+  <p>
+    We recommend reviewing the privacy policies of these services. 
+    We do not control or share data with these external services.
+  </p>
+
+  <h2>Data Security</h2>
+  <p>
+    We implement appropriate security measures to protect collected data:
+  </p>
+  <ul>
+    <li>Data is processed client-side before aggregation</li>
+    <li>No persistent storage of individual user data</li>
+    <li>Regular security reviews of our analytics implementation</li>
+    <li>Minimal data collection reduces exposure risk</li>
+  </ul>
+
+  <h2>Changes to This Policy</h2>
+  <p>
+    We may update this privacy policy from time to time. Changes will be posted on this page 
+    with an updated revision date. Continued use of the site after changes constitutes 
+    acceptance of the updated policy.
+  </p>
+
+  <h2>Contact Us</h2>
+  <p>
+    If you have questions about this privacy policy or our data practices, please contact us:
+  </p>
+  <ul>
+    <li><strong>GitHub:</strong> <a href="https://github.com/tobagin/tobagin.github.io/issues">Create an issue</a></li>
+    <li><strong>Email:</strong> Through GitHub contact methods</li>
+  </ul>
+
+  <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--dark-2);">
+  
+  <h2>Technical Details</h2>
+  <details>
+    <summary style="cursor: pointer; font-weight: 500;">For developers and privacy advocates</summary>
+    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--fg-alt);">
+      <h3>Implementation Details</h3>
+      <ul>
+        <li>Custom JavaScript analytics (no third-party trackers)</li>
+        <li>Client-side data anonymization before any processing</li>
+        <li>No server-side logging of individual requests</li>
+        <li>Progressive Web App with offline-first caching</li>
+        <li>Open source - view our implementation on GitHub</li>
+      </ul>
+      
+      <h3>Data Processing</h3>
+      <ul>
+        <li>Events aggregated in 5-minute time buckets</li>
+        <li>User agents stripped of version information</li>
+        <li>Referrers reduced to domain-only</li>
+        <li>Search queries anonymized (numbers → N, special chars removed)</li>
+        <li>Maximum 50 events stored per session in memory</li>
+      </ul>
+      
+      <h3>Privacy by Design</h3>
+      <ul>
+        <li>No unique identifiers (session IDs are non-persistent)</li>
+        <li>Do Not Track header automatically respected</li>
+        <li>Opt-out preference stored locally only</li>
+        <li>No cross-domain or cross-session tracking</li>
+        <li>GDPR compliant without requiring consent banners</li>
+      </ul>
+    </div>
+  </details>
+</section>

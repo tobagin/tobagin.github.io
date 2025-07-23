@@ -15,6 +15,11 @@
       this.startTime = Date.now();
       this.maxEvents = 50; // Limit memory usage
       
+      // Data retention settings (GDPR compliance)
+      this.dataRetentionPeriod = 24 * 60 * 60 * 1000; // 24 hours
+      this.sessionTimeout = 30 * 60 * 1000; // 30 minutes
+      this.maxStorageSize = 1024 * 1024; // 1MB max storage
+      
       // App engagement tracking
       this.pageViews = new Map();
       this.appClicks = new Map();
@@ -33,6 +38,7 @@
       // Initialize if tracking is enabled
       if (this.enabled) {
         this.init();
+        this.initDataRetentionPolicies();
       }
     }
 
@@ -85,6 +91,117 @@
       this.trackInitialReferrer();
       this.trackPageViewEngagement();
       this.setupEventListeners();
+    }
+
+    initDataRetentionPolicies() {
+      // Clean expired data on initialization
+      this.cleanExpiredData();
+      
+      // Set up periodic cleanup (every 5 minutes)
+      this.cleanupInterval = setInterval(() => {
+        this.cleanExpiredData();
+      }, 5 * 60 * 1000);
+      
+      // Set up session timeout cleanup
+      this.sessionTimeoutInterval = setInterval(() => {
+        this.checkSessionTimeout();
+      }, 60 * 1000); // Check every minute
+      
+      // Clean on page unload
+      window.addEventListener('beforeunload', () => {
+        this.cleanupOnExit();
+      });
+    }
+
+    cleanExpiredData() {
+      const now = Date.now();
+      const cutoffTime = now - this.dataRetentionPeriod;
+      
+      // Clean events older than retention period
+      this.events = this.events.filter(event => event.timestamp > cutoffTime);
+      
+      // Clean engagement events
+      this.engagementEvents = this.engagementEvents.filter(event => event.timestamp > cutoffTime);
+      
+      // Clean navigation history
+      this.navigationHistory = this.navigationHistory.filter(nav => nav.timestamp > cutoffTime);
+      
+      // Clean search queries
+      this.searchQueries = this.searchQueries.filter(query => query.timestamp > cutoffTime);
+      
+      // Clean localStorage consent data if expired
+      this.cleanExpiredConsent();
+    }
+
+    cleanExpiredConsent() {
+      try {
+        const consent = localStorage.getItem('tobagin-eu-consent');
+        if (consent) {
+          const consentData = JSON.parse(consent);
+          const consentAge = Date.now() - consentData.timestamp;
+          const consentExpiryPeriod = 365 * 24 * 60 * 60 * 1000; // 1 year
+          
+          if (consentAge > consentExpiryPeriod) {
+            localStorage.removeItem('tobagin-eu-consent');
+            // Reset to default state
+            this.enabled = this.shouldTrack();
+          }
+        }
+      } catch (e) {}
+    }
+
+    checkSessionTimeout() {
+      const now = Date.now();
+      const sessionAge = now - this.startTime;
+      
+      if (sessionAge > this.sessionTimeout) {
+        // Clear session-specific data but keep consent preferences
+        this.events = [];
+        this.engagementEvents = [];
+        this.navigationHistory = [];
+        this.searchQueries = [];
+        this.pageViews.clear();
+        this.appClicks.clear();
+        this.linkClicks.clear();
+        this.filterUsage.clear();
+        this.referrerData.clear();
+        this.entryPoints.clear();
+        this.exitPoints.clear();
+        
+        // Generate new session
+        this.sessionId = this.generateSessionId();
+        this.startTime = now;
+      }
+    }
+
+    cleanupOnExit() {
+      // Clear intervals
+      if (this.cleanupInterval) clearInterval(this.cleanupInterval);
+      if (this.sessionTimeoutInterval) clearInterval(this.sessionTimeoutInterval);
+      
+      // Optional: Clear all data on exit (aggressive privacy)
+      // Uncomment if you want to clear everything when user leaves
+      // this.resetEngagementData();
+    }
+
+    checkStorageSize() {
+      try {
+        const dataSize = JSON.stringify({
+          events: this.events,
+          engagementEvents: this.engagementEvents,
+          navigationHistory: this.navigationHistory,
+          searchQueries: this.searchQueries
+        }).length;
+        
+        if (dataSize > this.maxStorageSize) {
+          // Remove oldest 25% of data
+          const removeCount = Math.floor(this.events.length * 0.25);
+          this.events = this.events.slice(removeCount);
+          this.engagementEvents = this.engagementEvents.slice(removeCount);
+          this.navigationHistory = this.navigationHistory.slice(removeCount);
+          this.searchQueries = this.searchQueries.slice(removeCount);
+        }
+      } catch (e) {}
     }
 
     setupEventListeners() {
@@ -208,9 +325,15 @@
           ...data
         });
         this.events.push(event);
+        
+        // Enforce data retention limits
         if (this.events.length > this.maxEvents) {
           this.events = this.events.slice(-Math.floor(this.maxEvents * 0.8));
         }
+        
+        // Check storage size limits
+        this.checkStorageSize();
+        
         return true;
       } catch (e) {
         return false;
@@ -441,8 +564,81 @@
     }
   }
 
+  // EU Consent Management
+  class EUConsentManager {
+    constructor() {
+      this.initialized = false;
+      this.userLocation = null;
+      this.consentGiven = false;
+      this.consentLevel = null;
+    }
+
+    async init() {
+      if (this.initialized) return;
+      try {
+        this.userLocation = await this.detectLocation();
+        this.checkExistingConsent();
+        this.initialized = true;
+      } catch (e) {}
+    }
+
+    async detectLocation() {
+      // Fallback to browser timezone detection
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const euTimezones = ['Europe/', 'Atlantic/Azores', 'Atlantic/Madeira'];
+      const isLikelyEU = euTimezones.some(eu => tz.startsWith(eu));
+      return { isEU: isLikelyEU, timezone: tz, method: 'timezone' };
+    }
+
+    checkExistingConsent() {
+      try {
+        const stored = localStorage.getItem('tobagin-eu-consent');
+        if (stored) {
+          const consent = JSON.parse(stored);
+          this.consentGiven = true;
+          this.consentLevel = consent.level;
+          return consent;
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    setConsent(level, location = null) {
+      try {
+        const consent = {
+          level, // 'full', 'minimal', 'rejected'
+          timestamp: Date.now(),
+          location: location || this.userLocation,
+          version: '1.0.0'
+        };
+        localStorage.setItem('tobagin-eu-consent', JSON.stringify(consent));
+        this.consentGiven = true;
+        this.consentLevel = level;
+        return true;
+      } catch (e) { return false; }
+    }
+
+    withdrawConsent() {
+      try {
+        localStorage.removeItem('tobagin-eu-consent');
+        this.consentGiven = false;
+        this.consentLevel = null;
+        return true;
+      } catch (e) { return false; }
+    }
+
+    requiresEnhancedConsent() {
+      return this.userLocation && this.userLocation.isEU;
+    }
+
+    shouldShowConsentBanner() {
+      return this.requiresEnhancedConsent() && !this.consentGiven && !localStorage.getItem('analytics-banner-seen');
+    }
+  }
+
   // Initialize global analytics instance
   window.PrivacyAnalytics = new PrivacyAnalytics();
+  window.EUConsent = new EUConsentManager();
   
   window.analyticsOptOut = () => window.PrivacyAnalytics.optOut();
   window.analyticsOptIn = () => window.PrivacyAnalytics.optIn();
@@ -454,9 +650,37 @@
   window.trackSearchBehavior = (q, r) => window.PrivacyAnalytics.trackSearchBehavior(q, r);
   window.trackNavigation = (f, t, m) => window.PrivacyAnalytics.trackNavigation(f, t, m);
   window.analyzeUserFlow = () => window.PrivacyAnalytics.analyzeUserFlow();
+  window.getEUConsentStatus = () => window.EUConsent.checkExistingConsent();
+  window.setEUConsent = (level) => window.EUConsent.setConsent(level);
+  window.withdrawEUConsent = () => window.EUConsent.withdrawConsent();
+  window.getDataRetentionInfo = () => ({
+    retentionPeriod: window.PrivacyAnalytics.dataRetentionPeriod,
+    sessionTimeout: window.PrivacyAnalytics.sessionTimeout,
+    maxStorageSize: window.PrivacyAnalytics.maxStorageSize,
+    lastCleanup: window.PrivacyAnalytics.lastCleanup,
+    currentDataSize: JSON.stringify({
+      events: window.PrivacyAnalytics.events,
+      engagementEvents: window.PrivacyAnalytics.engagementEvents
+    }).length
+  });
   
-  const showBanner = () => {
-    if (window.PrivacyAnalytics.enabled && !localStorage.getItem('analytics-banner-seen')) {
+  const showBanner = async () => {
+    await window.EUConsent.init();
+    
+    if (window.EUConsent.shouldShowConsentBanner()) {
+      // Enhanced EU consent banner
+      const b = document.createElement('div');
+      b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:white;border-top:2px solid #3584e4;padding:1.5rem;z-index:1000;font-size:0.9rem;box-shadow:0 -4px 12px rgba(0,0,0,0.1)';
+      b.innerHTML = '<div style="max-width:1200px;margin:0 auto"><div style="display:flex;align-items:flex-start;gap:1rem"><div>🇪🇺</div><div style="flex:1"><h4 style="margin:0 0 0.5rem 0;color:#3584e4">Enhanced Privacy Protection for EU Users</h4><p style="margin:0 0 1rem 0">Under GDPR, you have enhanced rights. Our analytics are anonymous and privacy-first, but you can choose your level of participation.</p><div style="display:flex;gap:0.5rem;flex-wrap:wrap"><button onclick="euAcceptFull()" style="background:#28a745;color:white;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer">✅ Accept Analytics</button><button onclick="euAcceptMinimal()" style="background:#6c757d;color:white;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer">📊 Minimal Only</button><button onclick="euReject()" style="background:#dc3545;color:white;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer">❌ Reject All</button><button onclick="showEUPrivacy()" style="background:#17a2b8;color:white;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer">ℹ️ Details</button></div></div></div></div>';
+      document.body.appendChild(b);
+      
+      window.euAcceptFull = () => { window.EUConsent.setConsent('full'); window.PrivacyAnalytics.optIn(); localStorage.setItem('analytics-banner-seen', 'true'); b.remove(); };
+      window.euAcceptMinimal = () => { window.EUConsent.setConsent('minimal'); window.PrivacyAnalytics.optIn(); localStorage.setItem('analytics-banner-seen', 'true'); b.remove(); };
+      window.euReject = () => { window.EUConsent.setConsent('rejected'); window.PrivacyAnalytics.optOut(); localStorage.setItem('analytics-banner-seen', 'true'); b.remove(); };
+      window.showEUPrivacy = () => alert('🔒 Privacy Details\\n\\nOur privacy-first analytics:\\n• No cookies or persistent identifiers\\n• Anonymous data collection only\\n• Full GDPR compliance\\n• Data processed locally\\n• Easy opt-out anytime\\n\\nYour GDPR rights:\\n• Access your data\\n• Delete your data\\n• Data portability\\n• Object to processing');
+      
+    } else if (window.PrivacyAnalytics.enabled && !localStorage.getItem('analytics-banner-seen')) {
+      // Standard banner for non-EU users
       const b = document.createElement('div');
       b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:var(--bg-alt,#fff);border-top:1px solid #ddd;padding:1rem;z-index:1000;font-size:0.9rem';
       b.innerHTML = '<div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><div><strong>🔒 Privacy Analytics</strong><br>Anonymous usage data, no cookies.</div><div><button onclick="acceptAnalytics()" style="background:#3584e4;color:white;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;margin-right:0.5rem">Got it</button><button onclick="optOutAnalytics()" style="background:transparent;border:1px solid #ccc;padding:0.5rem 1rem;border-radius:6px;cursor:pointer">Opt out</button></div></div>';
