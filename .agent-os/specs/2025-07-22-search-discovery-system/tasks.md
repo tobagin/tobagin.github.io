@@ -27,12 +27,12 @@ These are the tasks to be completed for the spec detailed in @.agent-os/specs/20
   - [x] 3.4 Add category display to app cards
   - [x] 3.5 Verify all tests pass
 
-- [ ] 4. Implement Tag Filtering System
-  - [ ] 4.1 Write tests for tag filtering logic
-  - [ ] 4.2 Create tag filter UI component with multi-select
-  - [ ] 4.3 Implement tag intersection filtering (AND logic)
-  - [ ] 4.4 Add tag display to app cards
-  - [ ] 4.5 Verify all tests pass
+- [x] 4. Implement Tag Filtering System
+  - [x] 4.1 Write tests for tag filtering logic
+  - [x] 4.2 Create tag filter UI component with multi-select
+  - [x] 4.3 Implement tag intersection filtering (AND logic)
+  - [x] 4.4 Add tag display to app cards
+  - [x] 4.5 Verify all tests pass
 
 - [ ] 5. Integration and Performance Optimization
   - [ ] 5.1 Write integration tests for combined filtering
