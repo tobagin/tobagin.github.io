@@ -14,11 +14,11 @@
 
 - slug: karere
   name: Karere
-  tagline: Modern chat client for Matrix
+  tagline: Modern chat client for for Whatsapp Web
   github: tobagin/karere
   flathub: io.github.tobagin.karere
   category: "Network"
-  tags: ["chat", "matrix", "messaging", "gtk4"]
+  tags: ["chat", "whatsapp", "messaging", "gtk4"]
   screenshots: ["image-1", "image-2", "image-3", "image-4", "image-5"]
   resources:
     docs_url: "https://tobagin.github.io/karere/docs"
