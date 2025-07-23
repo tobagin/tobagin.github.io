@@ -55,7 +55,15 @@ description: "Discover quality open source applications for the GNOME desktop. B
      data-tagline="{{ app.tagline }}"
      data-category="{{ app.category }}"
      data-tags="{{ app.tags | join: ',' }}">
-    {% include responsive-image.html app=app type="icon" alt="App icon" %}
+    <img src="https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/128x128/apps/{{ app.flathub }}.png" 
+         alt="{{ app.name }}" 
+         width="128" 
+         height="128"
+         loading="lazy"
+         srcset="https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/64x64/apps/{{ app.flathub }}.png 64w,
+                 https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/128x128/apps/{{ app.flathub }}.png 128w,
+                 https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/256x256/apps/{{ app.flathub }}.png 256w"
+         sizes="(max-width: 640px) 64px, 128px">
     <div class="card-body">
       <h3>{{ app.name }}</h3>
       <p>{{ app.tagline }}</p>
