@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>User Journey Analysis Tests - Tobagin Apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: "Cantarell", "Inter", system-ui, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    
+    .test-result {
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    
+    .pass {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .fail {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    .warning {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+    
+    button {
+      background: #3584e4;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+    
+    button:hover {
+      background: #1c71d8;
+    }
+    
+    button.secondary {
+      background: #5e5c64;
+    }
+    
+    button.secondary:hover {
+      background: #3d3846;
+    }
+    
+    #results {
+      margin-top: 2rem;
+    }
+    
+    .journey-demo {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .metrics-display {
+      background: #e8f5e8;
+      border: 1px solid #c3e6cb;
+      border-radius: 6px;
+      padding: 0.75rem;
+      margin: 1rem 0;
+    }
+    
+    .data-display {
+      font-family: monospace;
+      background: #f1f3f4;
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .mock-nav-item {
+      display: inline-block;
+      margin: 0.25rem;
+      padding: 0.5rem 1rem;
+      background: #3584e4;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .mock-nav-item:hover {
+      background: #1c71d8;
+    }
+    
+    .search-demo {
+      margin: 1rem 0;
+    }
+    
+    .search-demo input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      margin: 0.5rem 0;
+    }
+    
+    .filter-demo {
+      margin: 1rem 0;
+    }
+    
+    .filter-demo button {
+      background: #f8f9fa;
+      color: #333;
+      border: 1px solid #dee2e6;
+      margin: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+    }
+    
+    .filter-demo button.active {
+      background: #3584e4;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>User Journey Analysis Tests</h1>
+  <p>Tests for navigation patterns, search behavior, filtering usage, and user flow analysis with privacy-first analytics.</p>
+  
+  <div class="metrics-display">
+    <strong>📊 Current Journey Metrics:</strong>
+    <div id="journey-summary">No journey data collected yet</div>
+  </div>
+  
+  <button onclick="runAllTests()">Run All Tests</button>
+  <button onclick="clearResults()">Clear Results</button>
+  <button onclick="testNavigationTracking()">Test Navigation</button>
+  <button onclick="testSearchBehavior()">Test Search Behavior</button>
+  <button onclick="testUserFlows()">Test User Flows</button>
+  <button onclick="testReferrerClassification()">Test Referrers</button>
+  <button onclick="resetJourneyData()" class="secondary">Reset Journey Data</button>
+  
+  <div class="journey-demo">
+    <h3>User Journey Demo</h3>
+    <p>Simulate user navigation patterns to generate journey data:</p>
+    
+    <!-- Mock navigation -->
+    <div>
+      <strong>Navigation:</strong><br>
+      <a class="mock-nav-item" onclick="simulateNavigation('homepage', '/')" href="/">Home</a>
+      <a class="mock-nav-item" onclick="simulateNavigation('digger', '/apps/digger/')" href="/apps/digger/">Digger</a>
+      <a class="mock-nav-item" onclick="simulateNavigation('sonar', '/apps/sonar/')" href="/apps/sonar/">Sonar</a>
+      <a class="mock-nav-item" onclick="simulateNavigation('secrets', '/apps/secrets/')" href="/apps/secrets/">Secrets</a>
+      <a class="mock-nav-item" onclick="simulateNavigation('external', 'https://flathub.org/apps/io.github.tobagin.digger')" href="#" target="_blank">External Link</a>
+    </div>
+    
+    <!-- Mock search -->
+    <div class="search-demo">
+      <strong>Search Simulation:</strong><br>
+      <input type="text" id="mock-search" placeholder="Try searching: dns, webhook, password..." 
+             onkeyup="simulateSearch(this.value)" 
+             oninput="simulateSearchInput(this.value)">
+      <div id="search-results" style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;"></div>
+    </div>
+    
+    <!-- Mock filters -->
+    <div class="filter-demo">
+      <strong>Filter Simulation:</strong><br>
+      <button onclick="simulateFilter('category', 'Development')" data-category="Development">Development</button>
+      <button onclick="simulateFilter('category', 'Network')" data-category="Network">Network</button>
+      <button onclick="simulateFilter('category', 'System')" data-category="System">System</button>
+      <button onclick="simulateFilter('tag', 'gtk4')" data-tag="gtk4">GTK4</button>
+      <button onclick="simulateFilter('tag', 'rust')" data-tag="rust">Rust</button>
+      <button onclick="simulateFilter('tag', 'python')" data-tag="python">Python</button>
+    </div>
+    
+    <button onclick="simulateCompleteJourney()">Simulate Complete User Journey</button>
+    <button onclick="showJourneyData()">Show Journey Data</button>
+  </div>
+  
+  <div id="results"></div>
+
+  <script>
+    const resultsDiv = document.getElementById('results');
+    let testCount = 0;
+    let passCount = 0;
+    let mockJourneyTracker = null;
+
+    function clearResults() {
+      resultsDiv.innerHTML = '';
+      testCount = 0;
+      passCount = 0;
+    }
+
+    function runTest(name, testFn) {
+      testCount++;
+      try {
+        const result = testFn();
+        if (result === true || result === undefined) {
+          passCount++;
+          resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name}</div>`;
+        } else if (result && typeof result.then === 'function') {
+          result.then(asyncResult => {
+            if (asyncResult === true || asyncResult === undefined) {
+              passCount++;
+              resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name} (async)</div>`;
+            } else {
+              resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name} (async): ${asyncResult}</div>`;
+            }
+          }).catch(error => {
+            resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name} (async): ${error.message}</div>`;
+          });
+        } else {
+          resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${result}</div>`;
+        }
+      } catch (error) {
+        resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${error.message}</div>`;
+      }
+    }
+
+    // Mock User Journey Tracker
+    class MockUserJourneyTracker {
+      constructor() {
+        this.navigationHistory = [];
+        this.searchQueries = [];
+        this.filterUsage = new Map();
+        this.sessionStartTime = Date.now();
+        this.currentPageStartTime = Date.now();
+        this.referrerData = new Map();
+        this.userFlows = [];
+        this.entryPoints = new Map();
+        this.exitPoints = new Map();
+        this.journeyEvents = [];
+      }
+
+      // Track navigation between pages
+      trackNavigation(fromPage, toPage, navigationMethod = 'click', metadata = {}) {
+        const navigation = {
+          fromPage: this.anonymizePage(fromPage),
+          toPage: this.anonymizePage(toPage),
+          method: navigationMethod, // click, search, filter, direct, back, forward
+          timestamp: Date.now(),
+          timeOnPreviousPage: Date.now() - this.currentPageStartTime,
+          sessionId: this.generateSessionId(),
+          ...metadata
+        };
+
+        this.navigationHistory.push(navigation);
+        this.journeyEvents.push({
+          type: 'navigation',
+          timestamp: Date.now(),
+          data: navigation
+        });
+
+        // Track as potential exit point if external
+        if (this.isExternalUrl(toPage)) {
+          const exitKey = this.anonymizePage(fromPage);
+          const currentCount = this.exitPoints.get(exitKey) || 0;
+          this.exitPoints.set(exitKey, currentCount + 1);
+        }
+
+        this.currentPageStartTime = Date.now();
+        return navigation;
+      }
+
+      // Track search behavior patterns
+      trackSearch(query, resultsCount = 0, searchContext = {}) {
+        const searchEvent = {
+          query: this.anonymizeQuery(query),
+          originalLength: query.length,
+          wordsCount: query.trim().split(/\s+/).length,
+          resultsCount: resultsCount,
+          timestamp: Date.now(),
+          sessionId: this.generateSessionId(),
+          hasSpecialChars: /[^a-zA-Z0-9\s]/.test(query),
+          isRefinement: this.isSearchRefinement(query),
+          ...searchContext
+        };
+
+        this.searchQueries.push(searchEvent);
+        this.journeyEvents.push({
+          type: 'search',
+          timestamp: Date.now(),
+          data: searchEvent
+        });
+
+        return searchEvent;
+      }
+
+      // Track filter and category usage
+      trackFilter(filterType, filterValue, isActive, resultsCount = 0) {
+        const filterKey = `${filterType}:${filterValue}`;
+        const currentCount = this.filterUsage.get(filterKey) || 0;
+        this.filterUsage.set(filterKey, currentCount + 1);
+
+        const filterEvent = {
+          filterType: filterType,
+          filterValue: filterValue,
+          isActive: isActive,
+          resultsCount: resultsCount,
+          timestamp: Date.now(),
+          sessionId: this.generateSessionId()
+        };
+
+        this.journeyEvents.push({
+          type: 'filter',
+          timestamp: Date.now(),
+          data: filterEvent
+        });
+
+        return filterEvent;
+      }
+
+      // Track user flow sequences
+      trackUserFlow(flowType, flowData = {}) {
+        const flow = {
+          flowType: flowType, // discovery, search-to-install, browse-category, etc.
+          startTime: flowData.startTime || Date.now(),
+          endTime: Date.now(),
+          duration: flowData.duration || 0,
+          steps: flowData.steps || [],
+          successful: flowData.successful || false,
+          sessionId: this.generateSessionId(),
+          ...flowData
+        };
+
+        this.userFlows.push(flow);
+        this.journeyEvents.push({
+          type: 'user_flow',
+          timestamp: Date.now(),
+          data: flow
+        });
+
+        return flow;
+      }
+
+      // Classify and track referrers
+      trackReferrer(referrer, entryPage) {
+        const classification = this.classifyReferrer(referrer);
+        const referrerKey = classification.type;
+        
+        const referrerData = {
+          type: classification.type,
+          domain: classification.domain,
+          category: classification.category,
+          entryPage: this.anonymizePage(entryPage),
+          timestamp: Date.now(),
+          sessionId: this.generateSessionId()
+        };
+
+        // Count referrer types
+        const currentCount = this.referrerData.get(referrerKey) || 0;
+        this.referrerData.set(referrerKey, currentCount + 1);
+
+        // Track entry points
+        const entryKey = this.anonymizePage(entryPage);
+        const entryCount = this.entryPoints.get(entryKey) || 0;
+        this.entryPoints.set(entryKey, entryCount + 1);
+
+        this.journeyEvents.push({
+          type: 'referrer',
+          timestamp: Date.now(),
+          data: referrerData
+        });
+
+        return referrerData;
+      }
+
+      // Analyze navigation patterns
+      analyzeNavigationPatterns() {
+        const patterns = {
+          commonPaths: this.getCommonNavigationPaths(),
+          avgTimePerPage: this.getAverageTimePerPage(),
+          bounceRate: this.calculateBounceRate(),
+          exitPages: this.getMostCommonExitPages(),
+          navigationMethods: this.getNavigationMethodStats()
+        };
+
+        return patterns;
+      }
+
+      // Analyze search behavior
+      analyzeSearchBehavior() {
+        if (this.searchQueries.length === 0) {
+          return { totalSearches: 0 };
+        }
+
+        const queries = this.searchQueries;
+        const behavior = {
+          totalSearches: queries.length,
+          avgQueryLength: queries.reduce((sum, q) => sum + q.originalLength, 0) / queries.length,
+          avgWordsPerQuery: queries.reduce((sum, q) => sum + q.wordsCount, 0) / queries.length,
+          refinementRate: queries.filter(q => q.isRefinement).length / queries.length * 100,
+          zeroResultsRate: queries.filter(q => q.resultsCount === 0).length / queries.length * 100,
+          commonQueries: this.getMostCommonQueries(),
+          searchSuccessRate: queries.filter(q => q.resultsCount > 0).length / queries.length * 100
+        };
+
+        return behavior;
+      }
+
+      // Generate comprehensive journey insights
+      generateJourneyInsights() {
+        return {
+          sessionDuration: Date.now() - this.sessionStartTime,
+          totalPageViews: this.navigationHistory.length,
+          totalSearches: this.searchQueries.length,
+          totalFilters: this.filterUsage.size,
+          navigationPatterns: this.analyzeNavigationPatterns(),
+          searchBehavior: this.analyzeSearchBehavior(),
+          referrerDistribution: Object.fromEntries(this.referrerData),
+          userFlowAnalysis: this.analyzeUserFlows(),
+          entryExitAnalysis: {
+            topEntryPoints: Array.from(this.entryPoints.entries())
+              .sort(([,a], [,b]) => b - a)
+              .slice(0, 5),
+            topExitPoints: Array.from(this.exitPoints.entries())
+              .sort(([,a], [,b]) => b - a)
+              .slice(0, 5)
+          }
+        };
+      }
+
+      // Export journey data for analysis
+      exportJourneyData() {
+        return {
+          summary: this.generateJourneyInsights(),
+          rawData: {
+            navigationHistory: this.navigationHistory.slice(-20), // Last 20 navigations
+            searchQueries: this.searchQueries.slice(-10), // Last 10 searches
+            filterUsage: Object.fromEntries(this.filterUsage),
+            userFlows: this.userFlows,
+            journeyEvents: this.journeyEvents.slice(-30) // Last 30 events
+          },
+          timestamp: Date.now(),
+          version: '1.0.0',
+          privacy: {
+            dataAnonymized: true,
+            cookiesUsed: false,
+            persistentIdUsed: false
+          }
+        };
+      }
+
+      // Utility methods
+      generateSessionId() {
+        const timestamp = Math.floor(Date.now() / 3600000); // Hour-level
+        const random = Math.floor(Math.random() * 1000);
+        return `journey_${timestamp}_${random}`;
+      }
+
+      anonymizePage(page) {
+        if (!page) return 'unknown';
+        // Remove query parameters and fragments for privacy
+        try {
+          if (page.startsWith('http')) {
+            const url = new URL(page);
+            return url.pathname;
+          }
+          return page.split('?')[0].split('#')[0];
+        } catch {
+          return 'invalid-page';
+        }
+      }
+
+      anonymizeQuery(query) {
+        return query
+          .toLowerCase()
+          .replace(/\d+/g, 'N') // Replace numbers
+          .replace(/[^\w\s]/g, '') // Remove special chars
+          .trim()
+          .substring(0, 50); // Limit length
+      }
+
+      isExternalUrl(url) {
+        if (!url) return false;
+        return url.startsWith('http') && !url.includes(window.location.hostname);
+      }
+
+      isSearchRefinement(query) {
+        if (this.searchQueries.length === 0) return false;
+        const lastQuery = this.searchQueries[this.searchQueries.length - 1];
+        const timeDiff = Date.now() - lastQuery.timestamp;
+        return timeDiff < 30000 && // Within 30 seconds
+               (query.includes(lastQuery.query) || lastQuery.query.includes(query));
+      }
+
+      classifyReferrer(referrer) {
+        if (!referrer || referrer === 'direct') {
+          return { type: 'direct', domain: null, category: 'direct' };
+        }
+
+        try {
+          const url = new URL(referrer);
+          const domain = url.hostname.toLowerCase();
+
+          // Search engines
+          if (domain.includes('google.') || domain.includes('bing.') || 
+              domain.includes('duckduckgo.') || domain.includes('yahoo.')) {
+            return { type: 'search', domain: domain, category: 'search_engine' };
+          }
+
+          // Social media
+          if (domain.includes('twitter.') || domain.includes('facebook.') || 
+              domain.includes('reddit.') || domain.includes('mastodon.')) {
+            return { type: 'social', domain: domain, category: 'social_media' };
+          }
+
+          // GitHub/development
+          if (domain.includes('github.') || domain.includes('gitlab.')) {
+            return { type: 'development', domain: domain, category: 'code_repository' };
+          }
+
+          // Flathub/app stores
+          if (domain.includes('flathub.')) {
+            return { type: 'app_store', domain: domain, category: 'application_store' };
+          }
+
+          // Default to external
+          return { type: 'external', domain: domain, category: 'other_website' };
+        } catch {
+          return { type: 'unknown', domain: 'invalid', category: 'unknown' };
+        }
+      }
+
+      getCommonNavigationPaths() {
+        const paths = new Map();
+        for (let i = 0; i < this.navigationHistory.length - 1; i++) {
+          const current = this.navigationHistory[i];
+          const next = this.navigationHistory[i + 1];
+          const pathKey = `${current.fromPage} → ${next.toPage}`;
+          const count = paths.get(pathKey) || 0;
+          paths.set(pathKey, count + 1);
+        }
+        return Array.from(paths.entries())
+          .sort(([,a], [,b]) => b - a)
+          .slice(0, 5);
+      }
+
+      getAverageTimePerPage() {
+        if (this.navigationHistory.length === 0) return 0;
+        const totalTime = this.navigationHistory.reduce((sum, nav) => sum + nav.timeOnPreviousPage, 0);
+        return Math.round(totalTime / this.navigationHistory.length);
+      }
+
+      calculateBounceRate() {
+        // Simple bounce rate: sessions with only 1 page view
+        return this.navigationHistory.length <= 1 ? 100 : 0;
+      }
+
+      getMostCommonExitPages() {
+        return Array.from(this.exitPoints.entries())
+          .sort(([,a], [,b]) => b - a)
+          .slice(0, 3);
+      }
+
+      getNavigationMethodStats() {
+        const methods = new Map();
+        this.navigationHistory.forEach(nav => {
+          const count = methods.get(nav.method) || 0;
+          methods.set(nav.method, count + 1);
+        });
+        return Object.fromEntries(methods);
+      }
+
+      getMostCommonQueries() {
+        const queries = new Map();
+        this.searchQueries.forEach(search => {
+          const count = queries.get(search.query) || 0;
+          queries.set(search.query, count + 1);
+        });
+        return Array.from(queries.entries())
+          .sort(([,a], [,b]) => b - a)
+          .slice(0, 5);
+      }
+
+      analyzeUserFlows() {
+        if (this.userFlows.length === 0) {
+          return { totalFlows: 0 };
+        }
+
+        const flows = this.userFlows;
+        return {
+          totalFlows: flows.length,
+          avgFlowDuration: flows.reduce((sum, f) => sum + f.duration, 0) / flows.length,
+          successfulFlows: flows.filter(f => f.successful).length,
+          successRate: flows.filter(f => f.successful).length / flows.length * 100,
+          commonFlowTypes: this.getCommonFlowTypes()
+        };
+      }
+
+      getCommonFlowTypes() {
+        const types = new Map();
+        this.userFlows.forEach(flow => {
+          const count = types.get(flow.flowType) || 0;
+          types.set(flow.flowType, count + 1);
+        });
+        return Array.from(types.entries())
+          .sort(([,a], [,b]) => b - a)
+          .slice(0, 3);
+      }
+
+      // Reset all journey data
+      reset() {
+        this.navigationHistory = [];
+        this.searchQueries = [];
+        this.filterUsage.clear();
+        this.referrerData.clear();
+        this.userFlows = [];
+        this.entryPoints.clear();
+        this.exitPoints.clear();
+        this.journeyEvents = [];
+        this.sessionStartTime = Date.now();
+        this.currentPageStartTime = Date.now();
+      }
+    }
+
+    // Initialize mock tracker
+    mockJourneyTracker = new MockUserJourneyTracker();
+
+    // Navigation Pattern Tests
+    function testNavigationTrackingBasic() {
+      const tracker = new MockUserJourneyTracker();
+      const result = tracker.trackNavigation('/home', '/apps/digger/', 'click');
+      
+      if (!result || !result.fromPage || !result.toPage) {
+        throw new Error('Navigation tracking failed to return proper data');
+      }
+
+      if (tracker.navigationHistory.length !== 1) {
+        throw new Error('Navigation not added to history');
+      }
+
+      return true;
+    }
+
+    function testNavigationTimeTracking() {
+      const tracker = new MockUserJourneyTracker();
+      
+      // Simulate some time passing
+      setTimeout(() => {
+        const result = tracker.trackNavigation('/home', '/apps/digger/', 'click');
+        if (result.timeOnPreviousPage <= 0) {
+          throw new Error('Time on previous page not tracked correctly');
+        }
+      }, 10);
+
+      return true;
+    }
+
+    function testExternalLinkTracking() {
+      const tracker = new MockUserJourneyTracker();
+      tracker.trackNavigation('/apps/digger/', 'https://flathub.org/apps/test', 'click');
+      
+      if (tracker.exitPoints.get('/apps/digger/') !== 1) {
+        throw new Error('External link exit not tracked');
+      }
+
+      return true;
+    }
+
+    // Search Behavior Tests
+    function testSearchQueryTracking() {
+      const tracker = new MockUserJourneyTracker();
+      const result = tracker.trackSearch('password manager', 5);
+
+      if (!result || result.originalLength !== 16) {
+        throw new Error('Search query length not tracked correctly');
+      }
+
+      if (result.wordsCount !== 2) {
+        throw new Error('Search words count incorrect');
+      }
+
+      if (result.resultsCount !== 5) {
+        throw new Error('Search results count not tracked');
+      }
+
+      return true;
+    }
+
+    function testSearchRefinement() {
+      const tracker = new MockUserJourneyTracker();
+      tracker.trackSearch('password', 10);
+      
+      // Simulate refinement within 30 seconds
+      setTimeout(() => {
+        const result = tracker.trackSearch('password manager', 5);
+        if (!result.isRefinement) {
+          throw new Error('Search refinement not detected');
+        }
+      }, 1000);
+
+      return true;
+    }
+
+    function testSearchAnonymization() {
+      const tracker = new MockUserJourneyTracker();
+      const result = tracker.trackSearch('my-email@test.com secret123', 0);
+
+      // Check that sensitive data is anonymized
+      if (result.query.includes('@') || result.query.includes('secret123')) {
+        throw new Error('Search query not properly anonymized');
+      }
+
+      return true;
+    }
+
+    // Filter Usage Tests
+    function testFilterTracking() {
+      const tracker = new MockUserJourneyTracker();
+      tracker.trackFilter('category', 'Development', true, 8);
+      tracker.trackFilter('tag', 'rust', true, 3);
+      
+      if (tracker.filterUsage.get('category:Development') !== 1) {
+        throw new Error('Category filter not tracked');
+      }
+
+      if (tracker.filterUsage.get('tag:rust') !== 1) {
+        throw new Error('Tag filter not tracked');
+      }
+
+      return true;
+    }
+
+    // User Flow Tests
+    function testUserFlowTracking() {
+      const tracker = new MockUserJourneyTracker();
+      const flow = tracker.trackUserFlow('search-to-install', {
+        steps: ['search', 'view_app', 'click_flathub'],
+        duration: 45000,
+        successful: true
+      });
+
+      if (!flow || flow.flowType !== 'search-to-install') {
+        throw new Error('User flow tracking failed');
+      }
+
+      if (!flow.successful || flow.steps.length !== 3) {
+        throw new Error('User flow data incorrect');
+      }
+
+      return true;
+    }
+
+    // Referrer Classification Tests
+    function testReferrerClassification() {
+      const tracker = new MockUserJourneyTracker();
+      
+      // Test search engine referrer
+      const googleRef = tracker.trackReferrer('https://www.google.com/search?q=gnome+apps', '/');
+      if (googleRef.type !== 'search' || googleRef.category !== 'search_engine') {
+        throw new Error('Search engine referrer not classified correctly');
+      }
+
+      // Test social media referrer
+      const twitterRef = tracker.trackReferrer('https://twitter.com/user/status/123', '/');
+      if (twitterRef.type !== 'social' || twitterRef.category !== 'social_media') {
+        throw new Error('Social media referrer not classified correctly');
+      }
+
+      // Test direct referrer
+      const directRef = tracker.trackReferrer('', '/');
+      if (directRef.type !== 'direct') {
+        throw new Error('Direct referrer not classified correctly');
+      }
+
+      return true;
+    }
+
+    // Journey Insights Tests
+    function testJourneyInsightsGeneration() {
+      const tracker = new MockUserJourneyTracker();
+      
+      // Generate some test data
+      tracker.trackNavigation('/', '/apps/digger/', 'click');
+      tracker.trackSearch('dns tool', 3);
+      tracker.trackFilter('category', 'Network', true, 3);
+      tracker.trackReferrer('https://www.google.com/search', '/');
+      
+      const insights = tracker.generateJourneyInsights();
+      
+      if (!insights || typeof insights !== 'object') {
+        throw new Error('Journey insights not generated');
+      }
+
+      if (insights.totalPageViews !== 1 || insights.totalSearches !== 1) {
+        throw new Error('Journey insights data incorrect');
+      }
+
+      return true;
+    }
+
+    function testDataExportPrivacy() {
+      const tracker = new MockUserJourneyTracker();
+      tracker.trackNavigation('/home', '/apps/test/', 'click');
+      tracker.trackSearch('sensitive query', 5);
+      
+      const exported = tracker.exportJourneyData();
+      const dataString = JSON.stringify(exported);
+      
+      // Should not contain sensitive information
+      if (dataString.includes('@') || dataString.includes('password') || dataString.includes('email')) {
+        throw new Error('Exported data contains potentially sensitive information');
+      }
+
+      if (!exported.privacy || !exported.privacy.dataAnonymized) {
+        throw new Error('Privacy metadata missing from export');
+      }
+
+      return true;
+    }
+
+    // Demo Functions
+    function simulateNavigation(pageId, pagePath) {
+      event.preventDefault();
+      
+      if (mockJourneyTracker) {
+        const fromPage = window.location.pathname || '/';
+        mockJourneyTracker.trackNavigation(fromPage, pagePath, 'click', {
+          pageId: pageId,
+          navigationSource: 'demo'
+        });
+        resultsDiv.innerHTML += `<div class="test-result info">🧭 Navigation tracked: ${fromPage} → ${pagePath}</div>`;
+        updateJourneySummary();
+      }
+    }
+
+    function simulateSearch(query) {
+      if (query.length >= 3 && mockJourneyTracker) {
+        // Simulate result count based on query
+        const mockResults = Math.max(0, Math.floor(Math.random() * 10) - (query.length > 10 ? 2 : 0));
+        mockJourneyTracker.trackSearch(query, mockResults, {
+          searchSource: 'demo'
+        });
+        
+        document.getElementById('search-results').textContent = 
+          `Found ${mockResults} results for "${query}"`;
+        
+        resultsDiv.innerHTML += `<div class="test-result info">🔍 Search tracked: "${query}" (${mockResults} results)</div>`;
+        updateJourneySummary();
+      }
+    }
+
+    function simulateSearchInput(query) {
+      // Real-time search input simulation (for refinement detection)
+      if (query.length >= 2) {
+        const mockResults = Math.floor(Math.random() * 15);
+        document.getElementById('search-results').textContent = 
+          `${mockResults} results found...`;
+      }
+    }
+
+    function simulateFilter(filterType, filterValue) {
+      if (mockJourneyTracker) {
+        const button = event.target;
+        const isActive = !button.classList.contains('active');
+        button.classList.toggle('active');
+        
+        const mockResults = Math.floor(Math.random() * 8) + 1;
+        mockJourneyTracker.trackFilter(filterType, filterValue, isActive, mockResults);
+        
+        resultsDiv.innerHTML += `<div class="test-result info">🏷️ Filter tracked: ${filterType}:${filterValue} (${isActive ? 'active' : 'inactive'})</div>`;
+        updateJourneySummary();
+      }
+    }
+
+    function simulateCompleteJourney() {
+      if (mockJourneyTracker) {
+        // Simulate a complete user journey
+        mockJourneyTracker.trackReferrer('https://www.google.com/search?q=gnome+apps', '/');
+        
+        setTimeout(() => {
+          mockJourneyTracker.trackNavigation('/', '/apps/digger/', 'click');
+          setTimeout(() => {
+            mockJourneyTracker.trackSearch('dns lookup', 4);
+            setTimeout(() => {
+              mockJourneyTracker.trackFilter('category', 'Network', true, 4);
+              setTimeout(() => {
+                mockJourneyTracker.trackNavigation('/apps/digger/', 'https://flathub.org/apps/io.github.tobagin.digger', 'click');
+                mockJourneyTracker.trackUserFlow('search-to-install', {
+                  steps: ['referrer', 'homepage', 'app_page', 'search', 'filter', 'external_install'],
+                  duration: 120000,
+                  successful: true
+                });
+                
+                resultsDiv.innerHTML += `<div class="test-result info">🎯 Complete user journey simulated</div>`;
+                updateJourneySummary();
+              }, 500);
+            }, 400);
+          }, 300);
+        }, 200);
+      }
+    }
+
+    function showJourneyData() {
+      if (mockJourneyTracker) {
+        const exportData = mockJourneyTracker.exportJourneyData();
+        resultsDiv.innerHTML += `<div class="test-result info">📊 Journey Data Export:</div>`;
+        resultsDiv.innerHTML += `<div class="data-display">${JSON.stringify(exportData, null, 2)}</div>`;
+      }
+    }
+
+    function resetJourneyData() {
+      if (mockJourneyTracker) {
+        mockJourneyTracker.reset();
+        resultsDiv.innerHTML += `<div class="test-result info">🔄 Journey data reset</div>`;
+        updateJourneySummary();
+      }
+    }
+
+    function updateJourneySummary() {
+      const summaryDiv = document.getElementById('journey-summary');
+      if (mockJourneyTracker && summaryDiv) {
+        const insights = mockJourneyTracker.generateJourneyInsights();
+        summaryDiv.innerHTML = `
+          Navigations: ${insights.totalPageViews} | 
+          Searches: ${insights.totalSearches} | 
+          Filters: ${insights.totalFilters} | 
+          Session: ${Math.round(insights.sessionDuration / 1000)}s
+        `;
+      }
+    }
+
+    // Test Runners
+    function testNavigationTracking() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Navigation Pattern Tests</h3>';
+      runTest('Basic Navigation Tracking', testNavigationTrackingBasic);
+      runTest('Navigation Time Tracking', testNavigationTimeTracking);
+      runTest('External Link Tracking', testExternalLinkTracking);
+    }
+
+    function testSearchBehavior() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Search Behavior Tests</h3>';
+      runTest('Search Query Tracking', testSearchQueryTracking);
+      runTest('Search Refinement Detection', testSearchRefinement);
+      runTest('Search Query Anonymization', testSearchAnonymization);
+    }
+
+    function testUserFlows() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>User Flow Tests</h3>';
+      runTest('Filter Usage Tracking', testFilterTracking);
+      runTest('User Flow Tracking', testUserFlowTracking);
+      runTest('Journey Insights Generation', testJourneyInsightsGeneration);
+    }
+
+    function testReferrerClassification() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Referrer Classification Tests</h3>';
+      runTest('Referrer Classification', testReferrerClassification);
+      runTest('Data Export Privacy', testDataExportPrivacy);
+    }
+
+    function runAllTests() {
+      clearResults();
+      resultsDiv.innerHTML += '<h2>Running User Journey Analysis Tests...</h2>';
+      
+      // Navigation tests
+      resultsDiv.innerHTML += '<h3>Navigation Pattern Tests</h3>';
+      runTest('Basic Navigation Tracking', testNavigationTrackingBasic);
+      runTest('Navigation Time Tracking', testNavigationTimeTracking);
+      runTest('External Link Tracking', testExternalLinkTracking);
+      
+      // Search behavior tests
+      resultsDiv.innerHTML += '<h3>Search Behavior Tests</h3>';
+      runTest('Search Query Tracking', testSearchQueryTracking);
+      runTest('Search Refinement Detection', testSearchRefinement);
+      runTest('Search Query Anonymization', testSearchAnonymization);
+      
+      // Filter and flow tests
+      resultsDiv.innerHTML += '<h3>User Flow Tests</h3>';
+      runTest('Filter Usage Tracking', testFilterTracking);
+      runTest('User Flow Tracking', testUserFlowTracking);
+      runTest('Journey Insights Generation', testJourneyInsightsGeneration);
+      
+      // Referrer tests
+      resultsDiv.innerHTML += '<h3>Referrer Classification Tests</h3>';
+      runTest('Referrer Classification', testReferrerClassification);
+      runTest('Data Export Privacy', testDataExportPrivacy);
+      
+      // Summary
+      setTimeout(() => {
+        resultsDiv.innerHTML += `<div class="test-result info"><strong>Test Summary: ${passCount}/${testCount} tests passed</strong></div>`;
+      }, 1000);
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateJourneySummary();
+      resultsDiv.innerHTML += '<div class="test-result info">User journey analysis test suite loaded. Try the demo interactions above or click "Run All Tests".</div>';
+    });
+  </script>
+</body>
+</html>

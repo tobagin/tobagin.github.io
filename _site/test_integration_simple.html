@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Integration Test</title>
+    <style>
+        body { font-family: system-ui; margin: 2rem; }
+        .result { margin: 1rem 0; padding: 0.5rem; border-radius: 4px; }
+        .pass { background: #d4edda; border: 1px solid #c3e6cb; }
+        .fail { background: #f8d7da; border: 1px solid #f5c6cb; }
+        button { margin: 0.5rem; padding: 0.5rem 1rem; }
+    </style>
+</head>
+<body>
+    <h1>Analytics Integration Test</h1>
+    <div id="results"></div>
+    <button onclick="runTests()">Run Tests</button>
+    <button onclick="showMetrics()">Show Metrics</button>
+    <button onclick="clearResults()">Clear</button>
+
+    <script src="assets/js/privacy-analytics.js"></script>
+    <script>
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        function addResult(test, passed, message = '') {
+            const div = document.createElement('div');
+            div.className = `result ${passed ? 'pass' : 'fail'}`;
+            div.textContent = `${passed ? '✓' : '✗'} ${test}: ${message}`;
+            document.getElementById('results').appendChild(div);
+        }
+
+        function runTests() {
+            clearResults();
+            
+            // Test 1: Analytics initialized
+            addResult('Analytics Initialization', 
+                typeof window.PrivacyAnalytics !== 'undefined',
+                typeof window.PrivacyAnalytics !== 'undefined' ? 'Available' : 'Not found');
+            
+            // Test 2: Global methods available
+            const methods = ['getEngagementMetrics', 'exportEngagementData', 'getPopularApps'];
+            methods.forEach(method => {
+                addResult(`Global method ${method}`, 
+                    typeof window[method] === 'function',
+                    typeof window[method] === 'function' ? 'Available' : 'Not found');
+            });
+
+            // Test 3: Engagement tracking
+            if (window.PrivacyAnalytics) {
+                try {
+                    window.PrivacyAnalytics.trackPageViewEngagement('test-app');
+                    addResult('Page View Tracking', true, 'Successfully tracked page view');
+                } catch (e) {
+                    addResult('Page View Tracking', false, e.message);
+                }
+
+                try {
+                    window.PrivacyAnalytics.trackAppClickEngagement('test-app', 'card_click');
+                    addResult('App Click Tracking', true, 'Successfully tracked app click');
+                } catch (e) {
+                    addResult('App Click Tracking', false, e.message);
+                }
+
+                try {
+                    window.PrivacyAnalytics.trackLinkClickEngagement('test-app', 'flathub', 'https://flathub.org/test');
+                    addResult('Link Click Tracking', true, 'Successfully tracked link click');
+                } catch (e) {
+                    addResult('Link Click Tracking', false, e.message);
+                }
+            }
+
+            // Test 4: File size check
+            fetch('assets/js/privacy-analytics.js')
+                .then(response => response.text())
+                .then(content => {
+                    const size = new Blob([content]).size;
+                    const compressedSize = Math.round(size * 0.3); // Rough gzip estimate
+                    addResult('File Size Check', 
+                        compressedSize < 5120,
+                        `~${compressedSize} bytes (estimated compressed)`);
+                })
+                .catch(e => addResult('File Size Check', false, e.message));
+        }
+
+        function showMetrics() {
+            if (window.getEngagementMetrics) {
+                const metrics = window.getEngagementMetrics();
+                const div = document.createElement('div');
+                div.className = 'result pass';
+                div.innerHTML = `<strong>Current Metrics:</strong><br><pre>${JSON.stringify(metrics, null, 2)}</pre>`;
+                document.getElementById('results').appendChild(div);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Flow Analysis Test</title>
+    <style>
+        body { font-family: system-ui; margin: 2rem; }
+        .result { margin: 1rem 0; padding: 0.5rem; border-radius: 4px; }
+        .pass { background: #d4edda; border: 1px solid #c3e6cb; }
+        .fail { background: #f8d7da; border: 1px solid #f5c6cb; }
+        button { margin: 0.5rem; padding: 0.5rem 1rem; cursor: pointer; }
+        .card { margin: 0.5rem; padding: 1rem; border: 1px solid #ddd; display: inline-block; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>User Flow Analysis Test</h1>
+    
+    <!-- Mock app cards for navigation testing -->
+    <div>
+        <div class="card" data-name="Test App 1" href="/apps/test-app-1/">Test App 1</div>
+        <div class="card" data-name="Test App 2" href="/apps/test-app-2/">Test App 2</div>
+        <div class="card" data-name="Test App 3" href="/apps/test-app-3/">Test App 3</div>
+    </div>
+    
+    <!-- Mock external links for exit tracking -->
+    <div>
+        <a href="https://flathub.org/apps/test.app" target="_blank">Flathub Link</a>
+        <a href="https://github.com/user/repo" target="_blank">GitHub Link</a>
+    </div>
+    
+    <div id="results"></div>
+    <button onclick="runTests()">Run Tests</button>
+    <button onclick="simulateUserJourney()">Simulate User Journey</button>
+    <button onclick="showFlowAnalysis()">Show Flow Analysis</button>
+    <button onclick="clearResults()">Clear</button>
+
+    <script src="assets/js/privacy-analytics.js"></script>
+    <script>
+        function addResult(test, passed, message = '') {
+            const div = document.createElement('div');
+            div.className = `result ${passed ? 'pass' : 'fail'}`;
+            div.textContent = `${passed ? '✓' : '✗'} ${test}: ${message}`;
+            document.getElementById('results').appendChild(div);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        function runTests() {
+            clearResults();
+            
+            // Test 1: User flow analysis method exists
+            addResult('User Flow Analysis Method', 
+                typeof window.analyzeUserFlow === 'function',
+                typeof window.analyzeUserFlow === 'function' ? 'Available' : 'Not found');
+            
+            // Test 2: Entry point tracking
+            const flowData = window.analyzeUserFlow();
+            addResult('Entry Point Tracking',
+                flowData && typeof flowData.entries !== 'undefined',
+                flowData ? `${flowData.entries.length} entry points tracked` : 'No data');
+            
+            // Test 3: Exit point tracking  
+            addResult('Exit Point Tracking',
+                flowData && typeof flowData.exits !== 'undefined',
+                flowData ? `${flowData.exits.length} exit points tracked` : 'No data');
+            
+            // Test 4: Session length tracking
+            addResult('Session Length Tracking',
+                flowData && typeof flowData.sessionLength === 'number',
+                flowData ? `Session: ${Math.floor(flowData.sessionLength / 1000)}s` : 'No data');
+        }
+
+        function simulateUserJourney() {
+            clearResults();
+            addResult('Journey Simulation', true, 'Starting user journey simulation...');
+            
+            // Simulate multiple navigation events
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.card');
+                cards[0].click();
+                addResult('Navigation 1', true, 'Clicked Test App 1');
+            }, 500);
+            
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.card');
+                cards[1].click();
+                addResult('Navigation 2', true, 'Clicked Test App 2');
+            }, 1000);
+            
+            setTimeout(() => {
+                const extLink = document.querySelector('a[href*="flathub"]');
+                extLink.click();
+                addResult('External Navigation', true, 'Clicked external Flathub link');
+            }, 1500);
+            
+            // Check flow data after simulation
+            setTimeout(() => {
+                const flowData = window.analyzeUserFlow();
+                const journeyData = window.exportJourneyData();
+                
+                addResult('Journey Data Check',
+                    journeyData.navs > 0,
+                    `${journeyData.navs} navigations, ${journeyData.entries.length} entries, ${journeyData.exits.length} exits`);
+                
+                if (flowData) {
+                    addResult('Flow Analysis Complete',
+                        true,
+                        `Session: ${Math.floor(flowData.sessionLength / 1000)}s, Entries: ${flowData.entries.length}, Exits: ${flowData.exits.length}`);
+                }
+            }, 2000);
+        }
+
+        function showFlowAnalysis() {
+            if (window.analyzeUserFlow) {
+                const data = window.analyzeUserFlow();
+                const div = document.createElement('div');
+                div.className = 'result pass';
+                div.innerHTML = `<strong>User Flow Analysis:</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                document.getElementById('results').appendChild(div);
+            }
+        }
+
+        // Add click event listeners to simulate navigation
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.card[data-name]');
+            if (card) {
+                // Simulate navigation tracking
+                const appName = card.getAttribute('data-name');
+                console.log(`Navigating to ${appName}`);
+            }
+            
+            const extLink = e.target.closest('a[href^="http"]');
+            if (extLink) {
+                // Simulate external link tracking
+                console.log(`External navigation to ${extLink.href}`);
+            }
+        });
+    </script>
+</body>
+</html>
