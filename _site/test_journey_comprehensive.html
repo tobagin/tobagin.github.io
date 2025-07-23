@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comprehensive Journey Analysis Test Suite</title>
+    <style>
+        body { font-family: system-ui; margin: 2rem; line-height: 1.5; }
+        .result { margin: 0.5rem 0; padding: 0.5rem; border-radius: 4px; }
+        .pass { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .fail { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .section { margin: 2rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; }
+        .section h3 { margin-top: 0; color: #333; }
+        button { margin: 0.5rem; padding: 0.5rem 1rem; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #0056b3; }
+        .summary { background: #f8f9fa; padding: 1rem; border-radius: 4px; margin: 1rem 0; }
+        .test-count { font-weight: bold; margin: 1rem 0; }
+        
+        /* Mock elements for testing */
+        .card { margin: 0.5rem; padding: 1rem; border: 1px solid #ddd; display: none; cursor: pointer; }
+        .category-filter, .tag-filter { margin: 0.2rem; padding: 0.3rem 0.8rem; border: 1px solid #ccc; cursor: pointer; }
+        .category-filter.active, .tag-filter.active { background: #007bff; color: white; }
+        #search-input { margin: 0.5rem; padding: 0.5rem; width: 200px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 User Journey Analysis - Comprehensive Test Suite</h1>
+    <p>This test suite verifies all user journey analysis functionality implemented in Tasks 3.1-3.6</p>
+    
+    <!-- Mock elements for testing (hidden) -->
+    <div style="display: none;">
+        <input type="text" id="search-input" placeholder="Search apps..." />
+        <button class="category-filter" data-category="productivity">Productivity</button>
+        <button class="category-filter" data-category="graphics">Graphics</button>
+        <button class="tag-filter" data-tag="gtk">GTK</button>
+        <button class="tag-filter" data-tag="gnome">GNOME</button>
+        <div class="card" data-name="Test App 1" data-category="productivity" href="/apps/test-app-1/">Test App 1</div>
+        <div class="card" data-name="Test App 2" data-category="graphics" href="/apps/test-app-2/">Test App 2</div>
+        <a href="https://flathub.org/apps/test.app" target="_blank">Flathub Link</a>
+        <a href="https://github.com/user/repo" target="_blank">GitHub Link</a>
+    </div>
+    
+    <div class="test-count" id="test-counter">Preparing tests...</div>
+    
+    <button onclick="runAllTests()">🚀 Run All Tests</button>
+    <button onclick="runPerformanceTests()">⚡ Run Performance Tests</button>
+    <button onclick="clearResults()">🗑️ Clear Results</button>
+    
+    <div id="results"></div>
+    
+    <div class="summary" id="summary" style="display: none;">
+        <h3>📊 Test Summary</h3>
+        <div id="summary-content"></div>
+    </div>
+
+    <script src="assets/js/privacy-analytics.js"></script>
+    <script>
+        let testResults = { passed: 0, failed: 0, total: 0 };
+        
+        function addResult(category, test, passed, message = '') {
+            testResults.total++;
+            if (passed) testResults.passed++;
+            else testResults.failed++;
+            
+            const div = document.createElement('div');
+            div.className = `result ${passed ? 'pass' : 'fail'}`;
+            div.innerHTML = `<strong>[${category}]</strong> ${passed ? '✓' : '✗'} ${test}: ${message}`;
+            document.getElementById('results').appendChild(div);
+            
+            updateTestCounter();
+        }
+        
+        function updateTestCounter() {
+            document.getElementById('test-counter').textContent = 
+                `Tests: ${testResults.total} | Passed: ${testResults.passed} | Failed: ${testResults.failed}`;
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('summary').style.display = 'none';
+            testResults = { passed: 0, failed: 0, total: 0 };
+            updateTestCounter();
+        }
+        
+        function showSummary() {
+            const summaryDiv = document.getElementById('summary');
+            const contentDiv = document.getElementById('summary-content');
+            const successRate = Math.round((testResults.passed / testResults.total) * 100);
+            
+            contentDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div><strong>Total Tests:</strong> ${testResults.total}</div>
+                        <div style="color: #28a745;"><strong>Passed:</strong> ${testResults.passed}</div>
+                        <div style="color: #dc3545;"><strong>Failed:</strong> ${testResults.failed}</div>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: bold; ${successRate >= 90 ? 'color: #28a745' : successRate >= 75 ? 'color: #ffc107' : 'color: #dc3545'};">
+                        ${successRate}%
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <strong>Status:</strong> ${successRate >= 90 ? '🎉 Excellent! All systems operational.' : successRate >= 75 ? '⚠️ Good, minor issues detected.' : '❌ Critical issues need attention.'}
+                </div>
+            `;
+            summaryDiv.style.display = 'block';
+        }
+        
+        async function runAllTests() {
+            clearResults();
+            
+            // Task 3.1: Navigation Pattern Tracking Tests
+            await testNavigationPatternTracking();
+            
+            // Task 3.2: Search Behavior Analytics Tests  
+            await testSearchBehaviorAnalytics();
+            
+            // Task 3.3: Category Filtering and Navigation Tests
+            await testCategoryFilteringNavigation();
+            
+            // Task 3.4: User Flow Analysis Tests
+            await testUserFlowAnalysis();
+            
+            // Task 3.5: Referrer Classification Tests
+            await testReferrerClassification();
+            
+            // Task 3.6: Journey Insights Aggregation Tests
+            await testJourneyInsightsAggregation();
+            
+            // Integration Tests
+            await testIntegration();
+            
+            showSummary();
+        }
+        
+        async function testNavigationPatternTracking() {
+            // Test navigation tracking method exists
+            addResult('Task 3.1', 'Navigation Tracking Method', 
+                typeof window.trackNavigation === 'function',
+                'trackNavigation method available globally');
+            
+            // Test navigation history tracking
+            const initialHistory = window.PrivacyAnalytics.navigationHistory.length;
+            window.trackNavigation('/', '/apps/test/', 'click');
+            addResult('Task 3.1', 'Navigation History Recording',
+                window.PrivacyAnalytics.navigationHistory.length > initialHistory,
+                'Navigation event recorded in history');
+            
+            // Test navigation anonymization
+            const lastNav = window.PrivacyAnalytics.navigationHistory[window.PrivacyAnalytics.navigationHistory.length - 1];
+            addResult('Task 3.1', 'Navigation Data Anonymization',
+                lastNav && !lastNav.from.includes('?') && !lastNav.to.includes('?'),
+                'Navigation URLs anonymized (query params removed)');
+        }
+        
+        async function testSearchBehaviorAnalytics() {
+            // Test search behavior tracking method exists
+            addResult('Task 3.2', 'Search Behavior Tracking Method',
+                typeof window.trackSearchBehavior === 'function',
+                'trackSearchBehavior method available globally');
+            
+            // Test search query tracking  
+            const initialSearches = window.PrivacyAnalytics.searchQueries.length;
+            window.trackSearchBehavior('gnome apps', 5);
+            addResult('Task 3.2', 'Search Query Recording',
+                window.PrivacyAnalytics.searchQueries.length > initialSearches,
+                'Search query recorded in analytics');
+            
+            // Test search refinement detection
+            await new Promise(resolve => setTimeout(resolve, 100));
+            window.trackSearchBehavior('gnome text apps', 3);
+            const lastSearch = window.PrivacyAnalytics.searchQueries[window.PrivacyAnalytics.searchQueries.length - 1];
+            addResult('Task 3.2', 'Search Refinement Detection',
+                lastSearch && typeof lastSearch.refinement === 'boolean',
+                'Search refinement detection working');
+            
+            // Test query anonymization
+            addResult('Task 3.2', 'Query Anonymization',
+                lastSearch && lastSearch.query.length <= 30 && !lastSearch.query.includes('"'),
+                'Search queries properly anonymized');
+        }
+        
+        async function testCategoryFilteringNavigation() {
+            // Test filter usage tracking
+            const initialFilters = window.PrivacyAnalytics.filterUsage.size;
+            window.PrivacyAnalytics.trackFilterUsage('category', 'productivity', true, 3);
+            addResult('Task 3.3', 'Filter Usage Tracking',
+                window.PrivacyAnalytics.filterUsage.size >= initialFilters,
+                'Filter usage tracked in analytics');
+            
+            // Test navigation with metadata
+            window.trackNavigation('/apps/', '/apps/test/', 'click', { category: 'productivity', searchActive: true });
+            const lastNav = window.PrivacyAnalytics.navigationHistory[window.PrivacyAnalytics.navigationHistory.length - 1];
+            addResult('Task 3.3', 'Navigation Metadata Tracking',
+                lastNav && lastNav.category === 'productivity',
+                'Navigation metadata captured correctly');
+            
+            // Test filter data in journey export
+            const journeyData = window.exportJourneyData();
+            addResult('Task 3.3', 'Filter Data in Journey Export',
+                journeyData.filters > 0,
+                `${journeyData.filters} filters tracked in journey data`);
+        }
+        
+        async function testUserFlowAnalysis() {
+            // Test user flow analysis method exists
+            addResult('Task 3.4', 'User Flow Analysis Method',
+                typeof window.analyzeUserFlow === 'function',
+                'analyzeUserFlow method available globally');
+            
+            // Test entry/exit point tracking
+            const flowData = window.analyzeUserFlow();
+            addResult('Task 3.4', 'Entry Point Tracking',
+                flowData && Array.isArray(flowData.entries),
+                `${flowData.entries.length} entry points tracked`);
+            
+            addResult('Task 3.4', 'Exit Point Tracking',
+                flowData && Array.isArray(flowData.exits),
+                `${flowData.exits.length} exit points tracked`);
+            
+            // Test session length tracking
+            addResult('Task 3.4', 'Session Length Tracking',
+                flowData && typeof flowData.sessionLength === 'number' && flowData.sessionLength > 0,
+                `Session length: ${Math.floor(flowData.sessionLength / 1000)}s`);
+        }
+        
+        async function testReferrerClassification() {
+            // Test referrer classification method exists
+            addResult('Task 3.5', 'Referrer Classification Method',
+                typeof window.PrivacyAnalytics.classifyReferrer === 'function',
+                'classifyReferrer method available');
+            
+            // Test various referrer classifications
+            const testCases = [
+                { url: 'https://google.com/search?q=test', expected: 'search' },
+                { url: 'https://twitter.com/user', expected: 'social' },
+                { url: 'https://github.com/user/repo', expected: 'tech' },
+                { url: 'https://example.com/page', expected: 'external' },
+                { url: '', expected: 'direct' }
+            ];
+            
+            let classificationsCorrect = 0;
+            testCases.forEach(testCase => {
+                const result = window.PrivacyAnalytics.classifyReferrer(testCase.url);
+                if (result.type === testCase.expected) classificationsCorrect++;
+            });
+            
+            addResult('Task 3.5', 'Referrer Classification Accuracy',
+                classificationsCorrect === testCases.length,
+                `${classificationsCorrect}/${testCases.length} classifications correct`);
+            
+            // Test referrer data in journey export
+            const journeyData = window.exportJourneyData();
+            addResult('Task 3.5', 'Referrer Data in Journey Export',
+                journeyData.referrers && typeof journeyData.referrers === 'object',
+                'Referrer data included in journey export');
+        }
+        
+        async function testJourneyInsightsAggregation() {
+            // Test journey data export
+            const journeyData = window.exportJourneyData();
+            const requiredFields = ['navs', 'searches', 'filters', 'duration', 'referrers', 'entries', 'exits'];
+            const hasAllFields = requiredFields.every(field => journeyData.hasOwnProperty(field));
+            
+            addResult('Task 3.6', 'Journey Data Export Completeness',
+                hasAllFields,
+                hasAllFields ? 'All required fields present' : 'Missing: ' + requiredFields.filter(f => !journeyData.hasOwnProperty(f)).join(', '));
+            
+            // Test aggregated data includes journey
+            const aggregatedData = window.PrivacyAnalytics.getAggregatedData();
+            addResult('Task 3.6', 'Journey Data in Aggregated Analytics',
+                aggregatedData && aggregatedData.journey,
+                'Journey data integrated in main analytics');
+            
+            // Test privacy compliance in journey data
+            addResult('Task 3.6', 'Privacy Compliance in Journey Data',
+                journeyData.privacy && journeyData.privacy.anon === true && journeyData.privacy.cookies === false,
+                'Journey data maintains privacy compliance');
+        }
+        
+        async function testIntegration() {
+            // Test file size constraint
+            try {
+                const response = await fetch('assets/js/privacy-analytics.js');
+                const content = await response.text();
+                const estimatedGzipSize = Math.round(content.length * 0.3); // Rough gzip estimate
+                
+                addResult('Integration', 'File Size Constraint',
+                    estimatedGzipSize < 5120,
+                    `Estimated compressed size: ~${estimatedGzipSize} bytes (target: <5KB)`);
+            } catch (e) {
+                addResult('Integration', 'File Size Constraint', false, 'Could not fetch file for size check');
+            }
+            
+            // Test all global methods are available
+            const globalMethods = [
+                'trackNavigation', 'trackSearchBehavior', 'analyzeUserFlow', 
+                'exportJourneyData', 'getEngagementMetrics', 'exportEngagementData'
+            ];
+            const availableMethods = globalMethods.filter(method => typeof window[method] === 'function');
+            
+            addResult('Integration', 'Global API Completeness',
+                availableMethods.length === globalMethods.length,
+                `${availableMethods.length}/${globalMethods.length} global methods available`);
+            
+            // Test analytics initialization
+            addResult('Integration', 'Analytics System Initialization',
+                typeof window.PrivacyAnalytics === 'object' && window.PrivacyAnalytics.version,
+                `Analytics v${window.PrivacyAnalytics.version} initialized`);
+            
+            // Test data consistency across methods
+            const journeyDataExport = window.exportJourneyData();
+            const aggregatedJourney = window.PrivacyAnalytics.getAggregatedData().journey;
+            
+            addResult('Integration', 'Data Consistency Across Methods',
+                journeyDataExport.searches === aggregatedJourney.searches && 
+                journeyDataExport.navs === aggregatedJourney.navigations,
+                'Journey data consistent between export and aggregated methods');
+        }
+        
+        async function runPerformanceTests() {
+            clearResults();
+            
+            // Performance test: Bulk operations
+            const startTime = performance.now();
+            
+            // Simulate heavy usage
+            for (let i = 0; i < 100; i++) {
+                window.trackNavigation(`/page${i}`, `/page${i+1}`, 'click');
+                if (i % 10 === 0) {
+                    window.trackSearchBehavior(`query ${i}`, Math.floor(Math.random() * 10));
+                }
+                if (i % 15 === 0) {
+                    window.PrivacyAnalytics.trackFilterUsage('category', `cat${i}`, true, 5);
+                }
+            }
+            
+            const endTime = performance.now();
+            const duration = endTime - startTime;
+            
+            addResult('Performance', 'Bulk Operations Performance',
+                duration < 100,
+                `100 operations completed in ${Math.round(duration)}ms`);
+            
+            // Memory usage test
+            const journeyData = window.exportJourneyData();
+            const dataSize = JSON.stringify(journeyData).length;
+            
+            addResult('Performance', 'Memory Usage',
+                dataSize < 10000,
+                `Journey data size: ${dataSize} bytes`);
+            
+            // Test data limits
+            addResult('Performance', 'Data Size Limits',
+                window.PrivacyAnalytics.events.length <= window.PrivacyAnalytics.maxEvents,
+                `Events: ${window.PrivacyAnalytics.events.length}/${window.PrivacyAnalytics.maxEvents}`);
+            
+            showSummary();
+        }
+        
+        // Auto-run basic test on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addResult('System', 'Page Load Test', true, 'Test suite loaded successfully');
+                updateTestCounter();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

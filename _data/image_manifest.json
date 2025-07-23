@@ -1,0 +1,671 @@
+{
+  "generated": "2025-07-23T05:12:32.391Z",
+  "apps": {
+    "digger": {
+      "icon": [
+        {
+          "width": 128,
+          "webp": "assets/images/icons/digger/icon-128w.webp",
+          "jpeg": "assets/images/icons/digger/icon-128w.jpg"
+        }
+      ],
+      "screenshots": [
+        {
+          "index": 0,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/digger/screenshot-1-320w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-1-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/digger/screenshot-1-640w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-1-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/digger/screenshot-1-1024w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-1-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/digger/screenshot-2-320w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-2-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/digger/screenshot-2-640w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-2-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/digger/screenshot-2-1024w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-2-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/digger/screenshot-3-320w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-3-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/digger/screenshot-3-640w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-3-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/digger/screenshot-3-1024w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-3-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/digger/screenshot-4-320w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-4-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/digger/screenshot-4-640w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-4-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/digger/screenshot-4-1024w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-4-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/digger/screenshot-5-320w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-5-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/digger/screenshot-5-640w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-5-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/digger/screenshot-5-1024w.webp",
+              "jpeg": "assets/images/screenshots/digger/screenshot-5-1024w.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "karere": {
+      "icon": [
+        {
+          "width": 128,
+          "webp": "assets/images/icons/karere/icon-128w.webp",
+          "jpeg": "assets/images/icons/karere/icon-128w.jpg"
+        }
+      ],
+      "screenshots": [
+        {
+          "index": 0,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/karere/screenshot-1-320w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-1-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/karere/screenshot-1-640w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-1-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/karere/screenshot-1-1024w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-1-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/karere/screenshot-2-320w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-2-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/karere/screenshot-2-640w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-2-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/karere/screenshot-2-1024w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-2-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/karere/screenshot-3-320w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-3-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/karere/screenshot-3-640w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-3-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/karere/screenshot-3-1024w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-3-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/karere/screenshot-4-320w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-4-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/karere/screenshot-4-640w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-4-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/karere/screenshot-4-1024w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-4-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/karere/screenshot-5-320w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-5-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/karere/screenshot-5-640w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-5-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/karere/screenshot-5-1024w.webp",
+              "jpeg": "assets/images/screenshots/karere/screenshot-5-1024w.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "keysmith": {
+      "icon": [
+        {
+          "width": 128,
+          "webp": "assets/images/icons/keysmith/icon-128w.webp",
+          "jpeg": "assets/images/icons/keysmith/icon-128w.jpg"
+        }
+      ],
+      "screenshots": [
+        {
+          "index": 0,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/keysmith/screenshot-1-320w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-1-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/keysmith/screenshot-1-640w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-1-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/keysmith/screenshot-1-1024w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-1-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/keysmith/screenshot-2-320w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-2-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/keysmith/screenshot-2-640w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-2-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/keysmith/screenshot-2-1024w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-2-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/keysmith/screenshot-3-320w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-3-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/keysmith/screenshot-3-640w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-3-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/keysmith/screenshot-3-1024w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-3-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/keysmith/screenshot-4-320w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-4-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/keysmith/screenshot-4-640w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-4-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/keysmith/screenshot-4-1024w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-4-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/keysmith/screenshot-5-320w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-5-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/keysmith/screenshot-5-640w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-5-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/keysmith/screenshot-5-1024w.webp",
+              "jpeg": "assets/images/screenshots/keysmith/screenshot-5-1024w.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "secrets": {
+      "icon": [
+        {
+          "width": 128,
+          "webp": "assets/images/icons/secrets/icon-128w.webp",
+          "jpeg": "assets/images/icons/secrets/icon-128w.jpg"
+        }
+      ],
+      "screenshots": [
+        {
+          "index": 0,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/secrets/screenshot-1-320w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-1-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/secrets/screenshot-1-640w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-1-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/secrets/screenshot-1-1024w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-1-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/secrets/screenshot-2-320w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-2-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/secrets/screenshot-2-640w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-2-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/secrets/screenshot-2-1024w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-2-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/secrets/screenshot-3-320w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-3-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/secrets/screenshot-3-640w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-3-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/secrets/screenshot-3-1024w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-3-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/secrets/screenshot-4-320w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-4-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/secrets/screenshot-4-640w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-4-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/secrets/screenshot-4-1024w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-4-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/secrets/screenshot-5-320w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-5-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/secrets/screenshot-5-640w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-5-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/secrets/screenshot-5-1024w.webp",
+              "jpeg": "assets/images/screenshots/secrets/screenshot-5-1024w.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "sonar": {
+      "icon": [
+        {
+          "width": 128,
+          "webp": "assets/images/icons/sonar/icon-128w.webp",
+          "jpeg": "assets/images/icons/sonar/icon-128w.jpg"
+        }
+      ],
+      "screenshots": [
+        {
+          "index": 0,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/sonar/screenshot-1-320w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-1-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/sonar/screenshot-1-640w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-1-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/sonar/screenshot-1-1024w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-1-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/sonar/screenshot-2-320w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-2-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/sonar/screenshot-2-640w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-2-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/sonar/screenshot-2-1024w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-2-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/sonar/screenshot-3-320w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-3-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/sonar/screenshot-3-640w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-3-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/sonar/screenshot-3-1024w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-3-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/sonar/screenshot-4-320w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-4-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/sonar/screenshot-4-640w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-4-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/sonar/screenshot-4-1024w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-4-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/sonar/screenshot-5-320w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-5-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/sonar/screenshot-5-640w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-5-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/sonar/screenshot-5-1024w.webp",
+              "jpeg": "assets/images/screenshots/sonar/screenshot-5-1024w.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "tempo": {
+      "icon": [
+        {
+          "width": 128,
+          "webp": "assets/images/icons/tempo/icon-128w.webp",
+          "jpeg": "assets/images/icons/tempo/icon-128w.jpg"
+        }
+      ],
+      "screenshots": [
+        {
+          "index": 0,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/tempo/screenshot-1-320w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-1-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/tempo/screenshot-1-640w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-1-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/tempo/screenshot-1-1024w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-1-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/tempo/screenshot-2-320w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-2-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/tempo/screenshot-2-640w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-2-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/tempo/screenshot-2-1024w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-2-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/tempo/screenshot-3-320w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-3-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/tempo/screenshot-3-640w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-3-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/tempo/screenshot-3-1024w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-3-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/tempo/screenshot-4-320w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-4-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/tempo/screenshot-4-640w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-4-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/tempo/screenshot-4-1024w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-4-1024w.jpg"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "variants": [
+            {
+              "width": 320,
+              "webp": "assets/images/screenshots/tempo/screenshot-5-320w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-5-320w.jpg"
+            },
+            {
+              "width": 640,
+              "webp": "assets/images/screenshots/tempo/screenshot-5-640w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-5-640w.jpg"
+            },
+            {
+              "width": 1024,
+              "webp": "assets/images/screenshots/tempo/screenshot-5-1024w.webp",
+              "jpeg": "assets/images/screenshots/tempo/screenshot-5-1024w.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

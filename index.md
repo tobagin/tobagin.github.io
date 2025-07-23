@@ -54,8 +54,7 @@ title: Home
      data-tagline="{{ app.tagline }}"
      data-category="{{ app.category }}"
      data-tags="{{ app.tags | join: ',' }}">
-    <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/icons/128x128/{{ app.flathub }}.png"
-         alt="{{ app.name }} icon">
+    {% include responsive-image.html app=app type="icon" alt="App icon" %}
     <div class="card-body">
       <h3>{{ app.name }}</h3>
       <p>{{ app.tagline }}</p>
