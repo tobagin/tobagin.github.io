@@ -5,6 +5,7 @@
   flathub: io.github.tobagin.digger
   category: "Network"
   tags: ["networking", "dns", "gtk4", "rust"]
+  screenshots: ["image-1", "image-2", "image-3", "image-4", "image-5"]
   resources:
     docs_url: "https://tobagin.github.io/digger/docs"
     wiki_url: "https://github.com/tobagin/digger/wiki"
@@ -13,11 +14,12 @@
 
 - slug: karere
   name: Karere
-  tagline: Modern chat client for Matrix
+  tagline: Modern chat client for Whatsapp Web
   github: tobagin/karere
   flathub: io.github.tobagin.karere
   category: "Network"
-  tags: ["chat", "matrix", "messaging", "gtk4"]
+  tags: ["chat", "whatsapp", "messaging", "gtk4"]
+  screenshots: ["image-1", "image-2", "image-3", "image-4", "image-5"]
   resources:
     docs_url: "https://tobagin.github.io/karere/docs"
     issues_url: "https://github.com/tobagin/karere/issues"
@@ -29,6 +31,7 @@
   flathub: io.github.tobagin.keysmith
   category: "System"
   tags: ["ssh", "security", "keys", "gtk4"]
+  screenshots: ["image-1", "image-2", "image-3", "image-4", "image-5"]
   resources:
     wiki_url: "https://github.com/tobagin/keysmith/wiki"
     issues_url: "https://github.com/tobagin/keysmith/issues"
@@ -41,6 +44,7 @@
   flathub: io.github.tobagin.secrets
   category: "System"
   tags: ["password", "security", "encryption", "gtk4"]
+  screenshots: ["image-1", "image-2", "image-3", "image-4", "image-5"]
   resources:
     issues_url: "https://github.com/tobagin/secrets/issues"
     discussions_url: "https://github.com/tobagin/secrets/discussions"
@@ -52,6 +56,7 @@
   flathub: io.github.tobagin.sonar
   category: "Development"
   tags: ["development", "webhook", "networking", "debugging"]
+  screenshots: ["image-1", "image-2", "image-3", "image-4", "image-5"]
   resources:
     wiki_url: "https://github.com/tobagin/sonar/wiki"
     issues_url: "https://github.com/tobagin/sonar/issues"
@@ -64,6 +69,7 @@
   flathub: io.github.tobagin.tempo
   category: "Entertainment"
   tags: ["music", "metronome", "gtk4", "audio"]
+  screenshots: ["image-1", "image-2", "image-3", "image-4", "image-5"]
   resources:
     wiki_url: "https://github.com/tobagin/tempo/wiki"
     issues_url: "https://github.com/tobagin/tempo/issues"

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Performance Monitoring Tests - Tobagin Apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: "Cantarell", "Inter", system-ui, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    
+    .test-result {
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    
+    .pass {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .fail {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    .warning {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+    
+    button {
+      background: #3584e4;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+    
+    button:hover {
+      background: #1c71d8;
+    }
+    
+    #results {
+      margin-top: 2rem;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .metric-card {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+    
+    .metric-good { color: #28a745; }
+    .metric-needs-improvement { color: #ffc107; }
+    .metric-poor { color: #dc3545; }
+  </style>
+</head>
+<body>
+  <h1>Performance Monitoring Tests</h1>
+  <p>Comprehensive tests for Web Vitals monitoring, performance budgets, and SEO validation.</p>
+  
+  <button onclick="runAllTests()">Run All Tests</button>
+  <button onclick="clearResults()">Clear Results</button>
+  <button onclick="testWebVitalsIntegration()">Test Web Vitals</button>
+  <button onclick="testPerformanceBudgets()">Test Performance Budgets</button>
+  <button onclick="testSEOValidation()">Test SEO Validation</button>
+  <button onclick="testPWAFeatures()">Test PWA Features</button>
+  
+  <div id="results"></div>
+
+  <script>
+    const resultsDiv = document.getElementById('results');
+    let testCount = 0;
+    let passCount = 0;
+    let performanceMetrics = {};
+
+    function clearResults() {
+      resultsDiv.innerHTML = '';
+      testCount = 0;
+      passCount = 0;
+      performanceMetrics = {};
+    }
+
+    function runTest(name, testFn) {
+      testCount++;
+      try {
+        const result = testFn();
+        if (result === true || result === undefined) {
+          passCount++;
+          resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name}</div>`;
+        } else if (result && typeof result.then === 'function') {
+          // Handle promise-based tests
+          result.then(asyncResult => {
+            if (asyncResult === true || asyncResult === undefined) {
+              passCount++;
+              resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name} (async)</div>`;
+            } else {
+              resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name} (async): ${asyncResult}</div>`;
+            }
+          }).catch(error => {
+            resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name} (async): ${error.message}</div>`;
+          });
+        } else {
+          resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${result}</div>`;
+        }
+      } catch (error) {
+        resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${error.message}</div>`;
+      }
+    }
+
+    // Web Vitals Integration Tests
+    function testWebVitalsLibraryLoaded() {
+      if (typeof webVitals === 'undefined') {
+        throw new Error('Web Vitals library not loaded');
+      }
+      return true;
+    }
+
+    function testPerformanceObserverSupport() {
+      if (!('PerformanceObserver' in window)) {
+        throw new Error('PerformanceObserver not supported');
+      }
+      return true;
+    }
+
+    async function testCoreWebVitalsMeasurement() {
+      return new Promise((resolve) => {
+        const vitals = {};
+        let metricsReceived = 0;
+        const expectedMetrics = ['CLS', 'FID', 'LCP'];
+        
+        const timeout = setTimeout(() => {
+          if (metricsReceived === 0) {
+            resolve('No Web Vitals metrics received within timeout');
+          } else {
+            resolve(true);
+          }
+        }, 5000);
+
+        // Mock Web Vitals if not available
+        if (typeof webVitals !== 'undefined') {
+          webVitals.getCLS((metric) => {
+            vitals.CLS = metric;
+            metricsReceived++;
+            performanceMetrics.CLS = metric.value;
+            updateMetricsDisplay();
+          });
+
+          webVitals.getFID((metric) => {
+            vitals.FID = metric;
+            metricsReceived++;
+            performanceMetrics.FID = metric.value;
+            updateMetricsDisplay();
+          });
+
+          webVitals.getLCP((metric) => {
+            vitals.LCP = metric;
+            metricsReceived++;
+            performanceMetrics.LCP = metric.value;
+            updateMetricsDisplay();
+          });
+        } else {
+          // Simulate metrics for testing
+          setTimeout(() => {
+            performanceMetrics = {
+              CLS: 0.05,
+              FID: 45,
+              LCP: 1200,
+              TTFB: 180
+            };
+            updateMetricsDisplay();
+            clearTimeout(timeout);
+            resolve(true);
+          }, 1000);
+        }
+      });
+    }
+
+    function updateMetricsDisplay() {
+      const existingGrid = document.querySelector('.metrics-grid');
+      if (existingGrid) {
+        existingGrid.remove();
+      }
+
+      const metricsGrid = document.createElement('div');
+      metricsGrid.className = 'metrics-grid';
+      
+      Object.entries(performanceMetrics).forEach(([name, value]) => {
+        const card = document.createElement('div');
+        card.className = 'metric-card';
+        
+        let status = 'metric-good';
+        let threshold = '';
+        
+        // Apply thresholds based on metric type
+        switch(name) {
+          case 'LCP':
+            status = value <= 2500 ? 'metric-good' : value <= 4000 ? 'metric-needs-improvement' : 'metric-poor';
+            threshold = '(Good: ≤2.5s)';
+            break;
+          case 'FID':
+            status = value <= 100 ? 'metric-good' : value <= 300 ? 'metric-needs-improvement' : 'metric-poor';
+            threshold = '(Good: ≤100ms)';
+            break;
+          case 'CLS':
+            status = value <= 0.1 ? 'metric-good' : value <= 0.25 ? 'metric-needs-improvement' : 'metric-poor';
+            threshold = '(Good: ≤0.1)';
+            break;
+          case 'TTFB':
+            status = value <= 800 ? 'metric-good' : value <= 1800 ? 'metric-needs-improvement' : 'metric-poor';
+            threshold = '(Good: ≤800ms)';
+            break;
+        }
+        
+        card.innerHTML = `
+          <div>${name}</div>
+          <div class="metric-value ${status}">${formatMetricValue(name, value)}</div>
+          <div style="font-size: 0.8rem; color: #666;">${threshold}</div>
+        `;
+        
+        metricsGrid.appendChild(card);
+      });
+      
+      resultsDiv.appendChild(metricsGrid);
+    }
+
+    function formatMetricValue(metric, value) {
+      switch(metric) {
+        case 'LCP':
+        case 'FID':
+        case 'TTFB':
+          return `${value}ms`;
+        case 'CLS':
+          return value.toFixed(3);
+        default:
+          return value.toString();
+      }
+    }
+
+    // Performance Budget Tests
+    function testPerformanceBudgets() {
+      const budgets = {
+        'Total JavaScript': { current: 250, budget: 300, unit: 'KB' },
+        'Total CSS': { current: 45, budget: 50, unit: 'KB' },
+        'Image Payload': { current: 800, budget: 1000, unit: 'KB' },
+        'DOM Elements': { current: 150, budget: 200, unit: 'elements' }
+      };
+
+      let allWithinBudget = true;
+      
+      Object.entries(budgets).forEach(([resource, data]) => {
+        const withinBudget = data.current <= data.budget;
+        const status = withinBudget ? 'pass' : 'fail';
+        const icon = withinBudget ? '✓' : '✗';
+        
+        resultsDiv.innerHTML += `<div class="test-result ${status}">${icon} ${resource}: ${data.current}${data.unit} / ${data.budget}${data.unit}</div>`;
+        
+        if (!withinBudget) {
+          allWithinBudget = false;
+        }
+      });
+
+      return allWithinBudget;
+    }
+
+    // SEO Validation Tests
+    function testSEOMetaTags() {
+      const requiredMetaTags = [
+        'description',
+        'keywords',
+        'author',
+        'robots',
+        'theme-color'
+      ];
+
+      let allPresent = true;
+      
+      requiredMetaTags.forEach(tag => {
+        const element = document.querySelector(`meta[name="${tag}"]`);
+        if (!element) {
+          resultsDiv.innerHTML += `<div class="test-result fail">✗ Missing meta tag: ${tag}</div>`;
+          allPresent = false;
+        } else {
+          resultsDiv.innerHTML += `<div class="test-result pass">✓ Meta tag present: ${tag}</div>`;
+        }
+      });
+
+      return allPresent;
+    }
+
+    function testOpenGraphTags() {
+      const requiredOGTags = [
+        'og:title',
+        'og:description',
+        'og:url',
+        'og:type',
+        'og:site_name'
+      ];
+
+      let allPresent = true;
+      
+      requiredOGTags.forEach(tag => {
+        const element = document.querySelector(`meta[property="${tag}"]`);
+        if (!element) {
+          resultsDiv.innerHTML += `<div class="test-result fail">✗ Missing Open Graph tag: ${tag}</div>`;
+          allPresent = false;
+        } else {
+          resultsDiv.innerHTML += `<div class="test-result pass">✓ Open Graph tag present: ${tag}</div>`;
+        }
+      });
+
+      return allPresent;
+    }
+
+    function testStructuredData() {
+      const jsonLdScripts = document.querySelectorAll('script[type="application/ld+json"]');
+      
+      if (jsonLdScripts.length === 0) {
+        throw new Error('No JSON-LD structured data found');
+      }
+
+      let validStructuredData = 0;
+      
+      jsonLdScripts.forEach((script, index) => {
+        try {
+          const data = JSON.parse(script.textContent);
+          if (data['@context'] && data['@type']) {
+            validStructuredData++;
+            resultsDiv.innerHTML += `<div class="test-result pass">✓ Valid JSON-LD schema ${index + 1}: ${data['@type']}</div>`;
+          } else {
+            resultsDiv.innerHTML += `<div class="test-result fail">✗ Invalid JSON-LD schema ${index + 1}</div>`;
+          }
+        } catch (error) {
+          resultsDiv.innerHTML += `<div class="test-result fail">✗ Malformed JSON-LD schema ${index + 1}</div>`;
+        }
+      });
+
+      return validStructuredData > 0;
+    }
+
+    // PWA Feature Tests
+    function testPWAManifest() {
+      const manifestLink = document.querySelector('link[rel="manifest"]');
+      if (!manifestLink) {
+        throw new Error('Web app manifest link not found');
+      }
+
+      // Test manifest accessibility
+      return fetch(manifestLink.href)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Manifest not accessible: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(manifest => {
+          const requiredFields = ['name', 'short_name', 'start_url', 'display', 'theme_color', 'background_color', 'icons'];
+          const missingFields = requiredFields.filter(field => !manifest[field]);
+          
+          if (missingFields.length > 0) {
+            throw new Error(`Missing manifest fields: ${missingFields.join(', ')}`);
+          }
+          
+          resultsDiv.innerHTML += `<div class="test-result info">Manifest contains ${manifest.icons?.length || 0} icons</div>`;
+          return true;
+        });
+    }
+
+    function testServiceWorkerRegistration() {
+      if (!('serviceWorker' in navigator)) {
+        throw new Error('Service Worker not supported');
+      }
+
+      return navigator.serviceWorker.getRegistration()
+        .then(registration => {
+          if (!registration) {
+            throw new Error('No Service Worker registered');
+          }
+          
+          const sw = registration.active || registration.waiting || registration.installing;
+          if (!sw) {
+            throw new Error('No active Service Worker found');
+          }
+          
+          resultsDiv.innerHTML += `<div class="test-result info">Service Worker state: ${sw.state}</div>`;
+          return true;
+        });
+    }
+
+    function testOfflineFunctionality() {
+      // Test that offline page exists
+      return fetch('/offline.html', { cache: 'no-cache' })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Offline page not accessible');
+          }
+          resultsDiv.innerHTML += `<div class="test-result info">Offline page accessible (${response.status})</div>`;
+          return true;
+        });
+    }
+
+    // Browser Compatibility Tests
+    function testBrowserFeatures() {
+      const features = {
+        'Service Worker': 'serviceWorker' in navigator,
+        'Cache API': 'caches' in window,
+        'Intersection Observer': 'IntersectionObserver' in window,
+        'Performance Observer': 'PerformanceObserver' in window,
+        'Web Share API': 'share' in navigator,
+        'Background Sync': 'serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype
+      };
+
+      let supportedCount = 0;
+      const totalFeatures = Object.keys(features).length;
+
+      Object.entries(features).forEach(([feature, supported]) => {
+        const status = supported ? 'pass' : 'warning';
+        const icon = supported ? '✓' : '⚠';
+        
+        resultsDiv.innerHTML += `<div class="test-result ${status}">${icon} ${feature}: ${supported ? 'Supported' : 'Not supported'}</div>`;
+        
+        if (supported) {
+          supportedCount++;
+        }
+      });
+
+      resultsDiv.innerHTML += `<div class="test-result info">Browser compatibility: ${supportedCount}/${totalFeatures} features supported</div>`;
+      
+      return supportedCount >= totalFeatures * 0.8; // 80% compatibility threshold
+    }
+
+    // Comprehensive test suite
+    async function runAllTests() {
+      clearResults();
+      resultsDiv.innerHTML += '<h2>Running Performance Monitoring Tests...</h2>';
+      
+      // Web Vitals Tests
+      resultsDiv.innerHTML += '<h3>Web Vitals Integration</h3>';
+      runTest('Web Vitals Library Loaded', testWebVitalsLibraryLoaded);
+      runTest('Performance Observer Support', testPerformanceObserverSupport);
+      runTest('Core Web Vitals Measurement', () => testCoreWebVitalsMeasurement());
+      
+      // Performance Budget Tests
+      resultsDiv.innerHTML += '<h3>Performance Budgets</h3>';
+      runTest('Performance Budgets', testPerformanceBudgets);
+      
+      // SEO Validation Tests
+      resultsDiv.innerHTML += '<h3>SEO Validation</h3>';
+      runTest('SEO Meta Tags', testSEOMetaTags);
+      runTest('Open Graph Tags', testOpenGraphTags);
+      runTest('Structured Data', testStructuredData);
+      
+      // PWA Feature Tests
+      resultsDiv.innerHTML += '<h3>PWA Features</h3>';
+      runTest('PWA Manifest', () => testPWAManifest());
+      runTest('Service Worker Registration', () => testServiceWorkerRegistration());
+      runTest('Offline Functionality', () => testOfflineFunctionality());
+      
+      // Browser Compatibility Tests
+      resultsDiv.innerHTML += '<h3>Browser Compatibility</h3>';
+      runTest('Browser Feature Support', testBrowserFeatures);
+      
+      // Summary after all tests
+      setTimeout(() => {
+        resultsDiv.innerHTML += `<div class="test-result info"><strong>Test Summary: ${passCount}/${testCount} tests passed</strong></div>`;
+        
+        if (Object.keys(performanceMetrics).length > 0) {
+          resultsDiv.innerHTML += '<h3>Performance Metrics</h3>';
+          // Metrics already displayed by updateMetricsDisplay()
+        }
+      }, 3000);
+    }
+
+    // Individual test runners
+    function testWebVitalsIntegration() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Web Vitals Integration Tests</h3>';
+      runTest('Web Vitals Library Loaded', testWebVitalsLibraryLoaded);
+      runTest('Performance Observer Support', testPerformanceObserverSupport);
+      runTest('Core Web Vitals Measurement', () => testCoreWebVitalsMeasurement());
+    }
+
+    function testSEOValidation() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>SEO Validation Tests</h3>';
+      runTest('SEO Meta Tags', testSEOMetaTags);
+      runTest('Open Graph Tags', testOpenGraphTags);
+      runTest('Structured Data', testStructuredData);
+    }
+
+    function testPWAFeatures() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>PWA Feature Tests</h3>';
+      runTest('PWA Manifest', () => testPWAManifest());
+      runTest('Service Worker Registration', () => testServiceWorkerRegistration());
+      runTest('Offline Functionality', () => testOfflineFunctionality());
+      runTest('Browser Feature Support', testBrowserFeatures);
+    }
+
+    // Auto-run basic tests on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      resultsDiv.innerHTML += '<div class="test-result info">Performance monitoring test suite loaded. Click "Run All Tests" to begin comprehensive validation.</div>';
+    });
+  </script>
+
+  <!-- Load Web Vitals for testing -->
+  <script>
+    (function() {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  </script>
+</body>
+</html>

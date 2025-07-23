@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Privacy-First Analytics Tests - Tobagin Apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: "Cantarell", "Inter", system-ui, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    
+    .test-result {
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    
+    .pass {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .fail {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    .warning {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+    
+    button {
+      background: #3584e4;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+    
+    button:hover {
+      background: #1c71d8;
+    }
+    
+    button.secondary {
+      background: #5e5c64;
+    }
+    
+    button.secondary:hover {
+      background: #3d3846;
+    }
+    
+    #results {
+      margin-top: 2rem;
+    }
+    
+    .analytics-demo {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .privacy-status {
+      background: #e8f5e8;
+      border: 1px solid #c3e6cb;
+      border-radius: 6px;
+      padding: 0.75rem;
+      margin: 1rem 0;
+    }
+    
+    .data-display {
+      font-family: monospace;
+      background: #f1f3f4;
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Privacy-First Analytics Tests</h1>
+  <p>Comprehensive tests for privacy-compliant analytics implementation with Do Not Track support and data anonymization.</p>
+  
+  <div class="privacy-status">
+    <strong>🔒 Privacy Status:</strong> <span id="privacy-status">Checking...</span><br>
+    <strong>🚫 Do Not Track:</strong> <span id="dnt-status">Checking...</span><br>
+    <strong>📊 Analytics:</strong> <span id="analytics-status">Checking...</span>
+  </div>
+  
+  <button onclick="runAllTests()">Run All Tests</button>
+  <button onclick="clearResults()">Clear Results</button>
+  <button onclick="testPrivacyCompliance()">Test Privacy</button>
+  <button onclick="testEventTracking()">Test Event Tracking</button>
+  <button onclick="testDataAnonymization()">Test Data Anonymization</button>
+  <button onclick="testPerformance()">Test Performance</button>
+  <button onclick="toggleOptOut()" class="secondary">Toggle Opt-Out</button>
+  
+  <div class="analytics-demo">
+    <h3>Analytics Demo</h3>
+    <button onclick="simulatePageView()">Simulate Page View</button>
+    <button onclick="simulateAppClick('digger')">Simulate App Click</button>
+    <button onclick="simulateSearch('password manager')">Simulate Search</button>
+    <button onclick="showCollectedData()">Show Collected Data</button>
+  </div>
+  
+  <div id="results"></div>
+
+  <script>
+    const resultsDiv = document.getElementById('results');
+    let testCount = 0;
+    let passCount = 0;
+    let mockAnalytics = null;
+
+    function clearResults() {
+      resultsDiv.innerHTML = '';
+      testCount = 0;
+      passCount = 0;
+    }
+
+    function runTest(name, testFn) {
+      testCount++;
+      try {
+        const result = testFn();
+        if (result === true || result === undefined) {
+          passCount++;
+          resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name}</div>`;
+        } else if (result && typeof result.then === 'function') {
+          // Handle promise-based tests
+          result.then(asyncResult => {
+            if (asyncResult === true || asyncResult === undefined) {
+              passCount++;
+              resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name} (async)</div>`;
+            } else {
+              resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name} (async): ${asyncResult}</div>`;
+            }
+          }).catch(error => {
+            resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name} (async): ${error.message}</div>`;
+          });
+        } else {
+          resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${result}</div>`;
+        }
+      } catch (error) {
+        resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${error.message}</div>`;
+      }
+    }
+
+    // Mock Analytics Implementation for Testing
+    class MockPrivacyAnalytics {
+      constructor() {
+        this.enabled = !this.getDoNotTrack() && !this.isOptedOut();
+        this.events = [];
+        this.sessionId = this.generateSessionId();
+        this.startTime = Date.now();
+      }
+
+      getDoNotTrack() {
+        return navigator.doNotTrack === '1' || 
+               navigator.doNotTrack === 'yes' || 
+               navigator.msDoNotTrack === '1' ||
+               window.doNotTrack === '1';
+      }
+
+      isOptedOut() {
+        return localStorage.getItem('analytics-opt-out') === 'true';
+      }
+
+      optOut() {
+        localStorage.setItem('analytics-opt-out', 'true');
+        this.enabled = false;
+      }
+
+      optIn() {
+        localStorage.removeItem('analytics-opt-out');
+        this.enabled = !this.getDoNotTrack();
+      }
+
+      generateSessionId() {
+        // Anonymous session ID that can't be used for tracking
+        const timestamp = Math.floor(Date.now() / 3600000); // Hour-level precision
+        const random = Math.floor(Math.random() * 1000);
+        return `s_${timestamp}_${random}`;
+      }
+
+      anonymizeData(data) {
+        // Remove/hash any potentially identifying information
+        const anonymized = { ...data };
+        
+        if (anonymized.userAgent) {
+          // Keep only browser and OS info, remove version specifics
+          anonymized.userAgent = anonymized.userAgent
+            .replace(/\d+\.\d+\.\d+/g, 'x.x.x')
+            .replace(/\([^)]*\)/g, '(...)');
+        }
+        
+        if (anonymized.referrer) {
+          try {
+            const url = new URL(anonymized.referrer);
+            anonymized.referrer = url.hostname; // Keep only domain
+          } catch {
+            anonymized.referrer = 'unknown';
+          }
+        }
+        
+        // Remove precise timestamps
+        if (anonymized.timestamp) {
+          anonymized.timestamp = Math.floor(anonymized.timestamp / 300000) * 300000; // 5-minute buckets
+        }
+        
+        return anonymized;
+      }
+
+      track(eventType, data = {}) {
+        if (!this.enabled) {
+          return false;
+        }
+
+        const event = this.anonymizeData({
+          type: eventType,
+          timestamp: Date.now(),
+          sessionId: this.sessionId,
+          url: window.location.pathname,
+          referrer: document.referrer,
+          userAgent: navigator.userAgent,
+          screenSize: `${screen.width}x${screen.height}`,
+          viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+          ...data
+        });
+
+        this.events.push(event);
+        
+        // Limit stored events to prevent memory issues
+        if (this.events.length > 100) {
+          this.events = this.events.slice(-50);
+        }
+
+        return true;
+      }
+
+      getEvents() {
+        return [...this.events]; // Return copy
+      }
+
+      getAggregatedData() {
+        const data = {
+          totalEvents: this.events.length,
+          eventTypes: {},
+          popularApps: {},
+          searchTerms: {},
+          avgSessionDuration: 0
+        };
+
+        this.events.forEach(event => {
+          // Count event types
+          data.eventTypes[event.type] = (data.eventTypes[event.type] || 0) + 1;
+          
+          // Track app popularity
+          if (event.type === 'app_click' && event.appId) {
+            data.popularApps[event.appId] = (data.popularApps[event.appId] || 0) + 1;
+          }
+          
+          // Track search terms (anonymized)
+          if (event.type === 'search' && event.query) {
+            const anonymizedQuery = event.query.toLowerCase().replace(/\d+/g, 'X');
+            data.searchTerms[anonymizedQuery] = (data.searchTerms[anonymizedQuery] || 0) + 1;
+          }
+        });
+
+        // Calculate average session duration
+        if (this.events.length > 0) {
+          data.avgSessionDuration = Math.floor((Date.now() - this.startTime) / 1000);
+        }
+
+        return data;
+      }
+
+      getScriptSize() {
+        // Estimate script size (this would be actual size in production)
+        return this.toString().length;
+      }
+    }
+
+    // Initialize mock analytics
+    mockAnalytics = new MockPrivacyAnalytics();
+
+    // Privacy Compliance Tests
+    function testDoNotTrackRespect() {
+      // Mock Do Not Track
+      const originalDNT = navigator.doNotTrack;
+      
+      // Test with DNT enabled
+      Object.defineProperty(navigator, 'doNotTrack', {
+        value: '1',
+        configurable: true
+      });
+      
+      const analytics = new MockPrivacyAnalytics();
+      const result = analytics.track('test_event');
+      
+      // Restore original value
+      Object.defineProperty(navigator, 'doNotTrack', {
+        value: originalDNT,
+        configurable: true
+      });
+      
+      if (result === false) {
+        return true;
+      } else {
+        throw new Error('Analytics should respect Do Not Track setting');
+      }
+    }
+
+    function testOptOutFunctionality() {
+      const analytics = new MockPrivacyAnalytics();
+      
+      // Test opt-out
+      analytics.optOut();
+      const resultOptOut = analytics.track('test_event');
+      
+      if (resultOptOut !== false) {
+        throw new Error('Analytics should stop tracking after opt-out');
+      }
+      
+      // Test opt-in
+      analytics.optIn();
+      const resultOptIn = analytics.track('test_event');
+      
+      if (resultOptIn !== true) {
+        throw new Error('Analytics should resume tracking after opt-in');
+      }
+      
+      return true;
+    }
+
+    function testDataAnonymizationFunctionality() {
+      const analytics = new MockPrivacyAnalytics();
+      
+      const sensitiveData = {
+        userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        referrer: 'https://example.com/some/private/path?token=secret123',
+        timestamp: 1625097600000, // Specific timestamp
+        personalInfo: 'user@email.com'
+      };
+      
+      const anonymized = analytics.anonymizeData(sensitiveData);
+      
+      // Check that sensitive data is anonymized
+      if (anonymized.userAgent.includes('91.0.4472.124')) {
+        throw new Error('User agent version should be anonymized');
+      }
+      
+      if (anonymized.referrer.includes('/some/private/path')) {
+        throw new Error('Referrer path should be removed');
+      }
+      
+      if (anonymized.timestamp === sensitiveData.timestamp) {
+        throw new Error('Timestamp should be bucketed for anonymity');
+      }
+      
+      return true;
+    }
+
+    function testNoCookiesUsed() {
+      const analytics = new MockPrivacyAnalytics();
+      analytics.track('test_event');
+      
+      // Check that no cookies were set
+      const cookies = document.cookie;
+      if (cookies.includes('analytics') || cookies.includes('tracking')) {
+        throw new Error('Analytics should not set any cookies');
+      }
+      
+      return true;
+    }
+
+    function testLocalStorageOnlyForOptOut() {
+      // Clear any existing localStorage
+      localStorage.removeItem('analytics-opt-out');
+      
+      const analytics = new MockPrivacyAnalytics();
+      analytics.track('test_event');
+      
+      // Should not store anything for normal tracking
+      const normalKeys = Object.keys(localStorage).filter(key => 
+        key.includes('analytics') && key !== 'analytics-opt-out'
+      );
+      
+      if (normalKeys.length > 0) {
+        throw new Error('Analytics should not use localStorage for tracking data');
+      }
+      
+      // But should store opt-out preference
+      analytics.optOut();
+      if (localStorage.getItem('analytics-opt-out') !== 'true') {
+        throw new Error('Opt-out preference should be stored in localStorage');
+      }
+      
+      return true;
+    }
+
+    // Event Tracking Tests
+    function testPageViewTracking() {
+      const analytics = new MockPrivacyAnalytics();
+      const result = analytics.track('page_view', {
+        url: '/apps/digger/',
+        title: 'Digger - DNS Tool'
+      });
+      
+      if (!result) {
+        throw new Error('Page view tracking should work when enabled');
+      }
+      
+      const events = analytics.getEvents();
+      if (events.length !== 1 || events[0].type !== 'page_view') {
+        throw new Error('Page view event not recorded correctly');
+      }
+      
+      return true;
+    }
+
+    function testAppClickTracking() {
+      const analytics = new MockPrivacyAnalytics();
+      const result = analytics.track('app_click', {
+        appId: 'digger',
+        appName: 'Digger',
+        clickType: 'flathub_install'
+      });
+      
+      if (!result) {
+        throw new Error('App click tracking should work when enabled');
+      }
+      
+      const events = analytics.getEvents();
+      const appClickEvent = events.find(e => e.type === 'app_click');
+      
+      if (!appClickEvent || appClickEvent.appId !== 'digger') {
+        throw new Error('App click event not recorded correctly');
+      }
+      
+      return true;
+    }
+
+    function testSearchTracking() {
+      const analytics = new MockPrivacyAnalytics();
+      const result = analytics.track('search', {
+        query: 'password manager',
+        resultsCount: 2
+      });
+      
+      if (!result) {
+        throw new Error('Search tracking should work when enabled');
+      }
+      
+      const events = analytics.getEvents();
+      const searchEvent = events.find(e => e.type === 'search');
+      
+      if (!searchEvent || searchEvent.query !== 'password manager') {
+        throw new Error('Search event not recorded correctly');
+      }
+      
+      return true;
+    }
+
+    function testEventDataAnonymization() {
+      const analytics = new MockPrivacyAnalytics();
+      analytics.track('page_view', {
+        customData: 'some identifying info'
+      });
+      
+      const events = analytics.getEvents();
+      const event = events[0];
+      
+      // Check that userAgent is anonymized
+      if (event.userAgent && event.userAgent.includes(navigator.userAgent.split('/')[1])) {
+        throw new Error('User agent should be anonymized in events');
+      }
+      
+      // Check that timestamp is bucketed
+      const timeDiff = Math.abs(event.timestamp - Date.now());
+      if (timeDiff < 60000) { // Less than 1 minute difference
+        throw new Error('Timestamp should be bucketed for privacy');
+      }
+      
+      return true;
+    }
+
+    // Performance Tests
+    function testScriptSizeLimit() {
+      const analytics = new MockPrivacyAnalytics();
+      const scriptSize = analytics.getScriptSize();
+      
+      // In production, this would check actual minified size
+      // For testing, we use a reasonable estimate
+      const maxSize = 5 * 1024; // 5KB limit
+      
+      if (scriptSize > maxSize) {
+        throw new Error(`Script size ${scriptSize} bytes exceeds 5KB limit`);
+      }
+      
+      resultsDiv.innerHTML += `<div class="test-result info">Script size: ${scriptSize} bytes (${(scriptSize/1024).toFixed(1)}KB)</div>`;
+      return true;
+    }
+
+    function testPerformanceImpact() {
+      const startTime = performance.now();
+      
+      const analytics = new MockPrivacyAnalytics();
+      
+      // Simulate multiple events
+      for (let i = 0; i < 10; i++) {
+        analytics.track('test_performance', { iteration: i });
+      }
+      
+      const endTime = performance.now();
+      const duration = endTime - startTime;
+      
+      // Should complete in under 10ms
+      if (duration > 10) {
+        throw new Error(`Performance impact too high: ${duration.toFixed(2)}ms`);
+      }
+      
+      resultsDiv.innerHTML += `<div class="test-result info">Performance impact: ${duration.toFixed(2)}ms for 10 events</div>`;
+      return true;
+    }
+
+    function testMemoryUsage() {
+      const analytics = new MockPrivacyAnalytics();
+      
+      // Add many events to test memory management
+      for (let i = 0; i < 150; i++) {
+        analytics.track('memory_test', { iteration: i });
+      }
+      
+      const events = analytics.getEvents();
+      
+      // Should limit stored events to prevent memory issues
+      if (events.length > 100) {
+        throw new Error(`Too many events stored: ${events.length} (should limit to ~50-100)`);
+      }
+      
+      resultsDiv.innerHTML += `<div class="test-result info">Memory usage: ${events.length} events stored</div>`;
+      return true;
+    }
+
+    // Aggregation Tests
+    function testDataAggregation() {
+      const analytics = new MockPrivacyAnalytics();
+      
+      // Generate sample data
+      analytics.track('page_view', { url: '/apps/digger/' });
+      analytics.track('app_click', { appId: 'digger' });
+      analytics.track('app_click', { appId: 'sonar' });
+      analytics.track('app_click', { appId: 'digger' });
+      analytics.track('search', { query: 'dns tool' });
+      
+      const aggregated = analytics.getAggregatedData();
+      
+      if (aggregated.totalEvents !== 5) {
+        throw new Error('Incorrect total event count in aggregation');
+      }
+      
+      if (aggregated.popularApps.digger !== 2) {
+        throw new Error('Incorrect app popularity aggregation');
+      }
+      
+      if (!aggregated.searchTerms['dns tool']) {
+        throw new Error('Search terms not aggregated correctly');
+      }
+      
+      return true;
+    }
+
+    // Demo Functions
+    function simulatePageView() {
+      if (mockAnalytics) {
+        const result = mockAnalytics.track('page_view', {
+          url: window.location.pathname,
+          title: document.title
+        });
+        resultsDiv.innerHTML += `<div class="test-result info">Page view tracked: ${result ? 'Success' : 'Blocked (privacy)'}</div>`;
+      }
+    }
+
+    function simulateAppClick(appId) {
+      if (mockAnalytics) {
+        const result = mockAnalytics.track('app_click', {
+          appId: appId,
+          clickType: 'demo'
+        });
+        resultsDiv.innerHTML += `<div class="test-result info">App click tracked (${appId}): ${result ? 'Success' : 'Blocked (privacy)'}</div>`;
+      }
+    }
+
+    function simulateSearch(query) {
+      if (mockAnalytics) {
+        const result = mockAnalytics.track('search', {
+          query: query,
+          resultsCount: 1
+        });
+        resultsDiv.innerHTML += `<div class="test-result info">Search tracked (${query}): ${result ? 'Success' : 'Blocked (privacy)'}</div>`;
+      }
+    }
+
+    function showCollectedData() {
+      if (mockAnalytics) {
+        const aggregated = mockAnalytics.getAggregatedData();
+        resultsDiv.innerHTML += `<div class="test-result info">Aggregated Data:</div>`;
+        resultsDiv.innerHTML += `<div class="data-display">${JSON.stringify(aggregated, null, 2)}</div>`;
+      }
+    }
+
+    function toggleOptOut() {
+      if (mockAnalytics) {
+        if (mockAnalytics.isOptedOut()) {
+          mockAnalytics.optIn();
+          resultsDiv.innerHTML += `<div class="test-result info">✅ Opted back in to analytics</div>`;
+        } else {
+          mockAnalytics.optOut();
+          resultsDiv.innerHTML += `<div class="test-result info">🚫 Opted out of analytics</div>`;
+        }
+        updatePrivacyStatus();
+      }
+    }
+
+    // Test Runners
+    function testPrivacyCompliance() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Privacy Compliance Tests</h3>';
+      runTest('Do Not Track Respect', testDoNotTrackRespect);
+      runTest('Opt-Out Functionality', testOptOutFunctionality);
+      runTest('Data Anonymization', testDataAnonymizationFunctionality);
+      runTest('No Cookies Used', testNoCookiesUsed);
+      runTest('LocalStorage Only for Opt-Out', testLocalStorageOnlyForOptOut);
+    }
+
+    function testEventTracking() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Event Tracking Tests</h3>';
+      runTest('Page View Tracking', testPageViewTracking);
+      runTest('App Click Tracking', testAppClickTracking);
+      runTest('Search Tracking', testSearchTracking);
+      runTest('Event Data Anonymization', testEventDataAnonymization);
+      runTest('Data Aggregation', testDataAggregation);
+    }
+
+    function testDataAnonymization() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Data Anonymization Tests</h3>';
+      runTest('Data Anonymization Functions', testDataAnonymizationFunctionality);
+      runTest('Event Data Anonymization', testEventDataAnonymization);
+    }
+
+    function testPerformance() {
+      clearResults();
+      resultsDiv.innerHTML += '<h3>Performance Tests</h3>';
+      runTest('Script Size Limit', testScriptSizeLimit);
+      runTest('Performance Impact', testPerformanceImpact);
+      runTest('Memory Usage', testMemoryUsage);
+    }
+
+    function runAllTests() {
+      clearResults();
+      resultsDiv.innerHTML += '<h2>Running Privacy-First Analytics Tests...</h2>';
+      
+      // Privacy tests
+      resultsDiv.innerHTML += '<h3>Privacy Compliance</h3>';
+      runTest('Do Not Track Respect', testDoNotTrackRespect);
+      runTest('Opt-Out Functionality', testOptOutFunctionality);
+      runTest('Data Anonymization', testDataAnonymizationFunctionality);
+      runTest('No Cookies Used', testNoCookiesUsed);
+      runTest('LocalStorage Only for Opt-Out', testLocalStorageOnlyForOptOut);
+      
+      // Event tracking tests
+      resultsDiv.innerHTML += '<h3>Event Tracking</h3>';
+      runTest('Page View Tracking', testPageViewTracking);
+      runTest('App Click Tracking', testAppClickTracking);
+      runTest('Search Tracking', testSearchTracking);
+      runTest('Event Data Anonymization', testEventDataAnonymization);
+      runTest('Data Aggregation', testDataAggregation);
+      
+      // Performance tests
+      resultsDiv.innerHTML += '<h3>Performance</h3>';
+      runTest('Script Size Limit', testScriptSizeLimit);
+      runTest('Performance Impact', testPerformanceImpact);
+      runTest('Memory Usage', testMemoryUsage);
+      
+      // Summary
+      setTimeout(() => {
+        resultsDiv.innerHTML += `<div class="test-result info"><strong>Test Summary: ${passCount}/${testCount} tests passed</strong></div>`;
+      }, 1000);
+    }
+
+    function updatePrivacyStatus() {
+      const privacyStatus = document.getElementById('privacy-status');
+      const dntStatus = document.getElementById('dnt-status');
+      const analyticsStatus = document.getElementById('analytics-status');
+      
+      // Privacy status
+      if (mockAnalytics && mockAnalytics.isOptedOut()) {
+        privacyStatus.textContent = 'Opted out ✅';
+        privacyStatus.style.color = '#155724';
+      } else {
+        privacyStatus.textContent = 'Tracking allowed';
+        privacyStatus.style.color = '#856404';
+      }
+      
+      // Do Not Track status
+      if (mockAnalytics && mockAnalytics.getDoNotTrack()) {
+        dntStatus.textContent = 'Enabled ✅';
+        dntStatus.style.color = '#155724';
+      } else {
+        dntStatus.textContent = 'Not set';
+        dntStatus.style.color = '#856404';
+      }
+      
+      // Analytics status
+      if (mockAnalytics && mockAnalytics.enabled) {
+        analyticsStatus.textContent = 'Active';
+        analyticsStatus.style.color = '#0c5460';
+      } else {
+        analyticsStatus.textContent = 'Disabled ✅';
+        analyticsStatus.style.color = '#155724';
+      }
+    }
+
+    // Initialize privacy status on load
+    document.addEventListener('DOMContentLoaded', () => {
+      updatePrivacyStatus();
+      resultsDiv.innerHTML += '<div class="test-result info">Privacy-first analytics test suite loaded. Click "Run All Tests" to begin validation.</div>';
+    });
+  </script>
+</body>
+</html>

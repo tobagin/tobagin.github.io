@@ -1,8 +1,16 @@
 title: Tobagin Apps
 description: A small collection of useful GNOME utilities
 url: https://tobagin.github.io
+author: Tobagin
+
 plugins:
   - jekyll-feed
   - jekyll-sass-converter
+  - jekyll-sitemap
+
 sass:
   style: compressed
+
+# SEO and sitemap configuration
+sitemap:
+  file: "/sitemap.xml"

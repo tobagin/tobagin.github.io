@@ -1,0 +1,29 @@
+{
+  "name": "tobagin-apps-portfolio",
+  "version": "1.0.0",
+  "description": "GNOME application portfolio website with performance optimization",
+  "scripts": {
+    "optimize-images": "node scripts/optimize-images.js",
+    "generate-pwa-icons": "node scripts/generate-pwa-icons.js",
+    "build": "npm run optimize-images && npm run generate-pwa-icons && bundle exec jekyll build",
+    "dev": "bundle exec jekyll serve --host 0.0.0.0 --port 4000",
+    "test:performance": "node scripts/test-performance.js",
+    "validate:seo": "node scripts/validate-seo.js",
+    "test": "npm run validate:seo && npm run test:performance"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.1",
+    "js-yaml": "^4.1.0",
+    "web-vitals": "^3.5.0",
+    "puppeteer": "^21.5.0",
+    "jsdom": "^23.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tobagin/tobagin.github.io.git"
+  },
+  "license": "MIT"
+}

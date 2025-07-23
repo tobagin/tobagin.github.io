@@ -53,3 +53,52 @@ Jekyll strikes the perfect balance between simplicity and power for this use cas
 - Static approach limits real-time integrations
 - Requires ongoing content management and quality control
 - Success depends on building community of contributors
+
+## 2025-07-23: Privacy-First Analytics Implementation
+
+**ID:** DEC-002
+**Status:** Accepted
+**Category:** Technical
+**Related Spec:** @.agent-os/specs/2025-07-23-privacy-first-analytics/
+**Stakeholders:** Product Owner, Tech Lead, Privacy Advocates
+
+### Decision
+
+Implement a custom, privacy-first analytics system that collects anonymous, aggregated usage data without cookies, personal identification, or third-party tracking services. This system will provide insights into app popularity and user behavior while maintaining absolute user privacy.
+
+### Context
+
+To improve the GNOME Portfolio's app curation and user experience, we need usage insights about which apps are popular, how users navigate the site, and where they encounter difficulties. However, the GNOME community values privacy highly, and implementing traditional analytics (Google Analytics, etc.) would compromise user trust and potentially violate privacy regulations.
+
+### Alternatives Considered
+
+1. **Google Analytics or Similar**
+   - Pros: Comprehensive features, easy implementation, industry standard
+   - Cons: Privacy violations, cookie tracking, data sharing with third parties
+
+2. **Privacy-Focused SaaS (Plausible, Fathom)**
+   - Pros: Privacy-compliant, no cookies, lightweight
+   - Cons: External dependency, recurring costs, less customization
+
+3. **No Analytics**
+   - Pros: Complete privacy, no implementation overhead
+   - Cons: No insights for improving user experience or content curation
+
+### Rationale
+
+Custom privacy-first analytics aligns perfectly with GNOME's privacy values and the project's static site architecture. By implementing client-side, anonymous data collection with explicit privacy safeguards, we can gain valuable insights while maintaining user trust. This approach also eliminates external dependencies and costs while providing complete control over data handling.
+
+### Consequences
+
+**Positive:**
+- Maintains user privacy and trust with GNOME community
+- Provides actionable insights for improving app curation
+- No external dependencies or recurring costs
+- Full compliance with GDPR and privacy regulations
+- Custom implementation fits perfectly with static site architecture
+
+**Negative:**
+- Requires custom development and maintenance
+- Limited analytics features compared to commercial solutions
+- Dependent on JavaScript being enabled (with graceful degradation)
+- Manual analysis required for insights (no real-time dashboards)

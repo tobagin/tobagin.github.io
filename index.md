@@ -1,6 +1,7 @@
 ---
 layout: default
-title: Home
+title: "Tobagin Apps - Open Source GNOME Applications"
+description: "Discover quality open source applications for the GNOME desktop. Browse our collection of Linux apps including Digger, Karere, KeySmith, and more."
 ---
 
 <!-- Search and Filter Interface -->
@@ -54,8 +55,15 @@ title: Home
      data-tagline="{{ app.tagline }}"
      data-category="{{ app.category }}"
      data-tags="{{ app.tags | join: ',' }}">
-    <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/icons/128x128/{{ app.flathub }}.png"
-         alt="{{ app.name }} icon">
+    <img src="https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/128x128/apps/{{ app.flathub }}.png" 
+         alt="{{ app.name }}" 
+         width="128" 
+         height="128"
+         loading="lazy"
+         srcset="https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/64x64/apps/{{ app.flathub }}.png 64w,
+                 https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/128x128/apps/{{ app.flathub }}.png 128w,
+                 https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/256x256/apps/{{ app.flathub }}.png 256w"
+         sizes="(max-width: 640px) 64px, 128px">
     <div class="card-body">
       <h3>{{ app.name }}</h3>
       <p>{{ app.tagline }}</p>

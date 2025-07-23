@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SEO Metadata Tests</title>
+  <style>
+    body { 
+      font-family: system-ui, sans-serif; 
+      margin: 2rem; 
+      background: #f6f5f4; 
+    }
+    .test-result {
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      border-radius: 4px;
+    }
+    .pass { background: #d1e7dd; color: #0f5132; }
+    .fail { background: #f8d7da; color: #842029; }
+    .info { background: #d1ecf1; color: #0c5460; }
+    .test-section {
+      margin: 2rem 0;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>SEO Metadata Tests</h1>
+  <div id="test-results"></div>
+
+  <script>
+    // Test framework
+    let testResults = [];
+    
+    function runTest(name, testFn) {
+      const resultsDiv = document.getElementById('test-results');
+      try {
+        const result = testFn();
+        if (result === true || result === undefined) {
+          resultsDiv.innerHTML += `<div class="test-result pass">✓ ${name}</div>`;
+          testResults.push({ name, status: 'pass' });
+        } else {
+          resultsDiv.innerHTML += `<div class="test-result info">ℹ ${name}: ${result}</div>`;
+          testResults.push({ name, status: 'info', message: result });
+        }
+      } catch (error) {
+        resultsDiv.innerHTML += `<div class="test-result fail">✗ ${name}: ${error.message}</div>`;
+        testResults.push({ name, status: 'fail', error: error.message });
+      }
+    }
+
+    function assert(condition, message) {
+      if (!condition) {
+        throw new Error(message);
+      }
+    }
+
+    function getMetaContent(name) {
+      const meta = document.querySelector(`meta[name="${name}"]`);
+      return meta ? meta.getAttribute('content') : null;
+    }
+
+    function getMetaProperty(property) {
+      const meta = document.querySelector(`meta[property="${property}"]`);
+      return meta ? meta.getAttribute('content') : null;
+    }
+
+    // SEO Metadata Tests
+    document.addEventListener('DOMContentLoaded', function() {
+      // Test 1: Basic meta tag presence
+      runTest('Page has title tag', function() {
+        const title = document.querySelector('title');
+        assert(title !== null, 'Title tag should exist');
+        assert(title.textContent.length > 0, 'Title should have content');
+        return `Title: "${title.textContent}"`;
+      });
+
+      // Test 2: Meta description validation
+      runTest('Meta description validation', function() {
+        const description = getMetaContent('description');
+        if (description) {
+          assert(description.length >= 120 && description.length <= 160, 
+                 `Description should be 120-160 chars, got ${description.length}`);
+          return `Description length: ${description.length} chars`;
+        }
+        return 'No description meta tag found (will test after implementation)';
+      });
+
+      // Test 3: Viewport meta tag
+      runTest('Viewport meta tag', function() {
+        const viewport = getMetaContent('viewport');
+        assert(viewport !== null, 'Viewport meta tag should exist');
+        assert(viewport.includes('width=device-width'), 'Should include responsive viewport');
+        return `Viewport: ${viewport}`;
+      });
+
+      // Test 4: Open Graph basic tags
+      runTest('Open Graph basic tags', function() {
+        const ogTitle = getMetaProperty('og:title');
+        const ogType = getMetaProperty('og:type');
+        const ogUrl = getMetaProperty('og:url');
+        const ogImage = getMetaProperty('og:image');
+        
+        if (!ogTitle) return 'Open Graph tags not implemented yet';
+        
+        assert(ogTitle !== null, 'og:title should exist');
+        assert(ogType !== null, 'og:type should exist');
+        assert(ogUrl !== null, 'og:url should exist');
+        assert(ogImage !== null, 'og:image should exist');
+        
+        return `OG tags present: title, type, url, image`;
+      });
+
+      // Test 5: Twitter Card tags
+      runTest('Twitter Card tags', function() {
+        const twitterCard = getMetaContent('twitter:card');
+        const twitterTitle = getMetaContent('twitter:title');
+        
+        if (!twitterCard) return 'Twitter Card tags not implemented yet';
+        
+        assert(twitterCard === 'summary_large_image', 'Should use summary_large_image card type');
+        assert(twitterTitle !== null, 'twitter:title should exist');
+        
+        return `Twitter card type: ${twitterCard}`;
+      });
+
+      // Test 6: Canonical URL
+      runTest('Canonical URL', function() {
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) return 'Canonical URL not implemented yet';
+        
+        assert(canonical !== null, 'Canonical link should exist');
+        assert(canonical.href.startsWith('http'), 'Should be absolute URL');
+        
+        return `Canonical: ${canonical.href}`;
+      });
+
+      // Test 7: JSON-LD structured data
+      runTest('JSON-LD structured data', function() {
+        const jsonLd = document.querySelector('script[type="application/ld+json"]');
+        if (!jsonLd) return 'JSON-LD structured data not implemented yet';
+        
+        assert(jsonLd !== null, 'JSON-LD script should exist');
+        
+        try {
+          const data = JSON.parse(jsonLd.textContent);
+          assert(data['@context'] === 'https://schema.org', 'Should use schema.org context');
+          assert(data['@type'], 'Should have @type property');
+          return `Schema type: ${data['@type']}`;
+        } catch (e) {
+          throw new Error('Invalid JSON-LD format');
+        }
+      });
+
+      // Test 8: Meta robots tag
+      runTest('Meta robots tag', function() {
+        const robots = getMetaContent('robots');
+        if (!robots) return 'Robots meta tag not set (defaults to index,follow)';
+        
+        // Should allow indexing for public pages
+        assert(!robots.includes('noindex'), 'Public pages should be indexable');
+        return `Robots: ${robots}`;
+      });
+
+      // Test 9: Language and charset
+      runTest('Language and charset', function() {
+        const html = document.querySelector('html');
+        const charset = document.querySelector('meta[charset]');
+        
+        assert(html.getAttribute('lang') !== null, 'HTML should have lang attribute');
+        assert(charset !== null, 'Should have charset meta tag');
+        assert(charset.getAttribute('charset').toLowerCase() === 'utf-8', 'Should use UTF-8');
+        
+        return `Lang: ${html.getAttribute('lang')}, Charset: ${charset.getAttribute('charset')}`;
+      });
+
+      // Test 10: Meta keywords (optional but useful for apps)
+      runTest('Meta keywords for app pages', function() {
+        const keywords = getMetaContent('keywords');
+        if (!keywords) return 'Keywords not implemented yet (optional)';
+        
+        const keywordArray = keywords.split(',').map(k => k.trim());
+        assert(keywordArray.length >= 3 && keywordArray.length <= 10, 
+               'Should have 3-10 keywords');
+        
+        return `Keywords count: ${keywordArray.length}`;
+      });
+
+      // Test 11: Site verification meta tags (Google, Bing)
+      runTest('Site verification tags', function() {
+        const googleVerify = getMetaContent('google-site-verification');
+        const bingVerify = getMetaContent('msvalidate.01');
+        
+        if (!googleVerify && !bingVerify) {
+          return 'Site verification tags not implemented yet (optional)';
+        }
+        
+        let verifications = [];
+        if (googleVerify) verifications.push('Google');
+        if (bingVerify) verifications.push('Bing');
+        
+        return `Verifications: ${verifications.join(', ')}`;
+      });
+
+      // Test 12: Performance-related meta tags
+      runTest('Performance meta tags', function() {
+        const preconnect = document.querySelector('link[rel="preconnect"]');
+        const dnsPrefetch = document.querySelector('link[rel="dns-prefetch"]');
+        
+        if (!preconnect && !dnsPrefetch) {
+          return 'Performance hints not implemented yet (optional)';
+        }
+        
+        let hints = [];
+        if (preconnect) hints.push('preconnect');
+        if (dnsPrefetch) hints.push('dns-prefetch');
+        
+        return `Performance hints: ${hints.join(', ')}`;
+      });
+
+      // Summary
+      setTimeout(() => {
+        const passCount = testResults.filter(r => r.status === 'pass').length;
+        const failCount = testResults.filter(r => r.status === 'fail').length;
+        const infoCount = testResults.filter(r => r.status === 'info').length;
+        
+        document.getElementById('test-results').innerHTML += 
+          `<div class="test-section">
+            <h3>Test Summary</h3>
+            <p><strong>✓ Passed:</strong> ${passCount}</p>
+            <p><strong>✗ Failed:</strong> ${failCount}</p>
+            <p><strong>ℹ Info:</strong> ${infoCount}</p>
+            <p><strong>Total:</strong> ${testResults.length}</p>
+          </div>`;
+      }, 100);
+    });
+
+    // SEO Testing Utilities
+    window.SEOTestUtils = {
+      // Test if meta tag has proper length
+      validateMetaLength: function(name, minLength, maxLength) {
+        const content = getMetaContent(name);
+        if (!content) return { valid: false, message: 'Meta tag not found' };
+        
+        const length = content.length;
+        const valid = length >= minLength && length <= maxLength;
+        
+        return {
+          valid,
+          length,
+          message: valid ? 'Length is optimal' : `Length ${length} not in range ${minLength}-${maxLength}`
+        };
+      },
+
+      // Test if URL is valid and absolute
+      validateURL: function(url) {
+        try {
+          const parsed = new URL(url);
+          return {
+            valid: true,
+            protocol: parsed.protocol,
+            host: parsed.host
+          };
+        } catch (e) {
+          return {
+            valid: false,
+            message: 'Invalid URL format'
+          };
+        }
+      },
+
+      // Test JSON-LD validity
+      validateJSONLD: function(scriptElement) {
+        try {
+          const data = JSON.parse(scriptElement.textContent);
+          const requiredFields = ['@context', '@type'];
+          const missing = requiredFields.filter(field => !data[field]);
+          
+          return {
+            valid: missing.length === 0,
+            data,
+            missing
+          };
+        } catch (e) {
+          return {
+            valid: false,
+            message: 'Invalid JSON format'
+          };
+        }
+      },
+
+      // Get all meta tags as object
+      getAllMetaTags: function() {
+        const metas = {};
+        document.querySelectorAll('meta').forEach(meta => {
+          const name = meta.getAttribute('name') || meta.getAttribute('property');
+          const content = meta.getAttribute('content');
+          if (name && content) {
+            metas[name] = content;
+          }
+        });
+        return metas;
+      }
+    };
+  </script>
+</body>
+</html>

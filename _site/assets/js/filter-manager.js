@@ -40,6 +40,8 @@ const FilterManager = {
     this.options = { ...defaults, ...options };
     this.cacheElements();
     this.bindEvents();
+    this.addKeyboardNavigation();
+    this.enhanceAccessibility();
     this.filterApps(); // Initial filter application
   },
 
@@ -138,47 +140,71 @@ const FilterManager = {
 
   /**
    * Apply current filters to the app grid
+   * Performance optimized with early exit and minimal DOM manipulation
    */
   filterApps: function() {
     if (!this.elements.apps || this.elements.apps.length === 0) return;
 
+    const startTime = performance.now();
     let visibleCount = 0;
 
-    this.elements.apps.forEach(app => {
-      const name = app.dataset.name?.toLowerCase() || '';
-      const tagline = app.dataset.tagline?.toLowerCase() || '';
-      const category = app.dataset.category || '';
-      const tags = app.dataset.tags ? app.dataset.tags.split(',').map(t => t.trim()) : [];
+    // Cache filter state for performance
+    const hasSearchTerm = Boolean(this.state.searchTerm);
+    const hasCategory = this.state.selectedCategory !== 'all';
+    const hasTags = this.state.selectedTags.size > 0;
+    const selectedTagsArray = hasTags ? Array.from(this.state.selectedTags) : [];
 
+    this.elements.apps.forEach(app => {
+      // Cache data attributes to avoid repeated DOM access
+      if (!app._cachedData) {
+        app._cachedData = {
+          name: app.dataset.name?.toLowerCase() || '',
+          tagline: app.dataset.tagline?.toLowerCase() || '',
+          category: app.dataset.category || '',
+          tags: app.dataset.tags ? app.dataset.tags.split(',').map(t => t.trim()) : []
+        };
+      }
+
+      const data = app._cachedData;
       let visible = true;
 
-      // Apply search filter
-      if (this.state.searchTerm) {
-        const searchMatch = name.includes(this.state.searchTerm) || 
-                           tagline.includes(this.state.searchTerm);
-        visible = visible && searchMatch;
+      // Apply search filter (early exit optimization)
+      if (hasSearchTerm && visible) {
+        const searchMatch = data.name.includes(this.state.searchTerm) || 
+                           data.tagline.includes(this.state.searchTerm);
+        visible = searchMatch;
       }
 
-      // Apply category filter
-      if (this.state.selectedCategory !== 'all') {
-        visible = visible && (category === this.state.selectedCategory);
+      // Apply category filter (early exit optimization)
+      if (hasCategory && visible) {
+        visible = data.category === this.state.selectedCategory;
       }
 
-      // Apply tag filter (AND logic - must have all selected tags)
-      if (this.state.selectedTags.size > 0) {
-        const hasAllTags = Array.from(this.state.selectedTags)
-          .every(tag => tags.includes(tag));
-        visible = visible && hasAllTags;
+      // Apply tag filter (early exit optimization)
+      if (hasTags && visible) {
+        visible = selectedTagsArray.every(tag => data.tags.includes(tag));
       }
 
-      // Apply visibility with animation
-      this.setAppVisibility(app, visible);
+      // Apply visibility with animation (only if state changed)
+      const wasVisible = !app.classList.contains('filtered-out');
+      if (visible !== wasVisible) {
+        this.setAppVisibility(app, visible);
+      }
       
       if (visible) visibleCount++;
     });
 
-    // Update results count or show no results message
+    // Update results display
     this.updateResultsDisplay(visibleCount);
+
+    // Performance logging (development only)
+    const duration = performance.now() - startTime;
+    if (duration > 100) {
+      console.warn(`Filter operation took ${duration.toFixed(2)}ms (>100ms threshold)`);
+    }
+
+    // Update ARIA live region for screen readers
+    this.updateAriaLiveRegion(visibleCount);
   },
 
   /**
@@ -292,6 +318,173 @@ const FilterManager = {
       selectedCategory: this.state.selectedCategory,
       selectedTags: Array.from(this.state.selectedTags)
     };
+  },
+
+  /**
+   * Update ARIA live region for screen readers
+   * @param {number} count - Number of visible results
+   */
+  updateAriaLiveRegion: function(count) {
+    let liveRegion = document.querySelector('#filter-live-region');
+    if (!liveRegion) {
+      liveRegion = document.createElement('div');
+      liveRegion.id = 'filter-live-region';
+      liveRegion.setAttribute('aria-live', 'polite');
+      liveRegion.setAttribute('aria-atomic', 'true');
+      liveRegion.style.position = 'absolute';
+      liveRegion.style.left = '-10000px';
+      liveRegion.style.width = '1px';
+      liveRegion.style.height = '1px';
+      liveRegion.style.overflow = 'hidden';
+      document.body.appendChild(liveRegion);
+    }
+
+    const totalApps = this.elements.apps.length;
+    if (count === totalApps) {
+      liveRegion.textContent = `Showing all ${totalApps} applications`;
+    } else if (count === 0) {
+      liveRegion.textContent = 'No applications match your search criteria';
+    } else {
+      liveRegion.textContent = `Showing ${count} of ${totalApps} applications`;
+    }
+  },
+
+  /**
+   * Add keyboard navigation support
+   */
+  addKeyboardNavigation: function() {
+    // Add keyboard support for filter buttons
+    document.addEventListener('keydown', (e) => {
+      // Handle keyboard navigation for filter buttons
+      if (e.target.matches('.category-filter, .tag-filter')) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          e.target.click();
+        }
+      }
+
+      // Handle keyboard shortcuts
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
+        switch (e.key) {
+          case 'k':
+            e.preventDefault();
+            if (this.elements.searchInput) {
+              this.elements.searchInput.focus();
+            }
+            break;
+          case 'Escape':
+            if (document.activeElement === this.elements.searchInput) {
+              this.elements.searchInput.blur();
+            }
+            break;
+        }
+      }
+
+      // Clear filters with Escape key
+      if (e.key === 'Escape' && !e.target.matches('input')) {
+        this.clearFilters();
+        this.updateUIStates();
+      }
+    });
+
+    // Add focus management for filter buttons
+    const filterButtons = document.querySelectorAll('.category-filter, .tag-filter');
+    filterButtons.forEach((button, index) => {
+      button.addEventListener('keydown', (e) => {
+        let nextIndex;
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+            e.preventDefault();
+            nextIndex = (index + 1) % filterButtons.length;
+            filterButtons[nextIndex].focus();
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+            e.preventDefault();
+            nextIndex = (index - 1 + filterButtons.length) % filterButtons.length;
+            filterButtons[nextIndex].focus();
+            break;
+          case 'Home':
+            e.preventDefault();
+            filterButtons[0].focus();
+            break;
+          case 'End':
+            e.preventDefault();
+            filterButtons[filterButtons.length - 1].focus();
+            break;
+        }
+      });
+    });
+  },
+
+  /**
+   * Add accessibility attributes to filter elements
+   */
+  enhanceAccessibility: function() {
+    // Add ARIA attributes to search input
+    if (this.elements.searchInput) {
+      this.elements.searchInput.setAttribute('role', 'searchbox');
+      this.elements.searchInput.setAttribute('aria-describedby', 'search-description');
+      
+      // Add search description
+      let searchDesc = document.querySelector('#search-description');
+      if (!searchDesc) {
+        searchDesc = document.createElement('div');
+        searchDesc.id = 'search-description';
+        searchDesc.className = 'sr-only';
+        searchDesc.textContent = 'Search applications by name or description. Use Ctrl+K to focus.';
+        this.elements.searchInput.parentNode.appendChild(searchDesc);
+      }
+    }
+
+    // Add ARIA attributes to filter sections
+    const categorySection = document.querySelector('.category-filters');
+    if (categorySection) {
+      categorySection.setAttribute('role', 'radiogroup');
+      categorySection.setAttribute('aria-labelledby', 'category-label');
+      
+      const categoryLabel = categorySection.querySelector('.filter-label');
+      if (categoryLabel) {
+        categoryLabel.id = 'category-label';
+      }
+    }
+
+    const tagSection = document.querySelector('.tag-filters');
+    if (tagSection) {
+      tagSection.setAttribute('role', 'group');
+      tagSection.setAttribute('aria-labelledby', 'tag-label');
+      
+      const tagLabel = tagSection.querySelector('.filter-label');
+      if (tagLabel) {
+        tagLabel.id = 'tag-label';
+      }
+    }
+
+    // Add ARIA attributes to filter buttons
+    this.elements.categoryButtons.forEach(button => {
+      button.setAttribute('role', 'radio');
+      button.setAttribute('aria-checked', button.classList.contains('active'));
+    });
+
+    this.elements.tagButtons.forEach(button => {
+      button.setAttribute('role', 'checkbox');
+      button.setAttribute('aria-checked', button.classList.contains('active'));
+    });
+
+    // Add clear filters button accessibility
+    if (this.elements.clearButton) {
+      this.elements.clearButton.setAttribute('aria-describedby', 'clear-description');
+      
+      let clearDesc = document.querySelector('#clear-description');
+      if (!clearDesc) {
+        clearDesc = document.createElement('div');
+        clearDesc.id = 'clear-description';
+        clearDesc.className = 'sr-only';
+        clearDesc.textContent = 'Clear all search and filter selections. Keyboard shortcut: Escape';
+        this.elements.clearButton.parentNode.appendChild(clearDesc);
+      }
+    }
   }
 };
 

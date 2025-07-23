@@ -5,8 +5,16 @@ layout: default
 {% assign app = site.data.apps | where: "slug", page.slug | first %}
 
 <section class="hero">
-  <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/icons/128x128/{{ app.flathub }}.png"
-       alt="{{ app.name }}">
+  <img src="https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/128x128/apps/{{ app.flathub }}.png" 
+       alt="{{ app.name }}" 
+       class="hero-icon" 
+       width="128" 
+       height="128"
+       loading="lazy"
+       srcset="https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/64x64/apps/{{ app.flathub }}.png 64w,
+               https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/128x128/apps/{{ app.flathub }}.png 128w,
+               https://raw.githubusercontent.com/{{ app.github }}/main/data/icons/hicolor/256x256/apps/{{ app.flathub }}.png 256w"
+       sizes="(max-width: 640px) 64px, 128px">
   <h1>{{ app.name }}</h1>
   <p>{{ app.tagline }}</p>
 
@@ -68,10 +76,14 @@ layout: default
 {% endif %}
 
 <section class="screenshots">
-  {% for i in (1..5) %}
-    {% assign url = "https://dl.flathub.org/media/" |
-                    append: app.flathub | replace: '.', '/' |
-                    append: "/screenshots/image-" | append: i | append: "_orig.webp" %}
-    <img src="{{ url }}" alt="Screenshot {{ i }}">
-  {% endfor %}
+  {% if app.screenshots %}
+    {% for screenshot_name in app.screenshots limit:5 %}
+      <img src="https://dl.flathub.org/media/{{ app.flathub | replace: '.', '/' }}/screenshots/{{ screenshot_name }}_orig.webp"
+           alt="Screenshot {{ forloop.index }}"
+           class="screenshot"
+           width="1024"
+           height="600"
+           loading="lazy">
+    {% endfor %}
+  {% endif %}
 </section>
