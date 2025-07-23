@@ -14,10 +14,10 @@
 
 - slug: karere
   name: Karere
-  tagline: Modern chat client for Whatsapp Web
+  tagline: Modern Whatsapp Web client
   github: tobagin/karere
   flathub: io.github.tobagin.karere
-  category: "Network"
+  category: "Communication"
   tags: ["chat", "whatsapp", "messaging", "gtk4"]
   screenshots: ["image-1", "image-2", "image-3", "image-4", "image-5"]
   resources:
