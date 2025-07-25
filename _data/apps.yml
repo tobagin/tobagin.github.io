@@ -1,128 +1,18 @@
 --- 
 - slug: digger
   name: Digger
-  tagline: Friendly DNS lookup without the terminal
+  tagline: Friendly DNS lookup utility for developers
   github: tobagin/digger
   flathub: io.github.tobagin.digger
-  category: Network
+  category: Development
   tags:
   - networking
   - dns
   - gtk4
   - rust
-  screenshots:
-  - image-1
-  - image-2
-  - image-3
-  - image-4
-  - image-5
-  resources:
-    docs_url: https://tobagin.github.io/digger/docs
-    wiki_url: https://github.com/tobagin/digger/wiki
-    issues_url: https://github.com/tobagin/digger/issues
-    discussions_url: https://github.com/tobagin/digger/discussions
-  metainfo_screenshots:
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/main-window.png
-    caption: Main application window showing DNS query interface in both dark and
-      light themes
-    default: true
-    index: 0
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/A-lookup.png
-    caption: A record lookup showing IPv4 address resolution
-    default: false
-    index: 1
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/AAAA-lookup.png
-    caption: AAAA record lookup showing IPv6 address resolution
-    default: false
-    index: 2
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/MX-lookup.png
-    caption: MX record lookup showing mail server configuration
-    default: false
-    index: 3
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/TXT-lookup.png
-    caption: TXT record lookup showing text-based DNS records
-    default: false
-    index: 4
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/CNAME-lookup.png
-    caption: CNAME record lookup showing domain aliasing
-    default: false
-    index: 5
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/NS-lookup.png
-    caption: NS record lookup showing nameserver configuration
-    default: false
-    index: 6
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/SOA-lookup.png
-    caption: SOA record lookup showing zone authority information
-    default: false
-    index: 7
-  - url: https://raw.githubusercontent.com/tobagin/Digger/main/screenshots/about.png
-    caption: About dialog showing application information and features
-    default: false
-    index: 8
-  icon_sizes:
-  - '16'
-  - '32'
-  - '48'
-  - '64'
-  - '128'
-  - '256'
-  - '512'
-- slug: karere
-  name: Karere
-  tagline: Modern chat client for Whatsapp Web
-  github: tobagin/karere
-  flathub: io.github.tobagin.karere
-  category: Network
-  tags:
-  - chat
-  - whatsapp
-  - messaging
-  - gtk4
-  screenshots:
-  - image-1
-  - image-2
-  - image-3
-  - image-4
-  - image-5
-  resources:
-    docs_url: https://tobagin.github.io/karere/docs
-    issues_url: https://github.com/tobagin/karere/issues
-  metainfo_screenshots:
-  - url: https://github.com/tobagin/karere/blob/main/screenshots/main-window.png?raw=true
-    caption: Main application window with WhatsApp Web integration
-    default: true
-    index: 0
-  - url: https://github.com/tobagin/karere/blob/main/screenshots/about.png?raw=true
-    caption: About dialog showing application information
-    default: false
-    index: 1
-  - url: https://github.com/tobagin/karere/blob/main/screenshots/preferences-general.png?raw=true
-    caption: General preferences and theme settings
-    default: false
-    index: 2
-  - url: https://github.com/tobagin/karere/blob/main/screenshots/preferences-notifications.png?raw=true
-    caption: Notification preferences and background settings
-    default: false
-    index: 3
-  - url: https://github.com/tobagin/karere/blob/main/screenshots/preferences-spell-checking.png?raw=true
-    caption: Spell checking configuration options
-    default: false
-    index: 4
-  - url: https://github.com/tobagin/karere/blob/main/screenshots/preferences-crash-reporting.png?raw=true
-    caption: Crash reporting and privacy settings
-    default: false
-    index: 5
-  icon_sizes:
-  - '16'
-  - '32'
-  - '48'
-  - '64'
-  - '128'
-  - '256'
-  - '512'
 - slug: keysmith
   name: KeySmith
-  tagline: Point-and-click SSH key manager
+  tagline: SSH key manager for the GNOME desktop
   github: tobagin/keysmith
   flathub: io.github.tobagin.keysmith
   category: System
@@ -131,64 +21,9 @@
   - security
   - keys
   - gtk4
-  screenshots:
-  - image-1
-  - image-2
-  - image-3
-  - image-4
-  - image-5
-  resources:
-    wiki_url: https://github.com/tobagin/keysmith/wiki
-    issues_url: https://github.com/tobagin/keysmith/issues
-    discussions_url: https://github.com/tobagin/keysmith/discussions
-  metainfo_screenshots:
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/main-window-with-keys.png
-    caption: Main window showing SSH key management with individual action buttons
-    default: true
-    index: 0
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/main-window-no-keys.png
-    caption: Clean interface when no SSH keys are present
-    default: false
-    index: 1
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/generate-key-without-passphrase.png
-    caption: Key generation dialog with comprehensive options
-    default: false
-    index: 2
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/gerenate-ssh-key-passphrase-mismatch.png
-    caption: Real-time validation with helpful error feedback
-    default: false
-    index: 3
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/key-details.png
-    caption: Detailed SSH key information and fingerprint
-    default: false
-    index: 4
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/copy-key-to-server.png
-    caption: Generate ssh-copy-id commands for server deployment
-    default: false
-    index: 5
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/change-passphrase.png
-    caption: Secure passphrase management
-    default: false
-    index: 6
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/delete-key.png
-    caption: Safe key deletion with confirmation
-    default: false
-    index: 7
-  - url: https://raw.githubusercontent.com/tobagin/keysmith/main/data/screenshots/preferences.png
-    caption: Comprehensive preferences and settings
-    default: false
-    index: 8
-  icon_sizes:
-  - '16'
-  - '32'
-  - '48'
-  - '64'
-  - '128'
-  - '256'
-  - '512'
 - slug: secrets
-  name: Secrets Manager
-  tagline: Beautiful password safe for GNOME
+  name: Secrets
+  tagline: Beautiful password safe for GN.
   github: tobagin/secrets
   flathub: io.github.tobagin.secrets
   category: System
@@ -197,15 +32,6 @@
   - security
   - encryption
   - gtk4
-  screenshots:
-  - image-1
-  - image-2
-  - image-3
-  - image-4
-  - image-5
-  resources:
-    issues_url: https://github.com/tobagin/secrets/issues
-    discussions_url: https://github.com/tobagin/secrets/discussions
 - slug: sonar
   name: Sonar
   tagline: Local webhook inspector for developers
@@ -217,16 +43,6 @@
   - webhook
   - networking
   - debugging
-  screenshots:
-  - image-1
-  - image-2
-  - image-3
-  - image-4
-  - image-5
-  resources:
-    wiki_url: https://github.com/tobagin/sonar/wiki
-    issues_url: https://github.com/tobagin/sonar/issues
-    discussions_url: https://github.com/tobagin/sonar/discussions
 - slug: tempo
   name: Tempo
   tagline: A rock-solid metronome
@@ -237,14 +53,3 @@
   - music
   - metronome
   - gtk4
-  - audio
-  screenshots:
-  - image-1
-  - image-2
-  - image-3
-  - image-4
-  - image-5
-  resources:
-    wiki_url: https://github.com/tobagin/tempo/wiki
-    issues_url: https://github.com/tobagin/tempo/issues
-    discussions_url: https://github.com/tobagin/tempo/discussions

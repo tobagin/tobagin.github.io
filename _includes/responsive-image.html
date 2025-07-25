@@ -9,26 +9,27 @@
        srcset="https://raw.githubusercontent.com/{{ include.app.github }}/main/data/icons/hicolor/64x64/apps/{{ include.app.flathub }}.png 64w,
                https://raw.githubusercontent.com/{{ include.app.github }}/main/data/icons/hicolor/128x128/apps/{{ include.app.flathub }}.png 128w,
                https://raw.githubusercontent.com/{{ include.app.github }}/main/data/icons/hicolor/256x256/apps/{{ include.app.flathub }}.png 256w"
-       sizes="(max-width: 640px) 64px, 128px">
+       sizes="(max-width: 640px) 64px, (max-width: 1024px) 128px, 256px">
 
 {% elsif include.type == "screenshot" %}
   <!-- Check if app has metainfo screenshots first -->
   {% if include.app.metainfo_screenshots and include.app.metainfo_screenshots.size > include.index %}
     {% assign screenshot = include.app.metainfo_screenshots[include.index] %}
-    <img src="{{ screenshot.url }}"
-         alt="{{ screenshot.caption | default: 'Screenshot' }}"
-         class="{{ include.class }}"
-         width="1024"
-         height="600"
-         loading="lazy">
+    <a href="{{ screenshot.url }}" target="_blank" rel="noopener noreferrer">
+      <img src="{{ screenshot.url }}"
+          alt="{{ screenshot.caption | default: 'Screenshot' }}"
+          class="{{ include.class }}"
+          loading="lazy">
+    </a>
   {% elsif include.app.screenshots and include.app.screenshots.size > include.index %}
     <!-- Fallback to Flathub CDN screenshots -->
     {% assign screenshot_name = include.app.screenshots[include.index] %}
-    <img src="https://dl.flathub.org/media/{{ include.app.flathub | replace: '.', '/' }}/screenshots/{{ screenshot_name }}_orig.webp"
-         alt="{{ include.alt | default: 'Screenshot' }} {{ include.index | plus: 1 }}"
-         class="{{ include.class }}"
-         width="1024"
-         height="600"
-         loading="lazy">
+    {% assign screenshot_url = "https://dl.flathub.org/media/" | append: app.flathub | replace: ".", "/" | append: "/screenshots/" | append: screenshot_name | append: "_orig.webp" %}
+    <a href="{{ screenshot_url }}" target="_blank" rel="noopener noreferrer">
+      <img src="{{ screenshot_url }}"
+          alt="{{ include.alt | default: 'Screenshot' }} {{ include.index | plus: 1 }}"
+          class="{{ include.class }}"
+          loading="lazy">
+    </a>
   {% endif %}
 {% endif %}
