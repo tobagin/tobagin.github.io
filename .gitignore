@@ -30,3 +30,9 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+# Development files
+NEW-GENERATOR-README.md
+dev-server.js
+serve.js
+new-package.json
+node_modules/.package-lock.json
