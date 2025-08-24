@@ -707,6 +707,14 @@ a:hover {
   color: white !important;
 }
 
+/* Ultra-specific override for active button text color */
+.filters .filter-buttons .filter-btn.active,
+.filters .filter-tags .tag-btn.active,
+button.filter-btn.active,
+button.tag-btn.active {
+  color: #ffffff !important;
+}
+
 .filter-tags {
   display: flex;
   flex-wrap: wrap;
