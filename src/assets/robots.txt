@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://tobagin.github.io/sitemap.xml
+
+# Allow indexing of all pages
+Allow: /apps/
+Allow: /assets/
+
+# Disallow any admin or build artifacts (if any exist)
+Disallow: /_site/
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /_test/
+
+# Cache policy - crawl delay to be respectful
+Crawl-delay: 1

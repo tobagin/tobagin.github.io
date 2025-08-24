@@ -1,0 +1,600 @@
+<%- include('partials/header') %>
+
+<main class="main">
+  <!-- Ultra-Modern App Hero Section -->
+  <section class="app-hero">
+    <div class="app-hero-container">
+      <div class="app-hero-content">
+        <div class="app-hero-icon">
+          <img src="https://raw.githubusercontent.com/tobagin/<%= app.github.split('/')[1] %>/main/data/icons/hicolor/512x512/apps/<%= app.flathub %>.png" 
+               alt="<%= app.name %> icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNjY3ZWVhIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNzY0YmEyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9InVybCgjZ3JhZCkiLz48dGV4dCB4PSIxMjgiIHk9IjEzNiIgZm9udC1mYW1pbHk9IlNwYWNlIEdyb3Rlc2ssIHN5c3RlbS11aSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIj5BcHA8L3RleHQ+PC9zdmc+'">
+        </div>
+        
+        <div class="app-hero-info">
+          <div class="app-badge-container">
+            <div class="app-category-badge"><%= app.category %></div>
+            <div class="app-status-badge <%= app.status || 'active' %>"><%= (app.status || 'active').charAt(0).toUpperCase() + (app.status || 'active').slice(1) %></div>
+          </div>
+          
+          <h1 class="app-title"><%= app.name %></h1>
+          <p class="app-tagline"><%= app.tagline %></p>
+          
+          <div class="app-tech-stack">
+            <% (app.tags || []).forEach(tag => { %>
+              <span class="tech-tag"><%= tag %></span>
+            <% }); %>
+          </div>
+          
+          <div class="app-actions">
+            <a href="https://flathub.org/apps/<%= app.flathub %>" 
+               class="btn btn-primary btn-large" 
+               target="_blank" 
+               rel="noopener noreferrer">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-15"></path>
+                <polyline points="7,10 12,15 17,10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Install from Flathub
+            </a>
+            
+            <a href="https://github.com/<%= app.github %>" 
+               class="btn btn-secondary btn-large"
+               target="_blank" 
+               rel="noopener noreferrer">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              View Source Code
+            </a>
+            
+            <a href="https://ko-fi.com/tobagin" 
+               class="btn btn-accent btn-large"
+               target="_blank" 
+               rel="noopener noreferrer">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.061 11.493c.02 4.169 4.011 4.169 4.011 4.169h13.594s3.645-.526 4.916-3.049c1.271-2.524.253-5.57.253-5.57s.264-1.789-.876-3.248zm-2.85 3.025c-.782 1.48-2.557 1.88-2.557 1.88H4.67c-2.136 0-2.136-2.137-2.136-2.137V9.069c0-.896.896-.896.896-.896h14.725s2.924.146 3.553 2.924c.629 2.778-.677 4.876-.677 4.876z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              Support & Donate
+            </a>
+            
+            <button class="btn btn-ghost btn-large share-btn" id="share-app">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              Share App
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources Section -->
+  <% if (app.resources) { %>
+  <section class="app-resources">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Project Resources</h2>
+        <p class="section-description">Everything you need to get started and contribute</p>
+      </div>
+      
+      <div class="resources-grid">
+        <% if (app.resources.docs_url) { %>
+        <a href="<%= app.resources.docs_url %>" class="resource-card" target="_blank" rel="noopener noreferrer">
+          <div class="resource-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14,2 14,8 20,8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10,9 9,9 8,9"></polyline>
+            </svg>
+          </div>
+          <div class="resource-content">
+            <h3>Documentation</h3>
+            <p>User guides, API docs, and tutorials</p>
+          </div>
+          <div class="resource-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 7h10v10"></path>
+              <path d="M7 17 17 7"></path>
+            </svg>
+          </div>
+        </a>
+        <% } %>
+        
+        <% if (app.resources.wiki_url) { %>
+        <a href="<%= app.resources.wiki_url %>" class="resource-card" target="_blank" rel="noopener noreferrer">
+          <div class="resource-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+          </div>
+          <div class="resource-content">
+            <h3>Wiki</h3>
+            <p>Community knowledge and guides</p>
+          </div>
+          <div class="resource-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 7h10v10"></path>
+              <path d="M7 17 17 7"></path>
+            </svg>
+          </div>
+        </a>
+        <% } %>
+        
+        <% if (app.resources.issues_url) { %>
+        <a href="<%= app.resources.issues_url %>" class="resource-card" target="_blank" rel="noopener noreferrer">
+          <div class="resource-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div class="resource-content">
+            <h3>Issues & Bugs</h3>
+            <p>Report bugs and request features</p>
+          </div>
+          <div class="resource-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 7h10v10"></path>
+              <path d="M7 17 17 7"></path>
+            </svg>
+          </div>
+        </a>
+        <% } %>
+        
+        <% if (app.resources.discussions_url) { %>
+        <a href="<%= app.resources.discussions_url %>" class="resource-card" target="_blank" rel="noopener noreferrer">
+          <div class="resource-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <div class="resource-content">
+            <h3>Discussions</h3>
+            <p>Community support and ideas</p>
+          </div>
+          <div class="resource-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 7h10v10"></path>
+              <path d="M7 17 17 7"></path>
+            </svg>
+          </div>
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- Screenshots Gallery -->
+  <section class="app-screenshots">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Screenshots</h2>
+        <p class="section-description">See the app in action</p>
+      </div>
+      
+      <div class="screenshots-gallery" id="screenshots-gallery">
+        <% if (app.screenshots && app.screenshots.length > 0) { %>
+          <% app.screenshots.forEach((screenshot, index) => { %>
+            <div class="screenshot-item" 
+                 data-screenshot="<%= index + 1 %>"
+                 onclick="openLightbox('<%= app.github.split('/')[1] %>', '<%= screenshot %>', <%= index + 1 %>)">
+              <img src="https://raw.githubusercontent.com/tobagin/<%= app.github.split('/')[1] %>/main/screenshots/<%= screenshot %>" 
+                   alt="<%= app.name %> screenshot <%= index + 1 %>"
+                   loading="lazy"
+                   onerror="this.parentElement.style.display='none'">
+              <div class="screenshot-overlay">
+                <div class="screenshot-play">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M15 3h6v6"></path>
+                    <path d="M10 14 21 3"></path>
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p class="no-screenshots">Screenshots coming soon!</p>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back Navigation -->
+  <section class="app-navigation">
+    <div class="container">
+      <a href="/" class="back-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M19 12H5"></path>
+          <path d="M12 19l-7-7 7-7"></path>
+        </svg>
+        Back to All Apps
+      </a>
+    </div>
+  </section>
+</main>
+
+<!-- Ultra-Modern Screenshot Lightbox -->
+<div id="lightbox" class="lightbox">
+  <div class="lightbox-backdrop"></div>
+  <div class="lightbox-container">
+    <button class="lightbox-close" onclick="closeLightbox()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <div class="lightbox-zoom-controls">
+      <button class="zoom-btn" onclick="zoomOut()" id="zoom-out">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M8 11h6"></path>
+          <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+      </button>
+      <span class="zoom-level" id="zoom-level">100%</span>
+      <button class="zoom-btn" onclick="zoomIn()" id="zoom-in">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M8 11h6"></path>
+          <path d="M11 8v6"></path>
+          <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+      </button>
+      <button class="zoom-btn" onclick="resetZoom()" id="reset-zoom">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z"></path>
+          <path d="M8 21l8-8"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="lightbox-content" id="lightbox-content">
+      <div class="lightbox-image-container" id="lightbox-image-container">
+        <img id="lightbox-image" src="" alt="Screenshot" />
+      </div>
+    </div>
+    
+    <div class="lightbox-controls">
+      <button class="lightbox-nav lightbox-prev" onclick="prevImage()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M15 18l-6-6 6-6"></path>
+        </svg>
+      </button>
+      <div class="lightbox-counter">
+        <span id="current-image">1</span> / <span id="total-images"><%= app.screenshots ? app.screenshots.length : 0 %></span>
+      </div>
+      <button class="lightbox-nav lightbox-next" onclick="nextImage()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 18l6-6-6-6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Enhanced App Page JavaScript -->
+<script>
+let currentAppId = '<%= app.github.split('/')[1] %>';
+let currentImage = 1;
+let appScreenshots = [<% if (app.screenshots) { %>'<%= app.screenshots.join("', '") %>'<% } %>];
+let maxImages = <%= app.screenshots ? app.screenshots.length : 0 %>;
+let currentZoom = 1;
+let panX = 0;
+let panY = 0;
+let isDragging = false;
+let lastMouseX = 0;
+let lastMouseY = 0;
+
+// Ultra-modern lightbox functionality
+function openLightbox(appId, screenshotName, imageIndex) {
+  const lightbox = document.getElementById('lightbox');
+  const image = document.getElementById('lightbox-image');
+  const currentSpan = document.getElementById('current-image');
+  
+  currentImage = imageIndex;
+  image.src = `https://raw.githubusercontent.com/tobagin/${appId}/main/screenshots/${screenshotName}`;
+  image.alt = `<%= app.name %> screenshot ${imageIndex}`;
+  currentSpan.textContent = imageIndex;
+  
+  // Reset zoom and pan
+  resetZoom();
+  
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  
+  // Add entrance animation
+  setTimeout(() => {
+    lightbox.querySelector('.lightbox-container').style.transform = 'scale(1)';
+    lightbox.querySelector('.lightbox-container').style.opacity = '1';
+  }, 10);
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  const container = lightbox.querySelector('.lightbox-container');
+  
+  // Add exit animation
+  container.style.transform = 'scale(0.9)';
+  container.style.opacity = '0';
+  
+  setTimeout(() => {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }, 200);
+}
+
+function nextImage() {
+  if (currentImage < maxImages) {
+    const nextIndex = currentImage + 1;
+    const nextScreenshot = appScreenshots[nextIndex - 1];
+    openLightbox(currentAppId, nextScreenshot, nextIndex);
+  }
+}
+
+function prevImage() {
+  if (currentImage > 1) {
+    const prevIndex = currentImage - 1;
+    const prevScreenshot = appScreenshots[prevIndex - 1];
+    openLightbox(currentAppId, prevScreenshot, prevIndex);
+  }
+}
+
+// Zoom functionality
+function zoomIn() {
+  currentZoom = Math.min(currentZoom * 1.2, 5);
+  updateImageTransform();
+  updateZoomLevel();
+}
+
+function zoomOut() {
+  currentZoom = Math.max(currentZoom / 1.2, 0.5);
+  updateImageTransform();
+  updateZoomLevel();
+  
+  // Reset pan if zoomed out too much
+  if (currentZoom <= 1) {
+    panX = 0;
+    panY = 0;
+    updateImageTransform();
+  }
+}
+
+function resetZoom() {
+  currentZoom = 1;
+  panX = 0;
+  panY = 0;
+  updateImageTransform();
+  updateZoomLevel();
+}
+
+function updateImageTransform() {
+  const image = document.getElementById('lightbox-image');
+  image.style.transform = `scale(${currentZoom}) translate(${panX}px, ${panY}px)`;
+  image.style.cursor = currentZoom > 1 ? 'grab' : 'default';
+}
+
+function updateZoomLevel() {
+  const zoomLevel = document.getElementById('zoom-level');
+  zoomLevel.textContent = `${Math.round(currentZoom * 100)}%`;
+  
+  // Update button states
+  const zoomInBtn = document.getElementById('zoom-in');
+  const zoomOutBtn = document.getElementById('zoom-out');
+  
+  zoomInBtn.disabled = currentZoom >= 5;
+  zoomOutBtn.disabled = currentZoom <= 0.5;
+}
+
+// Enhanced share functionality
+document.getElementById('share-app').addEventListener('click', async function() {
+  const shareData = {
+    title: '<%= app.name %> - <%= app.tagline %>',
+    text: 'Check out this amazing GNOME app: <%= app.name %>',
+    url: window.location.href
+  };
+  
+  if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        fallbackShare();
+      }
+    }
+  } else {
+    fallbackShare();
+  }
+});
+
+function fallbackShare() {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      showShareFeedback('Link copied to clipboard!');
+    }).catch(() => {
+      showShareFeedback('Unable to copy link');
+    });
+  } else {
+    showShareFeedback('Share feature not available');
+  }
+}
+
+function showShareFeedback(message) {
+  const button = document.getElementById('share-app');
+  const originalContent = button.innerHTML;
+  
+  button.innerHTML = `
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <polyline points="20,6 9,17 4,12"></polyline>
+    </svg>
+    ${message}
+  `;
+  button.style.background = 'var(--success)';
+  
+  setTimeout(() => {
+    button.innerHTML = originalContent;
+    button.style.background = '';
+  }, 2000);
+}
+
+// Keyboard navigation for lightbox
+document.addEventListener('keydown', function(e) {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox.classList.contains('active')) {
+    switch(e.key) {
+      case 'Escape':
+        closeLightbox();
+        break;
+      case 'ArrowLeft':
+        prevImage();
+        break;
+      case 'ArrowRight':
+        nextImage();
+        break;
+      case '+':
+      case '=':
+        e.preventDefault();
+        zoomIn();
+        break;
+      case '-':
+        e.preventDefault();
+        zoomOut();
+        break;
+      case '0':
+        e.preventDefault();
+        resetZoom();
+        break;
+    }
+  }
+});
+
+// Mouse wheel zoom
+document.addEventListener('wheel', function(e) {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox.classList.contains('active')) {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      zoomIn();
+    } else {
+      zoomOut();
+    }
+  }
+});
+
+// Pan functionality
+document.addEventListener('mousedown', function(e) {
+  const image = document.getElementById('lightbox-image');
+  const lightbox = document.getElementById('lightbox');
+  
+  if (lightbox.classList.contains('active') && e.target === image && currentZoom > 1) {
+    isDragging = true;
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+    image.style.cursor = 'grabbing';
+    e.preventDefault();
+  }
+});
+
+document.addEventListener('mousemove', function(e) {
+  if (isDragging) {
+    const deltaX = (e.clientX - lastMouseX) / currentZoom;
+    const deltaY = (e.clientY - lastMouseY) / currentZoom;
+    
+    panX += deltaX;
+    panY += deltaY;
+    
+    updateImageTransform();
+    
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+  }
+});
+
+document.addEventListener('mouseup', function() {
+  if (isDragging) {
+    isDragging = false;
+    const image = document.getElementById('lightbox-image');
+    image.style.cursor = currentZoom > 1 ? 'grab' : 'default';
+  }
+});
+
+// Touch events for mobile
+document.addEventListener('touchstart', function(e) {
+  const image = document.getElementById('lightbox-image');
+  const lightbox = document.getElementById('lightbox');
+  
+  if (lightbox.classList.contains('active') && e.target === image && currentZoom > 1 && e.touches.length === 1) {
+    isDragging = true;
+    lastMouseX = e.touches[0].clientX;
+    lastMouseY = e.touches[0].clientY;
+    e.preventDefault();
+  }
+});
+
+document.addEventListener('touchmove', function(e) {
+  if (isDragging && e.touches.length === 1) {
+    const deltaX = (e.touches[0].clientX - lastMouseX) / currentZoom;
+    const deltaY = (e.touches[0].clientY - lastMouseY) / currentZoom;
+    
+    panX += deltaX;
+    panY += deltaY;
+    
+    updateImageTransform();
+    
+    lastMouseX = e.touches[0].clientX;
+    lastMouseY = e.touches[0].clientY;
+    e.preventDefault();
+  }
+});
+
+document.addEventListener('touchend', function() {
+  isDragging = false;
+});
+
+// Close lightbox on backdrop click
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this || e.target.classList.contains('lightbox-backdrop')) {
+    closeLightbox();
+  }
+});
+
+// Add entrance animations
+document.addEventListener('DOMContentLoaded', function() {
+  const elements = document.querySelectorAll('.app-hero-content > *, .resource-card, .screenshot-item');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, index * 100);
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+  
+  elements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+    observer.observe(el);
+  });
+});
+</script>
+
+<%- include('partials/footer') %>

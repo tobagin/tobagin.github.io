@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <meta name="description" content="<%= description %>">
+  
+  <!-- SEO Meta Tags -->
+  <meta property="og:title" content="<%= title %>">
+  <meta property="og:description" content="<%= description %>">
+  <meta property="og:url" content="<%= url %>">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="<%= url %>/assets/images/og-image.png">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= title %>">
+  <meta name="twitter:description" content="<%= description %>">
+  <meta name="twitter:image" content="<%= url %>/assets/images/og-image.png">
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="/styles/main.css" as="style">
+  <link rel="stylesheet" href="/styles/main.css">
+  
+  <!-- PWA Meta -->
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#3584e4">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+  
+  <!-- Critical CSS for theme switching -->
+  <style>
+    :root {
+      --transition-speed: 0.3s;
+    }
+    
+    [data-theme="light"] {
+      --bg-primary: #f8f9fa;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: rgba(255, 255, 255, 0.8);
+      --text-primary: #1a1a1a;
+      --text-secondary: #6c757d;
+      --accent: #3584e4;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.18);
+    }
+    
+    [data-theme="dark"] {
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: rgba(22, 27, 34, 0.8);
+      --text-primary: #f0f6fc;
+      --text-secondary: #8b949e;
+      --accent: #58a6ff;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --glass-bg: rgba(22, 27, 34, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+    
+    * {
+      transition: background-color var(--transition-speed) ease, 
+                  color var(--transition-speed) ease,
+                  border-color var(--transition-speed) ease;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <a href="/" class="nav-logo">
+          <img src="https://github.com/tobagin.png" alt="Tobagin" class="nav-avatar">
+          <span class="nav-title">Tobagin Apps</span>
+        </a>
+      </div>
+      
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light theme">
+          <span class="theme-icon">🌓</span>
+        </button>
+      </div>
+    </nav>
+  </header>

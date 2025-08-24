@@ -1,0 +1,347 @@
+<%- include('partials/header') %>
+
+<main class="main">
+  <!-- Revolutionary Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Apps for 
+          <span class="hero-highlight">GNOME</span>
+        </h1>
+        <p class="hero-description">
+          Discover cutting-edge, beautifully crafted open-source applications that push the boundaries of what's possible on the GNOME desktop.
+        </p>
+        
+        <div class="hero-actions">
+          <a href="#apps" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="10,8 16,12 10,16 10,8"></polygon>
+            </svg>
+            Explore Apps
+          </a>
+          <a href="https://github.com/tobagin" class="btn btn-secondary" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            View Source
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number"><%= apps.length %></span>
+            <span class="stat-label">Premium Apps</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Open Source</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Possibilities</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-visual">
+        <div class="floating-grid">
+          <div class="floating-card">🚀</div>
+          <div class="floating-card">⚡</div>
+          <div class="floating-card">🎨</div>
+          <div class="floating-card">💎</div>
+          <div class="floating-card">🔧</div>
+          <div class="floating-card">✨</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Ultra-Modern Search Section -->
+  <section class="search-section">
+    <div class="search-container">
+      <div class="search-wrapper">
+        <input type="search" 
+               id="search-input" 
+               class="search-input"
+               placeholder="Search for the perfect app..."
+               aria-label="Search applications">
+        <div class="search-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+      
+    <div class="filters">
+      <div class="filter-group">
+        <h3 class="filter-title">Categories</h3>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All Apps</button>
+          <% 
+          const categories = [...new Set(apps.map(app => app.category))].sort();
+          categories.forEach(category => { %>
+            <button class="filter-btn" data-filter="<%= category.toLowerCase() %>"><%= category %></button>
+          <% }); %>
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <h3 class="filter-title">Technologies</h3>
+        <div class="filter-tags">
+          <% 
+          const allTags = [...new Set(apps.flatMap(app => app.tags || []))].sort();
+          allTags.forEach(tag => { %>
+            <button class="tag-btn" data-tag="<%= tag %>"><%= tag %></button>
+          <% }); %>
+        </div>
+      </div>
+      
+      <button id="clear-filters" class="clear-filters">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 6h18"></path>
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+          <line x1="10" y1="11" x2="10" y2="17"></line>
+          <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+        Clear All Filters
+      </button>
+    </div>
+  </section>
+  
+  <!-- Revolutionary Apps Grid -->
+  <section class="apps-section" id="apps">
+    <div class="apps-container">
+      <div class="apps-grid">
+        <% apps.forEach((app, index) => { %>
+          <article class="app-card" 
+                   data-category="<%= app.category.toLowerCase() %>" 
+                   data-tags="<%= (app.tags || []).join(',') %>"
+                   data-name="<%= app.name.toLowerCase() %>"
+                   data-description="<%= app.tagline.toLowerCase() %>"
+                   style="animation-delay: <%= index * 150 %>ms">
+            <a href="/apps/<%= app.slug %>/" class="app-link">
+              <div class="app-card-inner">
+                <div class="app-header">
+                  <div class="app-icon">
+                    <img src="https://raw.githubusercontent.com/tobagin/<%= app.github.split('/')[1] %>/main/data/icons/hicolor/512x512/apps/<%= app.flathub %>.png" 
+                         alt="<%= app.name %> icon"
+                         loading="lazy"
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNjY3ZWVhIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNzY0YmEyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9InVybCgjZ3JhZCkiLz48dGV4dCB4PSIxMjgiIHk9IjEzNiIgZm9udC1mYW1pbHk9IlNwYWNlIEdyb3Rlc2ssIHN5c3RlbS11aSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIj5BcHA8L3RleHQ+PC9zdmc+'">
+                  </div>
+                  
+                  <div class="app-info">
+                    <h3 class="app-name"><%= app.name %></h3>
+                    <p class="app-description"><%= app.tagline %></p>
+                  </div>
+                </div>
+                
+                <div class="app-meta">
+                  <div class="app-category-badge"><%= app.category %></div>
+                  <% if (app.status && app.status !== 'active') { %>
+                    <div class="app-status-badge <%= app.status %>"><%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %></div>
+                  <% } %>
+                  <div class="app-tags">
+                    <% (app.tags || []).slice(0, 4).forEach(tag => { %>
+                      <span class="app-tag"><%= tag %></span>
+                    <% }); %>
+                    <% if (app.tags && app.tags.length > 4) { %>
+                      <span class="app-tag-more">+<%= app.tags.length - 4 %></span>
+                    <% } %>
+                  </div>
+                </div>
+                
+                <div class="app-actions">
+                  <div class="action-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M7 7h10v10"></path>
+                      <path d="M7 17 17 7"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+        <% }); %>
+      </div>
+      
+      <div class="no-results" style="display: none;">
+        <div class="no-results-icon">🔍</div>
+        <h3>No apps found</h3>
+        <p>Try adjusting your search query or filters to discover amazing applications.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Modern Search and Filter JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('search-input');
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const tagButtons = document.querySelectorAll('.tag-btn');
+  const clearButton = document.getElementById('clear-filters');
+  const appCards = document.querySelectorAll('.app-card');
+  const noResults = document.querySelector('.no-results');
+  
+  let activeFilter = 'all';
+  let activeTags = new Set();
+  let searchQuery = '';
+  
+  // Modern filter function with smooth animations
+  function filterApps() {
+    let visibleCount = 0;
+    
+    appCards.forEach((card, index) => {
+      const category = card.dataset.category;
+      const tags = card.dataset.tags.split(',').filter(t => t.trim());
+      const name = card.dataset.name;
+      const description = card.dataset.description;
+      
+      // Advanced filtering logic
+      const categoryMatch = activeFilter === 'all' || category === activeFilter;
+      const tagMatch = activeTags.size === 0 || [...activeTags].some(tag => tags.includes(tag));
+      const searchMatch = !searchQuery || 
+                         name.includes(searchQuery) || 
+                         description.includes(searchQuery) ||
+                         tags.some(tag => tag.includes(searchQuery));
+      
+      const isVisible = categoryMatch && tagMatch && searchMatch;
+      
+      if (isVisible) {
+        card.style.display = 'block';
+        // Stagger animation delays for smooth reveal
+        card.style.animationDelay = (visibleCount * 100) + 'ms';
+        card.style.animationName = 'cardReveal';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    // Show/hide no results with smooth transition
+    if (visibleCount === 0) {
+      noResults.style.display = 'flex';
+      noResults.style.animation = 'fadeInUp 0.5s ease-out';
+    } else {
+      noResults.style.display = 'none';
+    }
+  }
+  
+  // Enhanced search with debouncing
+  let searchTimeout;
+  searchInput.addEventListener('input', function(e) {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      filterApps();
+    }, 200);
+  });
+  
+  // Modern category filter handlers
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      activeFilter = this.dataset.filter;
+      
+      // Add click feedback
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = '';
+      }, 150);
+      
+      filterApps();
+    });
+  });
+  
+  // Enhanced tag filter handlers
+  tagButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const tag = this.dataset.tag;
+      
+      if (activeTags.has(tag)) {
+        activeTags.delete(tag);
+        this.classList.remove('active');
+      } else {
+        activeTags.add(tag);
+        this.classList.add('active');
+      }
+      
+      // Add click feedback
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = '';
+      }, 150);
+      
+      filterApps();
+    });
+  });
+  
+  // Enhanced clear filters with confirmation
+  clearButton.addEventListener('click', function() {
+    // Add dramatic clear animation
+    searchInput.value = '';
+    searchQuery = '';
+    activeFilter = 'all';
+    activeTags.clear();
+    
+    filterButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === 'all');
+    });
+    
+    tagButtons.forEach(btn => btn.classList.remove('active'));
+    
+    // Animate clear button
+    this.style.transform = 'scale(0.9)';
+    this.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20,6 9,17 4,12"></polyline></svg>Cleared!';
+    
+    setTimeout(() => {
+      this.style.transform = '';
+      this.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>Clear All Filters';
+    }, 1500);
+    
+    filterApps();
+  });
+  
+  // Modern keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    // Focus search with '/' key
+    if (e.key === '/' && !searchInput.matches(':focus')) {
+      e.preventDefault();
+      searchInput.focus();
+    }
+    
+    // Clear filters with 'Escape' key
+    if (e.key === 'Escape') {
+      if (searchInput.matches(':focus')) {
+        searchInput.blur();
+      } else {
+        clearButton.click();
+      }
+    }
+  });
+  
+  // Add scroll-based header effect
+  const header = document.querySelector('.header');
+  let lastScroll = 0;
+  
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll > 100) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+    
+    lastScroll = currentScroll;
+  });
+});
+</script>
+
+<%- include('partials/footer') %>

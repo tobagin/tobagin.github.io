@@ -1,0 +1,106 @@
+---
+- slug: digger
+  name: Digger
+  tagline: DNS lookup tool with graphical interface
+  github: tobagin/digger
+  flathub: io.github.tobagin.digger
+  category: Development
+  tags:
+  - networking
+  - dns
+  - gtk4
+  - vala
+  screenshots:
+  - main.png
+  - lookup.png
+  - autocomplete.png
+  - history.png
+  - preferences.png
+  - about.png
+- slug: keysmith
+  name: KeySmith
+  tagline: SSH Key Management Application
+  github: tobagin/keysmith
+  flathub: io.github.tobagin.keysmith
+  category: System
+  tags:
+  - ssh
+  - security
+  - keys
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: secrets
+  name: Secrets
+  tagline: Beautiful password safe for GN.
+  github: tobagin/secrets
+  flathub: io.github.tobagin.secrets
+  category: System
+  tags:
+  - password
+  - security
+  - encryption
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: sonar
+  name: Sonar
+  tagline: Local webhook inspector for developers
+  github: tobagin/sonar
+  flathub: io.github.tobagin.sonar
+  category: Development
+  tags:
+  - development
+  - webhook
+  - networking
+  - debugging
+  screenshots:
+  - main-window.png
+- slug: karere
+  name: Karere
+  tagline: GTK4 WhatsApp Client
+  github: tobagin/karere
+  flathub: io.github.tobagin.karere
+  category: Network
+  tags:
+  - chat
+  - whatsapp
+  - messaging
+  - gtk4
+  screenshots:
+  - main-window.png
+  - about.png
+  - preferences-general.png
+  - preferences-notifications.png
+  - preferences-spell-checking.png
+  - preferences-crash-reporting.png
+- slug: tempo
+  name: Tempo
+  tagline: A modern metronome for musicians
+  github: tobagin/tempo
+  flathub: io.github.tobagin.tempo
+  category: Entertainment
+  tags:
+  - music
+  - metronome
+  - gtk4
+  screenshots:
+  - main-window.png
+  - preference-general.png
+  - preferences-visual.png
+  - about-dialog.png
+- slug: seoltoir
+  name: Seoltóir
+  tagline: Modern web browser for GNOME
+  github: tobagin/seoltoir
+  flathub: io.github.tobagin.seoltoir
+  category: Network
+  status: alpha
+  tags:
+  - web-browser
+  - gtk4
+  - internet
+  - webkit
+  - vala
+  screenshots:
+  - main-window.png

@@ -1,0 +1,66 @@
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About</h3>
+        <p>A curated collection of beautiful, modern applications for the GNOME desktop environment.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Links</h3>
+        <ul>
+          <li><a href="https://github.com/tobagin">GitHub</a></li>
+          <li><a href="https://flathub.org">Flathub</a></li>
+          <li><a href="/privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Built with</h3>
+        <p>Modern web technologies and love for open source.</p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2024 Tobagin Apps. Open source and built for the community.</p>
+    </div>
+  </footer>
+
+  <!-- Theme toggle script -->
+  <script>
+    (function() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const html = document.documentElement;
+      
+      // Load saved theme or use system preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        html.setAttribute('data-theme', savedTheme);
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      }
+      
+      // Theme toggle functionality
+      themeToggle.addEventListener('click', function() {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Add animation class
+        document.body.classList.add('theme-transitioning');
+        setTimeout(() => {
+          document.body.classList.remove('theme-transitioning');
+        }, 300);
+      });
+      
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+          html.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
