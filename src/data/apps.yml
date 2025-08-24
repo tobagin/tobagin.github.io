@@ -106,33 +106,36 @@
   - main-window.png
 - slug: atlas
   name: Atlas
-  tagline: Explore and navigate your world
+  tagline: Elegant desktop world clock application
   github: tobagin/atlas
   flathub: io.github.tobagin.atlas
   category: System
   status: development
   tags:
-  - maps
-  - navigation
+  - world-clock
+  - timezones
+  - time-conversion
   - gtk4
+  - libadwaita
   screenshots:
   - main-window.png
 - slug: beacon
   name: Beacon
-  tagline: Signal and communicate across networks
+  tagline: Simple network service discovery tool
   github: tobagin/beacon
   flathub: io.github.tobagin.beacon
   category: Network
   status: development
   tags:
+  - network-discovery
+  - services
   - networking
-  - communication
   - gtk4
   screenshots:
   - main-window.png
 - slug: chronicle
   name: Chronicle
-  tagline: Record and track your stories
+  tagline: Personal journaling application
   github: tobagin/chronicle
   flathub: io.github.tobagin.chronicle
   category: Office
@@ -140,91 +143,99 @@
   tags:
   - journaling
   - writing
-  - documentation
+  - personal
   - gtk4
   screenshots:
   - main-window.png
 - slug: chronomancer
   name: Chronomancer
-  tagline: Master time and scheduling
+  tagline: Graphical interface for managing systemd user timers
   github: tobagin/chronomancer
   flathub: io.github.tobagin.chronomancer
-  category: Office
+  category: System
   status: development
   tags:
-  - time-management
-  - scheduling
-  - productivity
+  - systemd
+  - timers
+  - task-scheduling
+  - system-management
   - gtk4
+  - libadwaita
   screenshots:
   - main-window.png
 - slug: fix-it
   name: Fix It
-  tagline: Repair and maintenance helper
+  tagline: Civic issue reporter for community problems
   github: tobagin/fix-it
   flathub: io.github.tobagin.fix-it
   category: System
   status: development
   tags:
-  - maintenance
-  - repair
-  - utilities
+  - civic-reporting
+  - community
+  - issue-tracking
   - gtk4
   screenshots:
   - main-window.png
 - slug: parish-pump
   name: Parish Pump
-  tagline: Community news and information hub
+  tagline: Local noticeboard aggregator for community news
   github: tobagin/parish-pump
   flathub: io.github.tobagin.parish-pump
   category: Network
   status: development
   tags:
-  - news
+  - local-news
   - community
-  - information
+  - aggregator
+  - noticeboard
   - gtk4
+  - libadwaita
   screenshots:
   - main-window.png
 - slug: purahei
   name: Purahei
-  tagline: Cultural heritage and tradition keeper
+  tagline: GTK4 Apple Music client
   github: tobagin/purahei
   flathub: io.github.tobagin.purahei
-  category: Education
+  category: Entertainment
   status: development
   tags:
-  - culture
-  - heritage
-  - education
+  - music
+  - apple-music
+  - streaming
   - gtk4
   screenshots:
   - main-window.png
 - slug: scramble
   name: Scramble
-  tagline: Word puzzles and brain games
+  tagline: Privacy-focused image metadata viewer and remover
   github: tobagin/scramble
   flathub: io.github.tobagin.scramble
-  category: Entertainment
+  category: System
   status: development
   tags:
-  - games
-  - puzzles
-  - word-games
+  - metadata
+  - privacy
+  - image-processing
+  - exif
   - gtk4
+  - libadwaita
   screenshots:
   - main-window.png
 - slug: tavern
   name: Tavern
-  tagline: Social gathering and community space
+  tagline: Modern D&D 5e character sheet manager
   github: tobagin/tavern
   flathub: io.github.tobagin.tavern
-  category: Network
+  category: Entertainment
   status: development
   tags:
-  - social
-  - community
-  - chat
+  - dnd
+  - character-sheets
+  - rpg
+  - gaming
   - gtk4
+  - libadwaita
   screenshots:
   - main-window.png
