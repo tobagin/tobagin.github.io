@@ -110,7 +110,7 @@
   github: tobagin/atlas
   flathub: io.github.tobagin.atlas
   category: System
-  status: development
+  status: planning
   tags:
   - world-clock
   - timezones
@@ -125,7 +125,7 @@
   github: tobagin/beacon
   flathub: io.github.tobagin.beacon
   category: Network
-  status: development
+  status: planning
   tags:
   - network-discovery
   - services
@@ -139,7 +139,7 @@
   github: tobagin/chronicle
   flathub: io.github.tobagin.chronicle
   category: Office
-  status: development
+  status: planning
   tags:
   - journaling
   - writing
@@ -153,7 +153,7 @@
   github: tobagin/chronomancer
   flathub: io.github.tobagin.chronomancer
   category: System
-  status: development
+  status: planning
   tags:
   - systemd
   - timers
@@ -169,7 +169,7 @@
   github: tobagin/fix-it
   flathub: io.github.tobagin.fix-it
   category: System
-  status: development
+  status: planning
   tags:
   - civic-reporting
   - community
@@ -183,7 +183,7 @@
   github: tobagin/parish-pump
   flathub: io.github.tobagin.parish-pump
   category: Network
-  status: development
+  status: planning
   tags:
   - local-news
   - community
@@ -199,7 +199,7 @@
   github: tobagin/purahei
   flathub: io.github.tobagin.purahei
   category: Entertainment
-  status: development
+  status: planning
   tags:
   - music
   - apple-music
@@ -213,7 +213,7 @@
   github: tobagin/scramble
   flathub: io.github.tobagin.scramble
   category: System
-  status: development
+  status: alpha
   tags:
   - metadata
   - privacy
@@ -229,7 +229,7 @@
   github: tobagin/tavern
   flathub: io.github.tobagin.tavern
   category: Entertainment
-  status: development
+  status: alpha
   tags:
   - dnd
   - character-sheets
