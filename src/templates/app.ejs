@@ -14,7 +14,7 @@
         <div class="app-hero-info">
           <div class="app-badge-container">
             <div class="app-category-badge"><%= app.category %></div>
-            <div class="app-status-badge <%= app.status || 'active' %>"><%= (app.status || 'active').charAt(0).toUpperCase() + (app.status || 'active').slice(1) %></div>
+            <div class="app-status-badge <%= app.status || 'released' %>"><%= (app.status || 'released').charAt(0).toUpperCase() + (app.status || 'released').slice(1) %></div>
           </div>
           
           <h1 class="app-title"><%= app.name %></h1>
@@ -27,7 +27,7 @@
           </div>
           
           <div class="app-actions">
-            <% if ((app.status || 'active') === 'active') { %>
+            <% if ((app.status || 'released') === 'released') { %>
             <a href="https://flathub.org/apps/<%= app.flathub %>" 
                class="btn btn-primary btn-large" 
                target="_blank" 
@@ -53,7 +53,7 @@
             </button>
             <% } %>
             
-            <% if ((app.status || 'active') === 'active') { %>
+            <% if ((app.status || 'released') === 'released') { %>
             <a href="https://github.com/<%= app.github %>" 
                class="btn btn-secondary btn-large"
                target="_blank" 

@@ -142,8 +142,10 @@
                 
                 <div class="app-meta">
                   <div class="app-category-badge"><%= app.category %></div>
-                  <% if (app.status && app.status !== 'active') { %>
+                  <% if (app.status) { %>
                     <div class="app-status-badge <%= app.status %>"><%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %></div>
+                  <% } else { %>
+                    <div class="app-status-badge released">Released</div>
                   <% } %>
                   <div class="app-tags">
                     <% (app.tags || []).slice(0, 4).forEach(tag => { %>
