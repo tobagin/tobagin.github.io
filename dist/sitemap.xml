@@ -6,41 +6,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://tobagin.github.io/apps/digger/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://tobagin.github.io/apps/keysmith/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://tobagin.github.io/apps/secrets/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://tobagin.github.io/apps/sonar/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://tobagin.github.io/apps/karere/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://tobagin.github.io/apps/tempo/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://tobagin.github.io/apps/seoltoir/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://tobagin.github.io/apps/atlas/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -61,7 +26,22 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://tobagin.github.io/apps/digger/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tobagin.github.io/apps/fix-it/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tobagin.github.io/apps/karere/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tobagin.github.io/apps/keysmith/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -81,7 +61,27 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://tobagin.github.io/apps/secrets/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tobagin.github.io/apps/seoltoir/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tobagin.github.io/apps/sonar/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tobagin.github.io/apps/tavern/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tobagin.github.io/apps/tempo/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
