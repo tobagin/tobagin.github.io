@@ -665,6 +665,8 @@ a:hover {
   transition: all var(--transition-normal);
   position: relative;
   overflow: hidden;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .filter-btn::before,
@@ -695,6 +697,14 @@ a:hover {
 .filter-btn.active::before,
 .tag-btn.active::before {
   opacity: 1;
+}
+
+/* Extra specificity to ensure white text on active filter buttons */
+.filter-buttons .filter-btn.active,
+.filter-tags .tag-btn.active {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: white !important;
 }
 
 .filter-tags {
