@@ -104,3 +104,127 @@
   - vala
   screenshots:
   - main-window.png
+- slug: atlas
+  name: Atlas
+  tagline: Explore and navigate your world
+  github: tobagin/atlas
+  flathub: io.github.tobagin.atlas
+  category: System
+  status: development
+  tags:
+  - maps
+  - navigation
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: beacon
+  name: Beacon
+  tagline: Signal and communicate across networks
+  github: tobagin/beacon
+  flathub: io.github.tobagin.beacon
+  category: Network
+  status: development
+  tags:
+  - networking
+  - communication
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: chronicle
+  name: Chronicle
+  tagline: Record and track your stories
+  github: tobagin/chronicle
+  flathub: io.github.tobagin.chronicle
+  category: Office
+  status: development
+  tags:
+  - journaling
+  - writing
+  - documentation
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: chronomancer
+  name: Chronomancer
+  tagline: Master time and scheduling
+  github: tobagin/chronomancer
+  flathub: io.github.tobagin.chronomancer
+  category: Office
+  status: development
+  tags:
+  - time-management
+  - scheduling
+  - productivity
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: fix-it
+  name: Fix It
+  tagline: Repair and maintenance helper
+  github: tobagin/fix-it
+  flathub: io.github.tobagin.fix-it
+  category: System
+  status: development
+  tags:
+  - maintenance
+  - repair
+  - utilities
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: parish-pump
+  name: Parish Pump
+  tagline: Community news and information hub
+  github: tobagin/parish-pump
+  flathub: io.github.tobagin.parish-pump
+  category: Network
+  status: development
+  tags:
+  - news
+  - community
+  - information
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: purahei
+  name: Purahei
+  tagline: Cultural heritage and tradition keeper
+  github: tobagin/purahei
+  flathub: io.github.tobagin.purahei
+  category: Education
+  status: development
+  tags:
+  - culture
+  - heritage
+  - education
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: scramble
+  name: Scramble
+  tagline: Word puzzles and brain games
+  github: tobagin/scramble
+  flathub: io.github.tobagin.scramble
+  category: Entertainment
+  status: development
+  tags:
+  - games
+  - puzzles
+  - word-games
+  - gtk4
+  screenshots:
+  - main-window.png
+- slug: tavern
+  name: Tavern
+  tagline: Social gathering and community space
+  github: tobagin/tavern
+  flathub: io.github.tobagin.tavern
+  category: Network
+  status: development
+  tags:
+  - social
+  - community
+  - chat
+  - gtk4
+  screenshots:
+  - main-window.png
