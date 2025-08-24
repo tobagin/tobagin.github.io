@@ -5,8 +5,8 @@
   "scripts": {
     "optimize-images": "node scripts/optimize-images.js",
     "generate-pwa-icons": "node scripts/generate-pwa-icons.js",
-    "build": "npm run optimize-images && npm run generate-pwa-icons && bundle exec jekyll build",
-    "dev": "bundle exec jekyll serve --host 0.0.0.0 --port 4000",
+    "build": "npm run optimize-images && npm run generate-pwa-icons && node build.js",
+    "dev": "node build.js && npx serve dist",
     "test:performance": "node scripts/test-performance.js",
     "validate:seo": "node scripts/validate-seo.js",
     "test": "npm run validate:seo && npm run test:performance"
