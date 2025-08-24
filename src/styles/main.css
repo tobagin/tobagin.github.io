@@ -905,11 +905,11 @@ a:hover {
 
 .app-tag {
   padding: var(--space-xs) var(--space-sm);
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--gradient-primary);
+  border: 1px solid transparent;
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: white !important;
   font-weight: 500;
   transition: all var(--transition-fast);
 }
@@ -917,7 +917,7 @@ a:hover {
 .app-card:hover .app-tag {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
+  color: white !important;
 }
 
 .app-tag-more {
