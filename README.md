@@ -1,7 +1,7 @@
 
 # GNOME Portfolio
 
-A Jekyll-based portfolio website showcasing quality GNOME applications with comprehensive resource links and unified access to project documentation, issues, and community discussions.
+A modern Node.js static site generator showcasing quality GNOME applications with comprehensive resource links and unified access to project documentation, issues, and community discussions.
 
 ## Features
 
@@ -15,7 +15,7 @@ A Jekyll-based portfolio website showcasing quality GNOME applications with comp
 
 ### App Entry Structure
 
-Each app in `_data/apps.yml` follows this schema:
+Each app in `src/data/apps.yml` follows this schema:
 
 ```yaml
 - slug: app-identifier          # Required: URL-friendly identifier
@@ -58,9 +58,9 @@ All resource URLs are optional and will only display if provided. URLs should be
 
 ## How to Add a New App
 
-1. **Add Entry**: Create a new entry in `_data/apps.yml` following the schema above
+1. **Add Entry**: Create a new entry in `src/data/apps.yml` following the schema above
 2. **Validate Data**: Ensure all required fields are present and URLs are accessible
-3. **Test Locally**: Run `bundle exec jekyll serve` to preview changes
+3. **Test Locally**: Run `node build.js` and serve the `dist/` directory to preview changes
 4. **Commit Changes**: Push to the repository
 5. **Auto-Deploy**: GitHub Actions will rebuild and deploy the site
 6. **Access Page**: Your app page will be live at `https://tobagin.github.io/apps/<slug>/`
@@ -90,41 +90,54 @@ git clone https://github.com/tobagin/tobagin.github.io.git
 cd tobagin.github.io
 
 # Install dependencies
-bundle install
+npm install
 
-# Serve locally
-bundle exec jekyll serve
+# Build the site
+node build.js
+
+# Serve locally (you can use any static server)
+npx serve dist
+# or
+python -m http.server 8000 --directory dist
 
 # Open in browser
-open http://localhost:4000
+open http://localhost:3000  # for serve
+# or
+open http://localhost:8000  # for python server
 ```
 
 ### Project Structure
 
 ```
 .
-├── _data/
-│   └── apps.yml              # App data following the schema
-├── _layouts/
-│   ├── default.html          # Base page layout
-│   └── app.html              # Individual app page layout
-├── _includes/
-│   └── app-resources.html    # Resource links component
-├── _sass/
-│   └── main.scss             # GNOME-inspired styling
-├── apps/
-│   └── [generated pages]     # Auto-generated app pages
-└── index.html                # Homepage with app grid
+├── src/
+│   ├── data/
+│   │   └── apps.yml          # App data following the schema
+│   ├── templates/
+│   │   ├── index.ejs         # Homepage template
+│   │   ├── app.ejs           # Individual app page template
+│   │   └── partials/         # Reusable template components
+│   ├── styles/
+│   │   ├── main.css          # Main stylesheet
+│   │   └── components/       # Component-specific styles
+│   └── assets/
+│       └── images/           # Optimized app icons and screenshots
+├── dist/                     # Generated site (deployment target)
+├── build.js                  # Static site generator
+├── package.json              # Node.js dependencies
+└── .github/workflows/        # GitHub Actions deployment
 ```
 
-### Backward Compatibility
+### Architecture
 
-The enhanced schema maintains full backward compatibility:
+The site uses a custom Node.js static site generator that:
 
-- Apps without `resources` sections display normally
-- Optional resource fields don't break existing functionality
-- Legacy apps can be gradually enhanced with resource links
-- All existing URLs and functionality remain unchanged
+- Loads app data from YAML files
+- Renders pages using EJS templates
+- Processes and minifies CSS and HTML
+- Optimizes images and generates responsive variants
+- Creates sitemaps and PWA manifests
+- Builds everything into a deployable `dist/` directory
 
 ## Contributing
 

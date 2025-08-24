@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const yaml = require('js-yaml');
 const ejs = require('ejs');
-const { minify } = require('html-minifier');
+const { minify } = require('html-minifier-terser');
 const CleanCSS = require('clean-css');
 
 class ModernSiteGenerator {
@@ -91,7 +91,7 @@ class ModernSiteGenerator {
       filename: templatePath
     });
 
-    const minifiedHtml = minify(html, {
+    const minifiedHtml = await minify(html, {
       collapseWhitespace: true,
       removeComments: true,
       removeRedundantAttributes: true,
@@ -122,7 +122,7 @@ class ModernSiteGenerator {
         filename: templatePath
       });
 
-      const minifiedHtml = minify(html, {
+      const minifiedHtml = await minify(html, {
         collapseWhitespace: true,
         removeComments: true,
         removeRedundantAttributes: true,
