@@ -903,9 +903,9 @@ a:hover {
   gap: var(--space-sm);
 }
 
-.app-tag {
+.app-card .app-tag {
   padding: var(--space-xs) var(--space-sm);
-  background: var(--gradient-primary);
+  background: var(--gradient-primary) !important;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
