@@ -61,7 +61,11 @@ class ModernSiteGenerator {
     const appsFile = path.join(this.dataDir, 'apps.yml');
     const appsData = await fs.readFile(appsFile, 'utf8');
     this.apps = yaml.load(appsData) || [];
-    console.log(`📊 Loaded ${this.apps.length} apps`);
+    
+    // Sort apps alphabetically by name
+    this.apps.sort((a, b) => a.name.localeCompare(b.name));
+    
+    console.log(`📊 Loaded ${this.apps.length} apps (sorted alphabetically)`);
   }
 
   async generatePages() {
