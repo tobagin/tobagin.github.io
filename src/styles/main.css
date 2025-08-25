@@ -711,8 +711,24 @@ a:hover {
 .filters .filter-buttons .filter-btn.active,
 .filters .filter-tags .tag-btn.active,
 button.filter-btn.active,
-button.tag-btn.active {
+button.tag-btn.active,
+.filter-buttons .filter-btn.active *,
+.filter-tags .tag-btn.active *,
+button.filter-btn.active *,
+button.tag-btn.active * {
   color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+/* Maximum specificity override for active filter buttons */
+body .search-section .filters .filter-buttons .filter-btn.active,
+body .search-section .filters .filter-tags .tag-btn.active,
+body .search-section button.filter-btn.active,
+body .search-section button.tag-btn.active {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #ffffff !important;
+  background-color: var(--primary) !important;
 }
 
 .filter-tags {
